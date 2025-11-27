@@ -72,7 +72,7 @@ def _run_test_safe():
             
         # Construct the function call
         # test.input is expected to be a valid python argument string like "(1, 2)" or "([1])"
-        expression = f"${functionName}{test.input}"
+        expression = "${functionName}${test.input}"
         
         # Execute and capture result
         # We evaluate the expression in the global scope
