@@ -55,7 +55,7 @@ export const Contribute: React.FC<ContributeProps> = ({ onBack, onToggleTheme, i
               </a>
 
               <a
-                href="https://wa.me/8949731495"
+                href="https://wa.me/+918949731495"
                 target="_blank"
                 rel="noreferrer"
                 className="group p-6 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-blue-500 dark:hover:border-blue-500 hover:shadow-lg transition-all"

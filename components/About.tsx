@@ -105,7 +105,7 @@ export const About: React.FC<AboutProps> = ({ onBack, onToggleTheme, isDark }) =
                   LinkedIn
                 </a>
                 <a
-                  href="https://wa.me/8949731495"
+                  href="https://wa.me/+918949731495"
                   target="_blank"
                   rel="noreferrer"
                   className="flex items-center px-4 py-2 bg-green-50 dark:bg-green-900/20 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/40 transition-colors font-medium text-sm text-green-700 dark:text-green-400"
