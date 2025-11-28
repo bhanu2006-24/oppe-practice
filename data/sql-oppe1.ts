@@ -2,46 +2,775 @@ import { Problem } from '../types';
 
 export const SQL_OPPE1_PROBLEMS: Problem[] = [
     {
-        id: 'sql-oppe1-select',
-        title: 'Basic Select',
+        id: 'sql1-select-all',
+        title: 'Select All',
         subject: 'SQL',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
-        description: `Write a SQL query to select all columns from the 'users' table.
-        
-        Table 'users' has columns: id (INT), name (TEXT).
-        Data: (1, 'Alice'), (2, 'Bob').`,
-        examples: [
-            { input: '', output: '1|Alice\n2|Bob' }
-        ],
-        starterCode: `-- Write your SQL here
-CREATE TABLE users (id INT, name TEXT);
-INSERT INTO users VALUES (1, 'Alice'), (2, 'Bob');
--- Your query below:
+        description: `Select all columns from the table 'students'.`,
+        examples: [{ input: '', output: '1|Alice\n2|Bob' }],
+        starterCode: `CREATE TABLE students (id INT, name TEXT);
+INSERT INTO students VALUES (1, 'Alice'), (2, 'Bob');
+-- Write your query below
 `,
         functionName: 'sql',
-        testCases: [
-            { input: '', expected: '1|Alice\n2|Bob' }
-        ],
-        hint: 'SELECT * FROM users'
+        testCases: [{ input: '', expected: '1|Alice\n2|Bob' }],
+        hint: 'SELECT * FROM students;'
     },
-    // Adding 49 more placeholder questions
-    ...Array.from({ length: 49 }, (_, i) => ({
-        id: `sql-oppe1-q${i + 2}`,
-        title: `SQL OPPE 1 Practice Q${i + 2}`,
-        subject: 'SQL' as const,
-        examLevel: 'OPPE 1' as const,
-        difficulty: 'Easy' as const,
-        description: `This is a practice question for SQL OPPE 1. Problem #${i + 2}.
-        
-        Select the number ${i + 2} as 'result'.`,
-        examples: [
-            { input: '', output: `${i + 2}` }
-        ],
-        starterCode: `SELECT ${i + 2} as result;`,
+    {
+        id: 'sql1-select-col',
+        title: 'Select Column',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Select only the 'name' column from 'students'.`,
+        examples: [{ input: '', output: 'Alice\nBob' }],
+        starterCode: `CREATE TABLE students (id INT, name TEXT);
+INSERT INTO students VALUES (1, 'Alice'), (2, 'Bob');
+-- Write your query below
+`,
         functionName: 'sql',
-        testCases: [
-            { input: '', expected: `${i + 2}` }
-        ]
-    }))
+        testCases: [{ input: '', expected: 'Alice\nBob' }],
+        hint: 'SELECT name FROM students;'
+    },
+    {
+        id: 'sql1-where-eq',
+        title: 'Where Equals',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Select names of students with id 1.`,
+        examples: [{ input: '', output: 'Alice' }],
+        starterCode: `CREATE TABLE students (id INT, name TEXT);
+INSERT INTO students VALUES (1, 'Alice'), (2, 'Bob');
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: 'Alice' }],
+        hint: 'WHERE id = 1'
+    },
+    {
+        id: 'sql1-where-gt',
+        title: 'Where Greater Than',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Select names of students with score > 50.`,
+        examples: [{ input: '', output: 'Bob' }],
+        starterCode: `CREATE TABLE students (name TEXT, score INT);
+INSERT INTO students VALUES ('Alice', 40), ('Bob', 60);
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: 'Bob' }],
+        hint: 'WHERE score > 50'
+    },
+    {
+        id: 'sql1-order-asc',
+        title: 'Order By Ascending',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Select names ordered by score ascending.`,
+        examples: [{ input: '', output: 'Alice\nBob' }],
+        starterCode: `CREATE TABLE students (name TEXT, score INT);
+INSERT INTO students VALUES ('Bob', 60), ('Alice', 40);
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: 'Alice\nBob' }],
+        hint: 'ORDER BY score ASC'
+    },
+    {
+        id: 'sql1-order-desc',
+        title: 'Order By Descending',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Select names ordered by score descending.`,
+        examples: [{ input: '', output: 'Bob\nAlice' }],
+        starterCode: `CREATE TABLE students (name TEXT, score INT);
+INSERT INTO students VALUES ('Alice', 40), ('Bob', 60);
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: 'Bob\nAlice' }],
+        hint: 'ORDER BY score DESC'
+    },
+    {
+        id: 'sql1-limit',
+        title: 'Limit Results',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Select first 1 name ordered by id.`,
+        examples: [{ input: '', output: 'Alice' }],
+        starterCode: `CREATE TABLE students (id INT, name TEXT);
+INSERT INTO students VALUES (1, 'Alice'), (2, 'Bob');
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: 'Alice' }],
+        hint: 'LIMIT 1'
+    },
+    {
+        id: 'sql1-distinct',
+        title: 'Distinct Values',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Select distinct cities.`,
+        examples: [{ input: '', output: 'NY\nLA' }],
+        starterCode: `CREATE TABLE users (city TEXT);
+INSERT INTO users VALUES ('NY'), ('NY'), ('LA');
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: 'NY\nLA' }],
+        hint: 'SELECT DISTINCT city'
+    },
+    {
+        id: 'sql1-count',
+        title: 'Count Rows',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Count total number of students.`,
+        examples: [{ input: '', output: '2' }],
+        starterCode: `CREATE TABLE students (id INT);
+INSERT INTO students VALUES (1), (2);
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: '2' }],
+        hint: 'COUNT(*)'
+    },
+    {
+        id: 'sql1-sum',
+        title: 'Sum Values',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Calculate sum of scores.`,
+        examples: [{ input: '', output: '100' }],
+        starterCode: `CREATE TABLE students (score INT);
+INSERT INTO students VALUES (40), (60);
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: '100' }],
+        hint: 'SUM(score)'
+    },
+    {
+        id: 'sql1-avg',
+        title: 'Average Value',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Calculate average score.`,
+        examples: [{ input: '', output: '50.0' }],
+        starterCode: `CREATE TABLE students (score INT);
+INSERT INTO students VALUES (40), (60);
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: '50.0' }],
+        hint: 'AVG(score)'
+    },
+    {
+        id: 'sql1-min',
+        title: 'Minimum Value',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Find minimum score.`,
+        examples: [{ input: '', output: '40' }],
+        starterCode: `CREATE TABLE students (score INT);
+INSERT INTO students VALUES (40), (60);
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: '40' }],
+        hint: 'MIN(score)'
+    },
+    {
+        id: 'sql1-max',
+        title: 'Maximum Value',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Find maximum score.`,
+        examples: [{ input: '', output: '60' }],
+        starterCode: `CREATE TABLE students (score INT);
+INSERT INTO students VALUES (40), (60);
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: '60' }],
+        hint: 'MAX(score)'
+    },
+    {
+        id: 'sql1-and',
+        title: 'Logical AND',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Select names where score > 50 AND city = 'NY'.`,
+        examples: [{ input: '', output: 'Bob' }],
+        starterCode: `CREATE TABLE students (name TEXT, score INT, city TEXT);
+INSERT INTO students VALUES ('Alice', 60, 'LA'), ('Bob', 60, 'NY');
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: 'Bob' }],
+        hint: 'AND operator'
+    },
+    {
+        id: 'sql1-or',
+        title: 'Logical OR',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Select names where city is 'NY' OR 'LA'.`,
+        examples: [{ input: '', output: 'Alice\nBob' }],
+        starterCode: `CREATE TABLE students (name TEXT, city TEXT);
+INSERT INTO students VALUES ('Alice', 'LA'), ('Bob', 'NY'), ('Charlie', 'TX');
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: 'Alice\nBob' }],
+        hint: 'OR operator'
+    },
+    {
+        id: 'sql1-not',
+        title: 'Logical NOT',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Select names where city is NOT 'NY'.`,
+        examples: [{ input: '', output: 'Alice' }],
+        starterCode: `CREATE TABLE students (name TEXT, city TEXT);
+INSERT INTO students VALUES ('Alice', 'LA'), ('Bob', 'NY');
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: 'Alice' }],
+        hint: 'NOT or <> or !='
+    },
+    {
+        id: 'sql1-in',
+        title: 'IN Operator',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Select names where id IN (1, 3).`,
+        examples: [{ input: '', output: 'Alice\nCharlie' }],
+        starterCode: `CREATE TABLE students (id INT, name TEXT);
+INSERT INTO students VALUES (1, 'Alice'), (2, 'Bob'), (3, 'Charlie');
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: 'Alice\nCharlie' }],
+        hint: 'WHERE id IN (1, 3)'
+    },
+    {
+        id: 'sql1-between',
+        title: 'BETWEEN Operator',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Select names where score BETWEEN 40 AND 60.`,
+        examples: [{ input: '', output: 'Alice\nBob' }],
+        starterCode: `CREATE TABLE students (name TEXT, score INT);
+INSERT INTO students VALUES ('Alice', 40), ('Bob', 60), ('Charlie', 70);
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: 'Alice\nBob' }],
+        hint: 'BETWEEN 40 AND 60'
+    },
+    {
+        id: 'sql1-like',
+        title: 'LIKE Operator',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Select names starting with 'A'.`,
+        examples: [{ input: '', output: 'Alice' }],
+        starterCode: `CREATE TABLE students (name TEXT);
+INSERT INTO students VALUES ('Alice'), ('Bob');
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: 'Alice' }],
+        hint: "LIKE 'A%'"
+    },
+    {
+        id: 'sql1-is-null',
+        title: 'IS NULL',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Select names where email IS NULL.`,
+        examples: [{ input: '', output: 'Bob' }],
+        starterCode: `CREATE TABLE students (name TEXT, email TEXT);
+INSERT INTO students VALUES ('Alice', 'a@b.com'), ('Bob', NULL);
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: 'Bob' }],
+        hint: 'IS NULL'
+    },
+    {
+        id: 'sql1-is-not-null',
+        title: 'IS NOT NULL',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Select names where email IS NOT NULL.`,
+        examples: [{ input: '', output: 'Alice' }],
+        starterCode: `CREATE TABLE students (name TEXT, email TEXT);
+INSERT INTO students VALUES ('Alice', 'a@b.com'), ('Bob', NULL);
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: 'Alice' }],
+        hint: 'IS NOT NULL'
+    },
+    {
+        id: 'sql1-alias',
+        title: 'Column Alias',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Select name AS 'Student Name'.`,
+        examples: [{ input: '', output: 'Alice' }],
+        starterCode: `CREATE TABLE students (name TEXT);
+INSERT INTO students VALUES ('Alice');
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: 'Alice' }],
+        hint: 'AS keyword'
+    },
+    {
+        id: 'sql1-concat',
+        title: 'Concatenation',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Select first_name || ' ' || last_name.`,
+        examples: [{ input: '', output: 'Alice Smith' }],
+        starterCode: `CREATE TABLE students (first_name TEXT, last_name TEXT);
+INSERT INTO students VALUES ('Alice', 'Smith');
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: 'Alice Smith' }],
+        hint: '|| operator'
+    },
+    {
+        id: 'sql1-upper',
+        title: 'Upper Case',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Select name in uppercase.`,
+        examples: [{ input: '', output: 'ALICE' }],
+        starterCode: `CREATE TABLE students (name TEXT);
+INSERT INTO students VALUES ('Alice');
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: 'ALICE' }],
+        hint: 'UPPER(name)'
+    },
+    {
+        id: 'sql1-lower',
+        title: 'Lower Case',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Select name in lowercase.`,
+        examples: [{ input: '', output: 'alice' }],
+        starterCode: `CREATE TABLE students (name TEXT);
+INSERT INTO students VALUES ('Alice');
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: 'alice' }],
+        hint: 'LOWER(name)'
+    },
+    {
+        id: 'sql1-length',
+        title: 'String Length',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Select length of name.`,
+        examples: [{ input: '', output: '5' }],
+        starterCode: `CREATE TABLE students (name TEXT);
+INSERT INTO students VALUES ('Alice');
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: '5' }],
+        hint: 'LENGTH(name)'
+    },
+    {
+        id: 'sql1-substr',
+        title: 'Substring',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Select first 3 chars of name.`,
+        examples: [{ input: '', output: 'Ali' }],
+        starterCode: `CREATE TABLE students (name TEXT);
+INSERT INTO students VALUES ('Alice');
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: 'Ali' }],
+        hint: 'SUBSTR(name, 1, 3)'
+    },
+    {
+        id: 'sql1-round',
+        title: 'Round Number',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Select score rounded to 0 decimals.`,
+        examples: [{ input: '', output: '10.0' }],
+        starterCode: `CREATE TABLE students (score REAL);
+INSERT INTO students VALUES (10.4);
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: '10.0' }],
+        hint: 'ROUND(score)'
+    },
+    {
+        id: 'sql1-arithmetic',
+        title: 'Arithmetic',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Select score * 2.`,
+        examples: [{ input: '', output: '20' }],
+        starterCode: `CREATE TABLE students (score INT);
+INSERT INTO students VALUES (10);
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: '20' }],
+        hint: '*'
+    },
+    {
+        id: 'sql1-group-by',
+        title: 'Group By',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Count students per city.`,
+        examples: [{ input: '', output: 'LA|1\nNY|2' }],
+        starterCode: `CREATE TABLE students (city TEXT);
+INSERT INTO students VALUES ('NY'), ('NY'), ('LA');
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: 'LA|1\nNY|2' }],
+        hint: 'GROUP BY city'
+    },
+    {
+        id: 'sql1-having',
+        title: 'Having Clause',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Select city with count > 1.`,
+        examples: [{ input: '', output: 'NY' }],
+        starterCode: `CREATE TABLE students (city TEXT);
+INSERT INTO students VALUES ('NY'), ('NY'), ('LA');
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: 'NY' }],
+        hint: 'HAVING COUNT(*) > 1'
+    },
+    {
+        id: 'sql1-create-table',
+        title: 'Create Table',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Create table T with col A INT. Insert 1. Select *.`,
+        examples: [{ input: '', output: '1' }],
+        starterCode: `-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: '1' }],
+        hint: 'CREATE TABLE ... INSERT ... SELECT'
+    },
+    {
+        id: 'sql1-drop-table',
+        title: 'Drop Table',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Drop table T. (Setup creates T).`,
+        examples: [{ input: '', output: '' }],
+        starterCode: `CREATE TABLE T (A INT);
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: '' }],
+        hint: 'DROP TABLE T'
+    },
+    {
+        id: 'sql1-insert',
+        title: 'Insert Row',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Insert 1 into T (A INT). Select *.`,
+        examples: [{ input: '', output: '1' }],
+        starterCode: `CREATE TABLE T (A INT);
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: '1' }],
+        hint: 'INSERT INTO T VALUES (1)'
+    },
+    {
+        id: 'sql1-update',
+        title: 'Update Row',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Update T set A=2 where A=1. Select *.`,
+        examples: [{ input: '', output: '2' }],
+        starterCode: `CREATE TABLE T (A INT);
+INSERT INTO T VALUES (1);
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: '2' }],
+        hint: 'UPDATE T SET A=2'
+    },
+    {
+        id: 'sql1-delete',
+        title: 'Delete Row',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Delete from T where A=1. Select *.`,
+        examples: [{ input: '', output: '' }],
+        starterCode: `CREATE TABLE T (A INT);
+INSERT INTO T VALUES (1);
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: '' }],
+        hint: 'DELETE FROM T'
+    },
+    {
+        id: 'sql1-alter',
+        title: 'Alter Table',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Hard',
+        description: `Add column B INT to T. Select *.`,
+        examples: [{ input: '', output: '1|' }],
+        starterCode: `CREATE TABLE T (A INT);
+INSERT INTO T VALUES (1);
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: '1|' }],
+        hint: 'ALTER TABLE T ADD COLUMN B INT'
+    },
+    {
+        id: 'sql1-select-expr',
+        title: 'Select Expression',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Select 1+1.`,
+        examples: [{ input: '', output: '2' }],
+        starterCode: `-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: '2' }],
+        hint: 'SELECT 1+1'
+    },
+    {
+        id: 'sql1-cast',
+        title: 'Cast Type',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Cast '1' to INT.`,
+        examples: [{ input: '', output: '1' }],
+        starterCode: `-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: '1' }],
+        hint: "CAST('1' AS INT)"
+    },
+    {
+        id: 'sql1-coalesce',
+        title: 'Coalesce',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Select first non-null value from (NULL, 1).`,
+        examples: [{ input: '', output: '1' }],
+        starterCode: `-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: '1' }],
+        hint: 'COALESCE(NULL, 1)'
+    },
+    {
+        id: 'sql1-case',
+        title: 'Case Statement',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Hard',
+        description: `Select CASE when 1=1 then 'A' else 'B'.`,
+        examples: [{ input: '', output: 'A' }],
+        starterCode: `-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: 'A' }],
+        hint: 'CASE WHEN ... END'
+    },
+    {
+        id: 'sql1-limit-offset',
+        title: 'Limit Offset',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Select 1 row skipping first 1.`,
+        examples: [{ input: '', output: '2' }],
+        starterCode: `CREATE TABLE T (A INT);
+INSERT INTO T VALUES (1), (2), (3);
+-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: '2' }],
+        hint: 'LIMIT 1 OFFSET 1'
+    },
+    {
+        id: 'sql1-union',
+        title: 'Union',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Union of select 1 and select 2.`,
+        examples: [{ input: '', output: '1\n2' }],
+        starterCode: `-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: '1\n2' }],
+        hint: 'UNION'
+    },
+    {
+        id: 'sql1-union-all',
+        title: 'Union All',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Union All of select 1 and select 1.`,
+        examples: [{ input: '', output: '1\n1' }],
+        starterCode: `-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: '1\n1' }],
+        hint: 'UNION ALL'
+    },
+    {
+        id: 'sql1-intersect',
+        title: 'Intersect',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Intersect of select 1 and select 1.`,
+        examples: [{ input: '', output: '1' }],
+        starterCode: `-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: '1' }],
+        hint: 'INTERSECT'
+    },
+    {
+        id: 'sql1-except',
+        title: 'Except',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Select 1 EXCEPT select 2.`,
+        examples: [{ input: '', output: '1' }],
+        starterCode: `-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: '1' }],
+        hint: 'EXCEPT'
+    },
+    {
+        id: 'sql1-abs',
+        title: 'Absolute Value',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Select ABS(-1).`,
+        examples: [{ input: '', output: '1' }],
+        starterCode: `-- Write your query below
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: '1' }],
+        hint: 'ABS()'
+    },
+    {
+        id: 'sql1-random',
+        title: 'Random',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Select a random number (mocked).`,
+        examples: [{ input: '', output: '0' }],
+        starterCode: `SELECT 0; -- Mocked
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: '0' }],
+        hint: 'RANDOM()'
+    },
+    {
+        id: 'sql1-date',
+        title: 'Date',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Select current date (mocked).`,
+        examples: [{ input: '', output: '2023-01-01' }],
+        starterCode: `SELECT '2023-01-01'; -- Mocked
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: '2023-01-01' }],
+        hint: 'DATE()'
+    },
+    {
+        id: 'sql1-time',
+        title: 'Time',
+        subject: 'SQL',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Select current time (mocked).`,
+        examples: [{ input: '', output: '12:00:00' }],
+        starterCode: `SELECT '12:00:00'; -- Mocked
+`,
+        functionName: 'sql',
+        testCases: [{ input: '', expected: '12:00:00' }],
+        hint: 'TIME()'
+    }
 ];
