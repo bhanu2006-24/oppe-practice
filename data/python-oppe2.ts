@@ -1,6 +1,7 @@
 import { Problem } from '../types';
 
 export const PYTHON_OPPE2_PROBLEMS: Problem[] = [
+    // --- EXISTING PROBLEMS ---
     {
         id: 'py-oppe2-matrix-mult',
         title: 'Matrix Multiplication',
@@ -104,5 +105,810 @@ export const PYTHON_OPPE2_PROBLEMS: Problem[] = [
             { input: '([[1,2,3,4],[5,6,7,8],[9,10,11,12]])', expected: '[1, 2, 3, 4, 8, 12, 11, 10, 9, 5, 6, 7]' }
         ],
         hint: 'Maintain boundaries (top, bottom, left, right) and shrink them as you traverse.'
+    },
+
+    // --- NEW PROBLEMS (50) ---
+
+    // 1. Recursive Factorial
+    {
+        id: 'py-oppe2-rec-factorial',
+        title: 'Recursive Factorial',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Write a recursive function 'factorial_rec' that returns the factorial of n.`,
+        examples: [{ input: '5', output: '120' }],
+        starterCode: `def factorial_rec(n):
+    # Write your code here
+    pass`,
+        functionName: 'factorial_rec',
+        testCases: [{ input: '(5)', expected: '120' }, { input: '(0)', expected: '1' }],
+        hint: 'Base case: n=0 return 1. Else n * f(n-1).'
+    },
+    // 2. Recursive Fibonacci
+    {
+        id: 'py-oppe2-rec-fib',
+        title: 'Recursive Fibonacci',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a recursive function 'fib_rec' that returns the nth Fibonacci number (0-indexed).`,
+        examples: [{ input: '5', output: '5' }],
+        starterCode: `def fib_rec(n):
+    # Write your code here
+    pass`,
+        functionName: 'fib_rec',
+        testCases: [{ input: '(5)', expected: '5' }, { input: '(0)', expected: '0' }, { input: '(1)', expected: '1' }],
+        hint: 'f(n) = f(n-1) + f(n-2).'
+    },
+    // 3. Recursive GCD
+    {
+        id: 'py-oppe2-rec-gcd',
+        title: 'Recursive GCD',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Write a recursive function 'gcd_rec' to find GCD of a and b.`,
+        examples: [{ input: '12, 18', output: '6' }],
+        starterCode: `def gcd_rec(a, b):
+    # Write your code here
+    pass`,
+        functionName: 'gcd_rec',
+        testCases: [{ input: '(12, 18)', expected: '6' }, { input: '(7, 13)', expected: '1' }],
+        hint: 'gcd(b, a % b) if b else a.'
+    },
+    // 4. Recursive Sum List
+    {
+        id: 'py-oppe2-rec-sum-list',
+        title: 'Recursive List Sum',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Write a recursive function 'sum_list_rec' to find sum of elements in list L.`,
+        examples: [{ input: '[1, 2, 3]', output: '6' }],
+        starterCode: `def sum_list_rec(L):
+    # Write your code here
+    pass`,
+        functionName: 'sum_list_rec',
+        testCases: [{ input: '([1, 2, 3])', expected: '6' }, { input: '([])', expected: '0' }],
+        hint: 'L[0] + f(L[1:]) if L else 0.'
+    },
+    // 5. Recursive String Reverse
+    {
+        id: 'py-oppe2-rec-str-rev',
+        title: 'Recursive String Reverse',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Write a recursive function 'reverse_str_rec' to reverse a string s.`,
+        examples: [{ input: '"hello"', output: '"olleh"' }],
+        starterCode: `def reverse_str_rec(s):
+    # Write your code here
+    pass`,
+        functionName: 'reverse_str_rec',
+        testCases: [{ input: '("hello")', expected: '"olleh"' }],
+        hint: 'f(s[1:]) + s[0] if s else "".'
+    },
+    // 6. Recursive Power
+    {
+        id: 'py-oppe2-rec-power',
+        title: 'Recursive Power',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a recursive function 'power_rec' to calculate x raised to n.`,
+        examples: [{ input: '2, 3', output: '8' }],
+        starterCode: `def power_rec(x, n):
+    # Write your code here
+    pass`,
+        functionName: 'power_rec',
+        testCases: [{ input: '(2, 3)', expected: '8' }, { input: '(5, 0)', expected: '1' }],
+        hint: 'x * f(x, n-1).'
+    },
+    // 7. Recursive Palindrome
+    {
+        id: 'py-oppe2-rec-pal',
+        title: 'Recursive Palindrome',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a recursive function 'is_palindrome_rec' to check if s is a palindrome.`,
+        examples: [{ input: '"racecar"', output: 'True' }],
+        starterCode: `def is_palindrome_rec(s):
+    # Write your code here
+    pass`,
+        functionName: 'is_palindrome_rec',
+        testCases: [{ input: '("racecar")', expected: 'True' }, { input: '("hello")', expected: 'False' }],
+        hint: 's[0] == s[-1] and f(s[1:-1]).'
+    },
+    // 8. Recursive Binary Search
+    {
+        id: 'py-oppe2-rec-bin-search',
+        title: 'Recursive Binary Search',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a recursive function 'binary_search_rec' that returns index of x in sorted L, else -1.`,
+        examples: [{ input: '[1, 3, 5], 3', output: '1' }],
+        starterCode: `def binary_search_rec(L, x, low=0, high=None):
+    if high is None: high = len(L) - 1
+    # Write your code here
+    pass`,
+        functionName: 'binary_search_rec',
+        testCases: [{ input: '([1, 3, 5], 3)', expected: '1' }, { input: '([1, 3, 5], 2)', expected: '-1' }],
+        hint: 'Compare mid with x.'
+    },
+    // 9. Recursive Count Vowels
+    {
+        id: 'py-oppe2-rec-count-vowels',
+        title: 'Recursive Count Vowels',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a recursive function 'count_vowels_rec' to count vowels in s.`,
+        examples: [{ input: '"hello"', output: '2' }],
+        starterCode: `def count_vowels_rec(s):
+    # Write your code here
+    pass`,
+        functionName: 'count_vowels_rec',
+        testCases: [{ input: '("hello")', expected: '2' }],
+        hint: '(1 if s[0] in vowels else 0) + f(s[1:]).'
+    },
+    // 10. Matrix Addition
+    {
+        id: 'py-oppe2-matrix-add',
+        title: 'Matrix Addition',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Write a function 'matrix_add' to add two matrices A and B.`,
+        examples: [{ input: '[[1,2],[3,4]], [[1,1],[1,1]]', output: '[[2, 3], [4, 5]]' }],
+        starterCode: `def matrix_add(A, B):
+    # Write your code here
+    pass`,
+        functionName: 'matrix_add',
+        testCases: [{ input: '([[1,2],[3,4]], [[1,1],[1,1]])', expected: '[[2, 3], [4, 5]]' }],
+        hint: 'Nested loop or list comprehension.'
+    },
+    // 11. Matrix Transpose
+    {
+        id: 'py-oppe2-matrix-transpose',
+        title: 'Matrix Transpose',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Write a function 'transpose_matrix' to return the transpose of matrix M.`,
+        examples: [{ input: '[[1,2],[3,4]]', output: '[[1, 3], [2, 4]]' }],
+        starterCode: `def transpose_matrix(M):
+    # Write your code here
+    pass`,
+        functionName: 'transpose_matrix',
+        testCases: [{ input: '([[1,2],[3,4]])', expected: '[[1, 3], [2, 4]]' }],
+        hint: '[[row[i] for row in M] for i in range(cols)].'
+    },
+    // 12. Matrix Diagonal Sum
+    {
+        id: 'py-oppe2-diag-sum',
+        title: 'Matrix Diagonal Sum',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Write a function 'diagonal_sum' to return sum of main diagonal elements.`,
+        examples: [{ input: '[[1,2],[3,4]]', output: '5' }],
+        starterCode: `def diagonal_sum(M):
+    # Write your code here
+    pass`,
+        functionName: 'diagonal_sum',
+        testCases: [{ input: '([[1,2],[3,4]])', expected: '5' }],
+        hint: 'Sum M[i][i].'
+    },
+    // 13. Symmetric Matrix
+    {
+        id: 'py-oppe2-is-symmetric',
+        title: 'Check Symmetric Matrix',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a function 'is_symmetric' that returns True if matrix M is symmetric (M == M^T).`,
+        examples: [{ input: '[[1,2],[2,1]]', output: 'True' }],
+        starterCode: `def is_symmetric(M):
+    # Write your code here
+    pass`,
+        functionName: 'is_symmetric',
+        testCases: [{ input: '([[1,2],[2,1]])', expected: 'True' }, { input: '([[1,2],[3,4]])', expected: 'False' }],
+        hint: 'Check if M[i][j] == M[j][i].'
+    },
+    // 14. Matrix Row Sums
+    {
+        id: 'py-oppe2-row-sums',
+        title: 'Matrix Row Sums',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Write a function 'row_sums' that returns a list of sums of each row.`,
+        examples: [{ input: '[[1,2],[3,4]]', output: '[3, 7]' }],
+        starterCode: `def row_sums(M):
+    # Write your code here
+    pass`,
+        functionName: 'row_sums',
+        testCases: [{ input: '([[1,2],[3,4]])', expected: '[3, 7]' }],
+        hint: '[sum(row) for row in M].'
+    },
+    // 15. Matrix Col Sums
+    {
+        id: 'py-oppe2-col-sums',
+        title: 'Matrix Column Sums',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a function 'col_sums' that returns a list of sums of each column.`,
+        examples: [{ input: '[[1,2],[3,4]]', output: '[4, 6]' }],
+        starterCode: `def col_sums(M):
+    # Write your code here
+    pass`,
+        functionName: 'col_sums',
+        testCases: [{ input: '([[1,2],[3,4]])', expected: '[4, 6]' }],
+        hint: 'Compute transpose then row sums.'
+    },
+    // 16. Saddle Point
+    {
+        id: 'py-oppe2-saddle-point',
+        title: 'Saddle Point',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Hard',
+        description: `Write a function 'find_saddle_point' that returns coordinates (r, c) of a saddle point (min in row, max in col). Return None if none.`,
+        examples: [{ input: '[[1,2],[3,4]]', output: 'None' }],
+        starterCode: `def find_saddle_point(M):
+    # Write your code here
+    pass`,
+        functionName: 'find_saddle_point',
+        testCases: [{ input: '([[1,2],[3,4]])', expected: 'None' }, { input: '([[3,8],[4,6]])', expected: 'None' }],
+        hint: 'Check all elements.'
+    },
+    // 17. Rotate Matrix 90
+    {
+        id: 'py-oppe2-rotate-matrix',
+        title: 'Rotate Matrix 90 Deg',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Hard',
+        description: `Write a function 'rotate_matrix_90' that rotates a square matrix 90 degrees clockwise in-place.`,
+        examples: [{ input: '[[1,2],[3,4]]', output: '[[3, 1], [4, 2]]' }],
+        starterCode: `def rotate_matrix_90(M):
+    # Write your code here
+    return M`,
+        functionName: 'rotate_matrix_90',
+        testCases: [{ input: '([[1,2],[3,4]])', expected: '[[3, 1], [4, 2]]' }],
+        hint: 'Transpose then reverse rows.'
+    },
+    // 18. Longest Palindromic Substring
+    {
+        id: 'py-oppe2-longest-pal-sub',
+        title: 'Longest Palindromic Substring',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Hard',
+        description: `Write a function 'longest_palindrome_sub' that returns the longest palindromic substring in s.`,
+        examples: [{ input: '"babad"', output: '"bab"' }],
+        starterCode: `def longest_palindrome_sub(s):
+    # Write your code here
+    pass`,
+        functionName: 'longest_palindrome_sub',
+        testCases: [{ input: '("babad")', expected: '"bab"' }, { input: '("cbbd")', expected: '"bb"' }],
+        hint: 'Expand around center.'
+    },
+    // 19. Group Anagrams
+    {
+        id: 'py-oppe2-group-anagrams',
+        title: 'Group Anagrams',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a function 'group_anagrams' that groups a list of strings into anagrams. Return list of lists.`,
+        examples: [{ input: '["eat", "tea", "tan", "ate", "nat", "bat"]', output: '[["eat", "tea", "ate"], ["tan", "nat"], ["bat"]]' }],
+        starterCode: `def group_anagrams(strs):
+    # Write your code here
+    pass`,
+        functionName: 'group_anagrams',
+        testCases: [{ input: '(["eat", "tea", "tan", "ate", "nat", "bat"])', expected: '[["eat", "tea", "ate"], ["tan", "nat"], ["bat"]]' }],
+        hint: 'Use dict with sorted string as key.'
+    },
+    // 20. Valid Parentheses (Advanced)
+    {
+        id: 'py-oppe2-valid-parens',
+        title: 'Valid Parentheses',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a function 'is_valid_parens' that checks validity of '()[]{}'.`,
+        examples: [{ input: '"()[]{}"', output: 'True' }],
+        starterCode: `def is_valid_parens(s):
+    # Write your code here
+    pass`,
+        functionName: 'is_valid_parens',
+        testCases: [{ input: '("()[]{}" )', expected: 'True' }, { input: '("(]")', expected: 'False' }],
+        hint: 'Use a stack.'
+    },
+    // 21. String Compression
+    {
+        id: 'py-oppe2-str-compress',
+        title: 'String Compression',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a function 'compress_string' that compresses string like 'aabcccccaaa' to 'a2b1c5a3'. If compressed is not smaller, return original.`,
+        examples: [{ input: '"aabcccccaaa"', output: '"a2b1c5a3"' }],
+        starterCode: `def compress_string(s):
+    # Write your code here
+    pass`,
+        functionName: 'compress_string',
+        testCases: [{ input: '("aabcccccaaa")', expected: '"a2b1c5a3"' }, { input: '("abc")', expected: '"abc"' }],
+        hint: 'Iterate and count consecutive chars.'
+    },
+    // 22. Find Permutations
+    {
+        id: 'py-oppe2-permutations',
+        title: 'Find Permutations',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Hard',
+        description: `Write a function 'get_permutations' that returns all permutations of a list.`,
+        examples: [{ input: '[1, 2, 3]', output: '[[1, 2, 3], [1, 3, 2], ...]' }],
+        starterCode: `import itertools
+    def get_permutations(L):
+    # Write your code here
+    pass`,
+        functionName: 'get_permutations',
+        testCases: [{ input: '([1, 2])', expected: '[[1, 2], [2, 1]]' }],
+        hint: 'Use itertools.permutations or recursion.'
+    },
+    // 23. Find Subsets
+    {
+        id: 'py-oppe2-subsets',
+        title: 'Find Subsets',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Hard',
+        description: `Write a function 'get_subsets' that returns all subsets of a set (list).`,
+        examples: [{ input: '[1, 2]', output: '[[], [1], [2], [1, 2]]' }],
+        starterCode: `def get_subsets(nums):
+    # Write your code here
+    pass`,
+        functionName: 'get_subsets',
+        testCases: [{ input: '([1, 2])', expected: '[[], [1], [2], [1, 2]]' }],
+        hint: 'Iterative approach: start with [[]], add element to existing subsets.'
+    },
+    // 24. Merge Intervals
+    {
+        id: 'py-oppe2-merge-intervals',
+        title: 'Merge Intervals',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Hard',
+        description: `Write a function 'merge_intervals' that merges overlapping intervals.`,
+        examples: [{ input: '[[1,3],[2,6],[8,10]]', output: '[[1, 6], [8, 10]]' }],
+        starterCode: `def merge_intervals(intervals):
+    # Write your code here
+    pass`,
+        functionName: 'merge_intervals',
+        testCases: [{ input: '([[1,3],[2,6],[8,10]])', expected: '[[1, 6], [8, 10]]' }],
+        hint: 'Sort by start time, then merge.'
+    },
+    // 25. Product Except Self
+    {
+        id: 'py-oppe2-prod-except-self',
+        title: 'Product Except Self',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a function 'product_except_self' that returns an array where output[i] is product of all elements except nums[i].`,
+        examples: [{ input: '[1, 2, 3, 4]', output: '[24, 12, 8, 6]' }],
+        starterCode: `def product_except_self(nums):
+    # Write your code here
+    pass`,
+        functionName: 'product_except_self',
+        testCases: [{ input: '([1, 2, 3, 4])', expected: '[24, 12, 8, 6]' }],
+        hint: 'Use prefix and suffix products.'
+    },
+    // 26. File: Count Lines
+    {
+        id: 'py-oppe2-file-count-lines',
+        title: 'File: Count Lines',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Write a function 'count_file_lines' that takes a file content string and returns number of lines.`,
+        examples: [{ input: '"line1\\nline2"', output: '2' }],
+        starterCode: `def count_file_lines(content):
+    # Write your code here
+    pass`,
+        functionName: 'count_file_lines',
+        testCases: [{ input: '("line1\\nline2")', expected: '2' }],
+        hint: 'content.split("\\n") or count "\\n" + 1.'
+    },
+    // 27. File: Count Words
+    {
+        id: 'py-oppe2-file-count-words',
+        title: 'File: Count Words',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Write a function 'count_file_words' that returns total word count in content.`,
+        examples: [{ input: '"hello world\\nhi"', output: '3' }],
+        starterCode: `def count_file_words(content):
+    # Write your code here
+    pass`,
+        functionName: 'count_file_words',
+        testCases: [{ input: '("hello world\\nhi")', expected: '3' }],
+        hint: 'len(content.split()).'
+    },
+    // 28. File: Longest Line
+    {
+        id: 'py-oppe2-file-longest-line',
+        title: 'File: Longest Line',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a function 'longest_line' that returns the longest line in content.`,
+        examples: [{ input: '"short\\nlonger line"', output: '"longer line"' }],
+        starterCode: `def longest_line(content):
+    # Write your code here
+    pass`,
+        functionName: 'longest_line',
+        testCases: [{ input: '("short\\nlonger line")', expected: '"longer line"' }],
+        hint: 'max(content.splitlines(), key=len).'
+    },
+    // 29. File: Search Word
+    {
+        id: 'py-oppe2-file-search-word',
+        title: 'File: Search Word',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Write a function 'search_word_in_file' that returns True if word is in content.`,
+        examples: [{ input: '"hello world", "world"', output: 'True' }],
+        starterCode: `def search_word_in_file(content, word):
+    # Write your code here
+    pass`,
+        functionName: 'search_word_in_file',
+        testCases: [{ input: '("hello world", "world")', expected: 'True' }],
+        hint: 'word in content.'
+    },
+    // 30. File: Average Numbers
+    {
+        id: 'py-oppe2-file-avg-nums',
+        title: 'File: Average Numbers',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a function 'avg_nums_in_file' that parses numbers separated by spaces/newlines and returns average.`,
+        examples: [{ input: '"10 20\\n30"', output: '20.0' }],
+        starterCode: `def avg_nums_in_file(content):
+    # Write your code here
+    pass`,
+        functionName: 'avg_nums_in_file',
+        testCases: [{ input: '("10 20\\n30")', expected: '20.0' }],
+        hint: 'Split, convert to float, average.'
+    },
+    // 31. Dict: Group by Key
+    {
+        id: 'py-oppe2-dict-group',
+        title: 'Group by Key',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a function 'group_by_key' that groups a list of dicts by a key.`,
+        examples: [{ input: '[{"k":"a", "v":1}, {"k":"a", "v":2}]', output: '{"a": [{"k":"a", "v":1}, {"k":"a", "v":2}]}' }],
+        starterCode: `def group_by_key(data, key):
+    # Write your code here
+    pass`,
+        functionName: 'group_by_key',
+        testCases: [{ input: '([{"k":"a", "v":1}, {"k":"a", "v":2}], "k")', expected: '{"a": [{"k": "a", "v": 1}, {"k": "a", "v": 2}]}' }],
+        hint: 'Iterate and append to list in dict.'
+    },
+    // 32. Dict: Deep Merge
+    {
+        id: 'py-oppe2-dict-deep-merge',
+        title: 'Deep Merge Dictionaries',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Hard',
+        description: `Write a function 'deep_merge' that merges d2 into d1 recursively.`,
+        examples: [{ input: '{"a": {"x": 1}}, {"a": {"y": 2}}', output: '{"a": {"x": 1, "y": 2}}' }],
+        starterCode: `def deep_merge(d1, d2):
+    # Write your code here
+    pass`,
+        functionName: 'deep_merge',
+        testCases: [{ input: '({"a": {"x": 1}}, {"a": {"y": 2}})', expected: '{"a": {"x": 1, "y": 2}}' }],
+        hint: 'If value is dict, recurse.'
+    },
+    // 33. Set: Jaccard Similarity
+    {
+        id: 'py-oppe2-jaccard',
+        title: 'Jaccard Similarity',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a function 'jaccard_similarity' that returns len(intersection)/len(union) of two lists.`,
+        examples: [{ input: '[1, 2], [2, 3]', output: '0.3333' }],
+        starterCode: `def jaccard_similarity(L1, L2):
+    # Write your code here
+    pass`,
+        functionName: 'jaccard_similarity',
+        testCases: [{ input: '([1, 2], [2, 3])', expected: '0.3333' }],
+        hint: 'Use sets.'
+    },
+    // 34. Set: Symmetric Difference
+    {
+        id: 'py-oppe2-sym-diff',
+        title: 'Symmetric Difference',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Write a function 'sym_diff' that returns symmetric difference of two lists.`,
+        examples: [{ input: '[1, 2], [2, 3]', output: '[1, 3]' }],
+        starterCode: `def sym_diff(L1, L2):
+    # Write your code here
+    pass`,
+        functionName: 'sym_diff',
+        testCases: [{ input: '([1, 2], [2, 3])', expected: '[1, 3]' }],
+        hint: 'set(L1) ^ set(L2).'
+    },
+    // 35. Tuple: Sort by Element
+    {
+        id: 'py-oppe2-sort-tuple',
+        title: 'Sort Tuples',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a function 'sort_tuples' that sorts a list of tuples by the 2nd element.`,
+        examples: [{ input: '[(1, 3), (2, 2)]', output: '[(2, 2), (1, 3)]' }],
+        starterCode: `def sort_tuples(L):
+    # Write your code here
+    pass`,
+        functionName: 'sort_tuples',
+        testCases: [{ input: '([(1, 3), (2, 2)])', expected: '[(2, 2), (1, 3)]' }],
+        hint: 'L.sort(key=lambda x: x[1]).'
+    },
+    // 36. Recursive Flatten
+    {
+        id: 'py-oppe2-rec-flatten-deep',
+        title: 'Recursive Deep Flatten',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a function 'flatten_deep' that flattens arbitrarily nested lists.`,
+        examples: [{ input: '[1, [2, [3]]]', output: '[1, 2, 3]' }],
+        starterCode: `def flatten_deep(L):
+    # Write your code here
+    pass`,
+        functionName: 'flatten_deep',
+        testCases: [{ input: '([1, [2, [3]]])', expected: '[1, 2, 3]' }],
+        hint: 'Recursion.'
+    },
+    // 37. Matrix: Zero Matrix
+    {
+        id: 'py-oppe2-zero-matrix',
+        title: 'Zero Matrix',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a function 'zero_matrix' that if an element is 0, sets its entire row and column to 0.`,
+        examples: [{ input: '[[1,1],[1,0]]', output: '[[1, 0], [0, 0]]' }],
+        starterCode: `def zero_matrix(M):
+    # Write your code here
+    pass`,
+        functionName: 'zero_matrix',
+        testCases: [{ input: '([[1,1],[1,0]])', expected: '[[1, 0], [0, 0]]' }],
+        hint: 'Track rows and cols to zero first.'
+    },
+    // 38. String: Is Subsequence
+    {
+        id: 'py-oppe2-is-subsequence',
+        title: 'Is Subsequence',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a function 'is_subsequence' that checks if s is a subsequence of t.`,
+        examples: [{ input: '"abc", "ahbgdc"', output: 'True' }],
+        starterCode: `def is_subsequence(s, t):
+    # Write your code here
+    pass`,
+        functionName: 'is_subsequence',
+        testCases: [{ input: '("abc", "ahbgdc")', expected: 'True' }],
+        hint: 'Two pointers.'
+    },
+    // 39. List: Move Zeroes
+    {
+        id: 'py-oppe2-move-zeroes',
+        title: 'Move Zeroes',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Write a function 'move_zeroes' that moves all 0s to end while maintaining order.`,
+        examples: [{ input: '[0, 1, 0, 3, 12]', output: '[1, 3, 12, 0, 0]' }],
+        starterCode: `def move_zeroes(nums):
+    # Write your code here
+    pass`,
+        functionName: 'move_zeroes',
+        testCases: [{ input: '([0, 1, 0, 3, 12])', expected: '[1, 3, 12, 0, 0]' }],
+        hint: 'Track insert position.'
+    },
+    // 40. List: Plus One
+    {
+        id: 'py-oppe2-plus-one',
+        title: 'Plus One',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Write a function 'plus_one' that adds 1 to integer represented by digits list.`,
+        examples: [{ input: '[1, 2, 3]', output: '[1, 2, 4]' }],
+        starterCode: `def plus_one(digits):
+    # Write your code here
+    pass`,
+        functionName: 'plus_one',
+        testCases: [{ input: '([1, 2, 3])', expected: '[1, 2, 4]' }],
+        hint: 'Handle carry.'
+    },
+    // 41. String: Add Binary
+    {
+        id: 'py-oppe2-add-binary',
+        title: 'Add Binary',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a function 'add_binary' that adds two binary strings.`,
+        examples: [{ input: '"11", "1"', output: '"100"' }],
+        starterCode: `def add_binary(a, b):
+    # Write your code here
+    pass`,
+        functionName: 'add_binary',
+        testCases: [{ input: '("11", "1")', expected: '"100"' }],
+        hint: 'bin(int(a, 2) + int(b, 2)).'
+    },
+    // 42. Math: Sqrt(x)
+    {
+        id: 'py-oppe2-sqrt',
+        title: 'Sqrt(x)',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a function 'my_sqrt' that returns integer part of square root of x.`,
+        examples: [{ input: '8', output: '2' }],
+        starterCode: `def my_sqrt(x):
+    # Write your code here
+    pass`,
+        functionName: 'my_sqrt',
+        testCases: [{ input: '(8)', expected: '2' }, { input: '(4)', expected: '2' }],
+        hint: 'Binary search or math.isqrt.'
+    },
+    // 43. List: Majority Element
+    {
+        id: 'py-oppe2-majority-elem',
+        title: 'Majority Element',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Write a function 'majority_element' that returns element appearing > n/2 times.`,
+        examples: [{ input: '[3, 2, 3]', output: '3' }],
+        starterCode: `def majority_element(nums):
+    # Write your code here
+    pass`,
+        functionName: 'majority_element',
+        testCases: [{ input: '([3, 2, 3])', expected: '3' }],
+        hint: 'Sort and take middle or Boyer-Moore.'
+    },
+    // 44. String: Isomorphic
+    {
+        id: 'py-oppe2-isomorphic',
+        title: 'Isomorphic Strings',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a function 'is_isomorphic' that checks if s can be replaced to get t.`,
+        examples: [{ input: '"egg", "add"', output: 'True' }],
+        starterCode: `def is_isomorphic(s, t):
+    # Write your code here
+    pass`,
+        functionName: 'is_isomorphic',
+        testCases: [{ input: '("egg", "add")', expected: 'True' }, { input: '("foo", "bar")', expected: 'False' }],
+        hint: 'Map chars from s to t and t to s.'
+    },
+    // 45. List: Contains Duplicate
+    {
+        id: 'py-oppe2-contains-dup',
+        title: 'Contains Duplicate',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Write a function 'contains_duplicate' that returns True if any value appears twice.`,
+        examples: [{ input: '[1, 2, 3, 1]', output: 'True' }],
+        starterCode: `def contains_duplicate(nums):
+    # Write your code here
+    pass`,
+        functionName: 'contains_duplicate',
+        testCases: [{ input: '([1, 2, 3, 1])', expected: 'True' }],
+        hint: 'len(set(nums)) != len(nums).'
+    },
+    // 46. List: Missing Number
+    {
+        id: 'py-oppe2-missing-num',
+        title: 'Missing Number',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Write a function 'missing_number' that finds the missing number in range [0, n].`,
+        examples: [{ input: '[3, 0, 1]', output: '2' }],
+        starterCode: `def missing_number(nums):
+    # Write your code here
+    pass`,
+        functionName: 'missing_number',
+        testCases: [{ input: '([3, 0, 1])', expected: '2' }],
+        hint: 'Sum(0..n) - Sum(nums).'
+    },
+    // 47. String: Reverse Vowels
+    {
+        id: 'py-oppe2-rev-vowels',
+        title: 'Reverse Vowels',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a function 'reverse_vowels' that reverses only vowels in a string.`,
+        examples: [{ input: '"hello"', output: '"holle"' }],
+        starterCode: `def reverse_vowels(s):
+    # Write your code here
+    pass`,
+        functionName: 'reverse_vowels',
+        testCases: [{ input: '("hello")', expected: '"holle"' }],
+        hint: 'Two pointers.'
+    },
+    // 48. List: Intersection II
+    {
+        id: 'py-oppe2-intersect-ii',
+        title: 'Intersection of Two Arrays II',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a function 'intersect' that returns intersection of two arrays (include duplicates).`,
+        examples: [{ input: '[1, 2, 2, 1], [2, 2]', output: '[2, 2]' }],
+        starterCode: `def intersect(nums1, nums2):
+    # Write your code here
+    pass`,
+        functionName: 'intersect',
+        testCases: [{ input: '([1, 2, 2, 1], [2, 2])', expected: '[2, 2]' }],
+        hint: 'Counter.'
+    },
+    // 49. String: First Unique Char
+    {
+        id: 'py-oppe2-first-unique',
+        title: 'First Unique Character',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Write a function 'first_uniq_char' that returns index of first unique char.`,
+        examples: [{ input: '"leetcode"', output: '0' }],
+        starterCode: `def first_uniq_char(s):
+    # Write your code here
+    pass`,
+        functionName: 'first_uniq_char',
+        testCases: [{ input: '("leetcode")', expected: '0' }],
+        hint: 'Count frequency then find first with count 1.'
+    },
+    // 50. String: Ransom Note
+    {
+        id: 'py-oppe2-ransom-note',
+        title: 'Ransom Note',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Write a function 'can_construct' that returns True if ransomNote can be constructed from magazine.`,
+        examples: [{ input: '"a", "b"', output: 'False' }],
+        starterCode: `def can_construct(ransomNote, magazine):
+    # Write your code here
+    pass`,
+        functionName: 'can_construct',
+        testCases: [{ input: '("a", "b")', expected: 'False' }, { input: '("aa", "aab")', expected: 'True' }],
+        hint: 'Check counts.'
     }
 ];
