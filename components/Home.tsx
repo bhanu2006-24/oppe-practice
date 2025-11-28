@@ -46,7 +46,7 @@ export const Home: React.FC<HomeProps> = ({
       id: 'DBMS',
       title: 'Database Management',
       level: 'Diploma',
-      description: 'SQL Logic, Schema Design, Joins (Python Sim).',
+      description: 'SQL Logic, Schema Design, Joins (Real SQL).',
       icon: Database,
       color: 'teal',
       available: true
@@ -108,8 +108,8 @@ export const Home: React.FC<HomeProps> = ({
       <button
         onClick={() => setActiveLevel(level)}
         className={`flex items-center px-5 py-3 rounded-lg font-bold text-sm transition-all duration-200 ${isActive
-            ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-md transform scale-105'
-            : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700'
+          ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-md transform scale-105'
+          : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700'
           }`}
       >
         <Icon className={`w-4 h-4 mr-2 ${isActive ? '' : 'opacity-50'}`} />
@@ -228,8 +228,8 @@ export const Home: React.FC<HomeProps> = ({
                 <div
                   key={course.id}
                   className={`group relative p-6 rounded-2xl border transition-all duration-300 ${course.available
-                      ? `bg-white dark:bg-slate-900 hover:shadow-xl hover:-translate-y-1 ${colorClasses}`
-                      : 'bg-slate-50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-800 opacity-70 grayscale'
+                    ? `bg-white dark:bg-slate-900 hover:shadow-xl hover:-translate-y-1 ${colorClasses}`
+                    : 'bg-slate-50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-800 opacity-70 grayscale'
                     }`}
                 >
                   <div className="flex items-start justify-between mb-4">
