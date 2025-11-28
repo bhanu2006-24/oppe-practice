@@ -136,35 +136,91 @@ const App: React.FC = () => {
   };
 
   const handleRun = useCallback(async () => {
-    if (!isPyodideReady || !currentProblem) return;
+    if (!currentProblem) return;
+
+    // Only block for Python runtime if we are running Python
+    const isPython = ['Python', 'PDSA', 'ML_Practice'].includes(currentProblem.subject);
+    if (isPython && !isPyodideReady) return;
 
     setStatus(ExecutionStatus.RUNNING);
+    setOutput("");
+    setTestResults([]);
 
     try {
       await new Promise(r => setTimeout(r, 300)); // UI Feedback delay
 
-      const { results, output } = await runPythonCode(
-        userCode,
-        currentProblem.functionName,
-        currentProblem.testCases
-      );
+      if (isPython) {
+        const { results, output } = await runPythonCode(
+          userCode,
+          currentProblem.functionName,
+          currentProblem.testCases
+        );
+        setTestResults(results);
+        setOutput(output);
+        setStatus(ExecutionStatus.COMPLETED);
 
-      setTestResults(results);
-      setOutput(output);
-      setStatus(ExecutionStatus.COMPLETED);
-
-      const allPassed = results.length > 0 && results.every(r => r.passed);
-      if (allPassed) {
-        if (!solvedProblems.has(currentProblem.id)) {
-          setSolvedProblems(prev => new Set(prev).add(currentProblem.id));
+        const allPassed = results.length > 0 && results.every(r => r.passed);
+        if (allPassed) {
+          if (!solvedProblems.has(currentProblem.id)) {
+            setSolvedProblems(prev => new Set(prev).add(currentProblem.id));
+          }
+          triggerConfetti();
         }
-        if (typeof confetti === 'function') {
-          confetti({
-            particleCount: 150,
-            spread: 80,
-            origin: { y: 0.6 },
-            colors: ['#3b82f6', '#10b981', '#f59e0b']
+      } else {
+        // Handle Non-Python Languages (Java, Bash, SQL/DBMS) via Piston
+        const langMap: Record<string, string> = {
+          'Java': 'java',
+          'System_Commands': 'bash',
+          'SQL': 'sql',
+          'DBMS': 'sql'
+        };
+
+        const language = langMap[currentProblem.subject];
+        if (!language) {
+          throw new Error(`Unsupported subject: ${currentProblem.subject}`);
+        }
+
+        // For Piston, we run the code against each test case
+        const results: TestResult[] = [];
+        let fullOutput = "";
+
+        // If no test cases, just run once
+        const casesToRun = currentProblem.testCases.length > 0 ? currentProblem.testCases : [{ input: "", expected: "" }];
+
+        for (const testCase of casesToRun) {
+          const { output: runOutput, status: runStatus } = await import('./services/multiCompilerRuntime').then(m =>
+            m.executeCode(language, userCode, testCase.input)
+          );
+
+          // Clean up output (trim whitespace for comparison)
+          const cleanActual = runOutput.trim();
+          const cleanExpected = testCase.expected.trim();
+
+          // Simple string comparison for now
+          // For SQL, we might need more robust comparison (e.g. ignoring row order if not specified), but strict string match is a good start
+          const passed = runStatus === ExecutionStatus.COMPLETED && cleanActual === cleanExpected;
+
+          results.push({
+            passed,
+            input: testCase.input,
+            expected: testCase.expected,
+            actual: cleanActual,
+            error: runStatus === ExecutionStatus.ERROR ? runOutput : undefined
           });
+
+          fullOutput += `--- Input: ${testCase.input} ---\n${runOutput}\n`;
+        }
+
+        setTestResults(results);
+        setOutput(fullOutput);
+        setStatus(ExecutionStatus.COMPLETED);
+
+        const allPassed = results.length > 0 && results.every(r => r.passed);
+        if (allPassed) {
+          if (!solvedProblems.has(currentProblem.id)) {
+            setSolvedProblems(prev => new Set(prev).add(currentProblem.id));
+          }
+          triggerConfetti();
         }
       }
 
@@ -173,6 +229,17 @@ const App: React.FC = () => {
       setOutput(prev => prev + `\nExecution Error: ${error.message}`);
     }
   }, [isPyodideReady, userCode, currentProblem, solvedProblems]);
+
+  const triggerConfetti = () => {
+    if (typeof confetti === 'function') {
+      confetti({
+        particleCount: 150,
+        spread: 80,
+        origin: { y: 0.6 },
+        colors: ['#3b82f6', '#10b981', '#f59e0b']
+      });
+    }
+  };
 
   const handleDownload = () => {
     const blob = new Blob([userCode], { type: 'text/plain' });
@@ -358,6 +425,12 @@ const App: React.FC = () => {
                 <CodeEditor
                   value={userCode}
                   onChange={setUserCode}
+                  language={currentProblem ? (
+                    ['Python', 'PDSA', 'ML_Practice'].includes(currentProblem.subject) ? 'python' :
+                      currentProblem.subject === 'Java' ? 'java' :
+                        currentProblem.subject === 'System_Commands' ? 'bash' :
+                          ['SQL', 'DBMS'].includes(currentProblem.subject) ? 'sql' : 'python'
+                  ) : 'python'}
                 />
               </div>
             </div>

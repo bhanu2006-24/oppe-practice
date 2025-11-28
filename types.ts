@@ -4,8 +4,9 @@ export interface TestCase {
 }
 
 export type Level = 'Foundation' | 'Diploma' | 'Degree';
-export type Subject = 'Python' | 'Java' | 'PDSA' | 'DBMS' | 'ML_Practice' | 'System_Commands';
+export type Subject = 'Python' | 'Java' | 'PDSA' | 'DBMS' | 'SQL' | 'ML_Practice' | 'System_Commands';
 export type ExamLevel = 'OPPE 1' | 'OPPE 2';
+export type Language = 'python' | 'javascript' | 'typescript' | 'java' | 'c++' | 'go' | 'rust' | 'bash' | 'sql';
 
 export interface Problem {
   id: string;

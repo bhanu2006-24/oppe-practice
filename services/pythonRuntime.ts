@@ -72,7 +72,7 @@ def _run_test_safe():
             
         # Construct the function call
         # test.input is expected to be a valid python argument string like "(1, 2)" or "([1])"
-        expression = "${functionName}${test.input}"
+        expression = """${functionName}${test.input}"""
         
         # Execute and capture result
         # We evaluate the expression in the global scope
@@ -99,15 +99,15 @@ def _run_test_safe():
 
 _run_test_safe()
 `;
-      
+
       // Use synchronous runPython for the test runner checks
       // This returns a PyProxy which we must convert to JS
       const proxy = pyodide.runPython(testRunnerScript);
-      
+
       if (proxy && typeof proxy.toJs === 'function') {
         const [passed, actual, expected] = proxy.toJs();
         proxy.destroy(); // Important: prevent memory leaks
-        
+
         results.push({
           passed,
           input: test.input,
@@ -132,21 +132,21 @@ _run_test_safe()
   } catch (error: any) {
     // Get stdout even if it crashed
     try {
-        capturedOutput = pyodide.runPython("sys.stdout.getvalue()");
-    } catch (e) {}
+      capturedOutput = pyodide.runPython("sys.stdout.getvalue()");
+    } catch (e) { }
 
     // If no results yet, it means it crashed during compilation or execution
     if (results.length === 0) {
-        results.push({
-          passed: false,
-          input: "Global Execution",
-          expected: "-",
-          actual: "Error",
-          error: error.message
-        });
+      results.push({
+        passed: false,
+        input: "Global Execution",
+        expected: "-",
+        actual: "Error",
+        error: error.message
+      });
     } else {
-        // If it crashed during tests, append error to output
-        capturedOutput += `\n\nRuntime Error: ${error.message}`;
+      // If it crashed during tests, append error to output
+      capturedOutput += `\n\nRuntime Error: ${error.message}`;
     }
   }
 
