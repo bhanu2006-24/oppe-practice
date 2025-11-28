@@ -189,7 +189,12 @@ const App: React.FC = () => {
         const casesToRun = currentProblem.testCases.length > 0 ? currentProblem.testCases : [{ input: "", expected: "" }];
 
         for (const testCase of casesToRun) {
-          const { output: runOutput, status: runStatus } = await executeCode(language, userCode, testCase.input);
+          // Prepend setup code if available (for SQL/DBMS)
+          const codeToRun = currentProblem.setupCode
+            ? `${currentProblem.setupCode}\n${userCode}`
+            : userCode;
+
+          const { output: runOutput, status: runStatus } = await executeCode(language, codeToRun, testCase.input);
 
           // Clean up output (trim whitespace for comparison)
           const cleanActual = runOutput.trim();

@@ -37,9 +37,9 @@ export const SYSTEM_COMMANDS_OPPE1_PROBLEMS: Problem[] = [
         difficulty: 'Easy',
         description: `Write a command to count the number of lines in a file named 'data.txt'. Assume 'data.txt' exists and has 3 lines.`,
         examples: [{ input: '', output: '3' }],
-        starterCode: `printf "1\\n2\\n3" > data.txt
-# Write your command here
+        starterCode: `# Write your command here
 `,
+        setupCode: `printf "1\\n2\\n3" > data.txt`,
         functionName: 'bash',
         testCases: [{ input: '', expected: '3' }],
         hint: 'Use wc -l < data.txt to avoid filename in output.'
@@ -52,9 +52,9 @@ export const SYSTEM_COMMANDS_OPPE1_PROBLEMS: Problem[] = [
         difficulty: 'Easy',
         description: `Write a command to display the first 2 lines of 'file.txt'.`,
         examples: [{ input: '', output: '1\n2' }],
-        starterCode: `printf "1\\n2\\n3\\n4" > file.txt
-# Write your command here
+        starterCode: `# Write your command here
 `,
+        setupCode: `printf "1\\n2\\n3\\n4" > file.txt`,
         functionName: 'bash',
         testCases: [{ input: '', expected: '1\n2' }],
         hint: 'Use head -n 2.'
@@ -67,9 +67,9 @@ export const SYSTEM_COMMANDS_OPPE1_PROBLEMS: Problem[] = [
         difficulty: 'Easy',
         description: `Write a command to display the last 2 lines of 'file.txt'.`,
         examples: [{ input: '', output: '3\n4' }],
-        starterCode: `printf "1\\n2\\n3\\n4" > file.txt
-# Write your command here
+        starterCode: `# Write your command here
 `,
+        setupCode: `printf "1\\n2\\n3\\n4" > file.txt`,
         functionName: 'bash',
         testCases: [{ input: '', expected: '3\n4' }],
         hint: 'Use tail -n 2.'
@@ -82,9 +82,9 @@ export const SYSTEM_COMMANDS_OPPE1_PROBLEMS: Problem[] = [
         difficulty: 'Easy',
         description: `Write a command to sort the lines of 'file.txt' in ascending order.`,
         examples: [{ input: '', output: '1\n2\n3' }],
-        starterCode: `printf "3\\n1\\n2" > file.txt
-# Write your command here
+        starterCode: `# Write your command here
 `,
+        setupCode: `printf "3\\n1\\n2" > file.txt`,
         functionName: 'bash',
         testCases: [{ input: '', expected: '1\n2\n3' }],
         hint: 'Use sort command.'
@@ -97,9 +97,9 @@ export const SYSTEM_COMMANDS_OPPE1_PROBLEMS: Problem[] = [
         difficulty: 'Easy',
         description: `Write a command to sort the lines of 'file.txt' in descending order.`,
         examples: [{ input: '', output: '3\n2\n1' }],
-        starterCode: `printf "1\\n3\\n2" > file.txt
-# Write your command here
+        starterCode: `# Write your command here
 `,
+        setupCode: `printf "1\\n3\\n2" > file.txt`,
         functionName: 'bash',
         testCases: [{ input: '', expected: '3\n2\n1' }],
         hint: 'Use sort -r.'
@@ -112,9 +112,9 @@ export const SYSTEM_COMMANDS_OPPE1_PROBLEMS: Problem[] = [
         difficulty: 'Medium',
         description: `Write a command to remove adjacent duplicate lines from 'file.txt'.`,
         examples: [{ input: '', output: 'A\nB' }],
-        starterCode: `printf "A\\nA\\nB" > file.txt
-# Write your command here
+        starterCode: `# Write your command here
 `,
+        setupCode: `printf "A\\nA\\nB" > file.txt`,
         functionName: 'bash',
         testCases: [{ input: '', expected: 'A\nB' }],
         hint: 'Use uniq command.'
@@ -127,9 +127,9 @@ export const SYSTEM_COMMANDS_OPPE1_PROBLEMS: Problem[] = [
         difficulty: 'Easy',
         description: `Write a command to find lines containing "apple" in 'file.txt'.`,
         examples: [{ input: '', output: 'apple pie' }],
-        starterCode: `printf "apple pie\\nbanana" > file.txt
-# Write your command here
+        starterCode: `# Write your command here
 `,
+        setupCode: `printf "apple pie\\nbanana" > file.txt`,
         functionName: 'bash',
         testCases: [{ input: '', expected: 'apple pie' }],
         hint: 'Use grep "apple" file.txt.'
@@ -142,9 +142,9 @@ export const SYSTEM_COMMANDS_OPPE1_PROBLEMS: Problem[] = [
         difficulty: 'Easy',
         description: `Write a command to find lines containing "Apple" in 'file.txt', ignoring case.`,
         examples: [{ input: '', output: 'apple' }],
-        starterCode: `printf "apple\\nbanana" > file.txt
-# Write your command here
+        starterCode: `# Write your command here
 `,
+        setupCode: `printf "apple\\nbanana" > file.txt`,
         functionName: 'bash',
         testCases: [{ input: '', expected: 'apple' }],
         hint: 'Use grep -i.'
@@ -241,10 +241,10 @@ export const SYSTEM_COMMANDS_OPPE1_PROBLEMS: Problem[] = [
         difficulty: 'Medium',
         description: `Merge lines of 'f1.txt' (content "1") and 'f2.txt' (content "A") side by side.`,
         examples: [{ input: '', output: '1\tA' }],
-        starterCode: `echo "1" > f1.txt
-echo "A" > f2.txt
-# Write your command here
+        starterCode: `# Write your command here
 `,
+        setupCode: `echo "1" > f1.txt
+echo "A" > f2.txt`,
         functionName: 'bash',
         testCases: [{ input: '', expected: '1\tA' }],
         hint: 'Use paste f1.txt f2.txt.'
@@ -257,10 +257,10 @@ echo "A" > f2.txt
         difficulty: 'Hard',
         description: `Join 'f1.txt' ("1 A") and 'f2.txt' ("1 X") on the first field.`,
         examples: [{ input: '', output: '1 A X' }],
-        starterCode: `echo "1 A" > f1.txt
-echo "1 X" > f2.txt
-# Write your command here
+        starterCode: `# Write your command here
 `,
+        setupCode: `echo "1 A" > f1.txt
+echo "1 X" > f2.txt`,
         functionName: 'bash',
         testCases: [{ input: '', expected: '1 A X' }],
         hint: 'Use join f1.txt f2.txt.'
@@ -329,9 +329,9 @@ echo "1 X" > f2.txt
         difficulty: 'Medium',
         description: `Find all files ending with ".txt" in the current directory.`,
         examples: [{ input: '', output: './a.txt' }],
-        starterCode: `touch a.txt b.log
-# Write your command here
+        starterCode: `# Write your command here
 `,
+        setupCode: `touch a.txt b.log`,
         functionName: 'bash',
         testCases: [{ input: '', expected: './a.txt' }],
         hint: 'Use find . -name "*.txt".'
@@ -443,10 +443,10 @@ ls -d d
         difficulty: 'Easy',
         description: `Remove an empty directory 'd'.`,
         examples: [{ input: '', output: '' }],
-        starterCode: `mkdir d
-# Write your command here
+        starterCode: `# Write your command here
 ls
 `,
+        setupCode: `mkdir d`,
         functionName: 'bash',
         testCases: [{ input: '', expected: '' }],
         hint: 'Use rmdir d.'
@@ -474,10 +474,10 @@ ls f
         difficulty: 'Easy',
         description: `Copy 'a' to 'b'. 'a' contains "Hi". Print 'b'.`,
         examples: [{ input: '', output: 'Hi' }],
-        starterCode: `echo "Hi" > a
-# Write your command here
+        starterCode: `# Write your command here
 cat b
 `,
+        setupCode: `echo "Hi" > a`,
         functionName: 'bash',
         testCases: [{ input: '', expected: 'Hi' }],
         hint: 'Use cp a b.'
@@ -490,10 +490,10 @@ cat b
         difficulty: 'Easy',
         description: `Rename 'a' to 'b'. 'a' contains "Hi". Print 'b'.`,
         examples: [{ input: '', output: 'Hi' }],
-        starterCode: `echo "Hi" > a
-# Write your command here
+        starterCode: `# Write your command here
 cat b
 `,
+        setupCode: `echo "Hi" > a`,
         functionName: 'bash',
         testCases: [{ input: '', expected: 'Hi' }],
         hint: 'Use mv a b.'
@@ -506,10 +506,10 @@ cat b
         difficulty: 'Easy',
         description: `Remove file 'a'.`,
         examples: [{ input: '', output: '' }],
-        starterCode: `touch a
-# Write your command here
+        starterCode: `# Write your command here
 ls
 `,
+        setupCode: `touch a`,
         functionName: 'bash',
         testCases: [{ input: '', expected: '' }],
         hint: 'Use rm a.'
@@ -522,9 +522,9 @@ ls
         difficulty: 'Medium',
         description: `Change permissions of 'a' to 777. (Mocked).`,
         examples: [{ input: '', output: '' }],
-        starterCode: `touch a
-# Write your command here
+        starterCode: `# Write your command here
 `,
+        setupCode: `touch a`,
         functionName: 'bash',
         testCases: [{ input: '', expected: '' }],
         hint: 'Use chmod 777 a.'
@@ -537,10 +537,10 @@ ls
         difficulty: 'Medium',
         description: `Compare 'a' ("A") and 'b' ("B").`,
         examples: [{ input: '', output: '1c1\n< A\n---\n> B' }],
-        starterCode: `echo "A" > a
-echo "B" > b
-# Write your command here
+        starterCode: `# Write your command here
 `,
+        setupCode: `echo "A" > a
+echo "B" > b`,
         functionName: 'bash',
         testCases: [{ input: '', expected: '1c1\n< A\n---\n> B' }],
         hint: 'Use diff a b.'
@@ -553,10 +553,10 @@ echo "B" > b
         difficulty: 'Medium',
         description: `Compare 'a' ("A") and 'b' ("A") byte by byte. No output if identical.`,
         examples: [{ input: '', output: '' }],
-        starterCode: `echo "A" > a
-echo "A" > b
-# Write your command here
+        starterCode: `# Write your command here
 `,
+        setupCode: `echo "A" > a
+echo "A" > b`,
         functionName: 'bash',
         testCases: [{ input: '', expected: '' }],
         hint: 'Use cmp a b.'
@@ -569,10 +569,10 @@ echo "A" > b
         difficulty: 'Hard',
         description: `Compare sorted files 'a' ("1\n2\n3") and 'b' ("1\n2"). Suppress column 1 and 2 (show only unique to b? No, show unique to a? comm -3 suppresses both unique, shows common. Wait. comm -3 suppresses common? No. comm -12 shows common. comm -3 shows unique to both. Let's use -3 to show diff).`,
         examples: [{ input: '', output: '\t\t3' }],
-        starterCode: `printf "1\\n2\\n3" > a
-printf "1\\n2" > b
-# Write your command here
+        starterCode: `# Write your command here
 `,
+        setupCode: `printf "1\\n2\\n3" > a
+printf "1\\n2" > b`,
         functionName: 'bash',
         testCases: [{ input: '', expected: '\t\t3' }],
         hint: 'Use comm -3 a b. (Actually comm output depends on flags. -3 suppresses col 3 (common). Wait. -1 suppresses unique to a. -2 suppresses unique to b. -3 suppresses common. So unique to a and unique to b are shown. 3 is unique to a. So it shows in col 1. 1 and 2 are common. So suppressed. Result: 3 in col 1. Tab indentation matters.)'

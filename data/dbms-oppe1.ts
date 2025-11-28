@@ -23,9 +23,9 @@ export const DBMS_OPPE1_PROBLEMS: Problem[] = [
         difficulty: 'Medium',
         description: `Create table 'orders' with 'user_id' referencing 'users(id)'. Insert valid data. Select *. (Assume users table exists with id 1).`,
         examples: [{ input: '', output: '1' }],
-        starterCode: `CREATE TABLE users (id INT PRIMARY KEY); INSERT INTO users VALUES (1);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE users (id INT PRIMARY KEY); INSERT INTO users VALUES (1);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1' }],
         hint: 'FOREIGN KEY (user_id) REFERENCES users(id)'
@@ -170,9 +170,10 @@ SELECT count(*) FROM logs;
         difficulty: 'Easy',
         description: `Delete from 'users' where id=1. Select count(*).`,
         examples: [{ input: '', output: '0' }],
-        starterCode: `CREATE TABLE users (id INT); INSERT INTO users VALUES (1);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE users (id INT PRIMARY KEY, role TEXT DEFAULT 'user');
+INSERT INTO users (id) VALUES (1);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '0' }],
         hint: 'DELETE FROM ... WHERE'
@@ -185,9 +186,9 @@ SELECT count(*) FROM logs;
         difficulty: 'Easy',
         description: `Select distinct dept from employees.`,
         examples: [{ input: '', output: 'HR\nIT' }],
-        starterCode: `CREATE TABLE employees (dept TEXT); INSERT INTO employees VALUES ('HR'), ('HR'), ('IT');
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE employees (dept TEXT); INSERT INTO employees VALUES ('HR'), ('HR'), ('IT');`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'HR\nIT' }],
         hint: 'SELECT DISTINCT'
@@ -200,9 +201,9 @@ SELECT count(*) FROM logs;
         difficulty: 'Easy',
         description: `Select names ordered by age desc.`,
         examples: [{ input: '', output: 'Bob\nAlice' }],
-        starterCode: `CREATE TABLE users (name TEXT, age INT); INSERT INTO users VALUES ('Alice', 20), ('Bob', 30);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE users (name TEXT, age INT); INSERT INTO users VALUES ('Alice', 20), ('Bob', 30);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'Bob\nAlice' }],
         hint: 'ORDER BY age DESC'
@@ -215,9 +216,9 @@ SELECT count(*) FROM logs;
         difficulty: 'Medium',
         description: `Count users per country.`,
         examples: [{ input: '', output: 'IN|2\nUS|1' }],
-        starterCode: `CREATE TABLE users (country TEXT); INSERT INTO users VALUES ('IN'), ('IN'), ('US');
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE users (country TEXT); INSERT INTO users VALUES ('IN'), ('IN'), ('US');`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'IN|2\nUS|1' }],
         hint: 'GROUP BY country'
@@ -230,9 +231,9 @@ SELECT count(*) FROM logs;
         difficulty: 'Medium',
         description: `Select country with > 1 users.`,
         examples: [{ input: '', output: 'IN' }],
-        starterCode: `CREATE TABLE users (country TEXT); INSERT INTO users VALUES ('IN'), ('IN'), ('US');
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE users (country TEXT); INSERT INTO users VALUES ('IN'), ('IN'), ('US');`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'IN' }],
         hint: 'HAVING count(*) > 1'
@@ -245,10 +246,11 @@ SELECT count(*) FROM logs;
         difficulty: 'Medium',
         description: `Join users and orders on user_id. Select user name and order id.`,
         examples: [{ input: '', output: 'Alice|101' }],
-        starterCode: `CREATE TABLE users (id INT, name TEXT); CREATE TABLE orders (id INT, user_id INT);
-INSERT INTO users VALUES (1, 'Alice'); INSERT INTO orders VALUES (101, 1);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE users (id INT PRIMARY KEY); INSERT INTO users VALUES (1);
+CREATE TABLE orders (id INT PRIMARY KEY, user_id INT, FOREIGN KEY (user_id) REFERENCES users(id));
+INSERT INTO orders VALUES (101, 1);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'Alice|101' }],
         hint: 'JOIN ... ON'

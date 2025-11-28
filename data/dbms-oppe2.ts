@@ -9,9 +9,9 @@ export const DBMS_OPPE2_PROBLEMS: Problem[] = [
         difficulty: 'Medium',
         description: `Begin transaction, update balance, commit. Select balance.`,
         examples: [{ input: '', output: '100' }],
-        starterCode: `CREATE TABLE account (bal INT); INSERT INTO account VALUES (50);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE account (bal INT); INSERT INTO account VALUES (50);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '100' }],
         hint: 'BEGIN; UPDATE ... COMMIT;'
@@ -24,9 +24,9 @@ export const DBMS_OPPE2_PROBLEMS: Problem[] = [
         difficulty: 'Medium',
         description: `Begin, update balance, rollback. Select balance.`,
         examples: [{ input: '', output: '50' }],
-        starterCode: `CREATE TABLE account (bal INT); INSERT INTO account VALUES (50);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE account (bal INT); INSERT INTO account VALUES (50);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '50' }],
         hint: 'ROLLBACK'
@@ -39,9 +39,9 @@ export const DBMS_OPPE2_PROBLEMS: Problem[] = [
         difficulty: 'Hard',
         description: `Begin, insert 1, savepoint S, insert 2, rollback to S, commit. Select *.`,
         examples: [{ input: '', output: '1' }],
-        starterCode: `CREATE TABLE T (val INT);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE T (val INT);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1' }],
         hint: 'SAVEPOINT'
@@ -54,9 +54,9 @@ export const DBMS_OPPE2_PROBLEMS: Problem[] = [
         difficulty: 'Hard',
         description: `Create trigger to log inserts. Insert 1. Select log.`,
         examples: [{ input: '', output: '1' }],
-        starterCode: `CREATE TABLE T (val INT); CREATE TABLE Log (val INT);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE T (val INT); CREATE TABLE Log (val INT);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1' }],
         hint: 'CREATE TRIGGER'
@@ -69,9 +69,9 @@ export const DBMS_OPPE2_PROBLEMS: Problem[] = [
         difficulty: 'Hard',
         description: `Create trigger to log updates (old val). Update 1 to 2. Select log.`,
         examples: [{ input: '', output: '1' }],
-        starterCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1); CREATE TABLE Log (val INT);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1); CREATE TABLE Log (val INT);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1' }],
         hint: 'OLD.val'
@@ -84,9 +84,9 @@ export const DBMS_OPPE2_PROBLEMS: Problem[] = [
         difficulty: 'Hard',
         description: `Create trigger to prevent deletion (raise error). Try delete (ignore error). Select count.`,
         examples: [{ input: '', output: '1' }],
-        starterCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1' }],
         hint: 'RAISE(ABORT, ...)'
@@ -99,9 +99,9 @@ export const DBMS_OPPE2_PROBLEMS: Problem[] = [
         difficulty: 'Medium',
         description: `Create view V on T. Update V. Select T.`,
         examples: [{ input: '', output: '2' }],
-        starterCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '2' }],
         hint: 'UPDATE V'
@@ -114,9 +114,9 @@ export const DBMS_OPPE2_PROBLEMS: Problem[] = [
         difficulty: 'Medium',
         description: `Create unique index on T(val). Try insert duplicate (ignore error). Select count.`,
         examples: [{ input: '', output: '1' }],
-        starterCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1' }],
         hint: 'CREATE UNIQUE INDEX'
@@ -171,9 +171,9 @@ export const DBMS_OPPE2_PROBLEMS: Problem[] = [
         difficulty: 'Hard',
         description: `Select val and previous val (LAG).`,
         examples: [{ input: '', output: '1|NULL\n2|1' }],
-        starterCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (2);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (2);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1|NULL\n2|1' }],
         hint: 'LAG(val)'
@@ -186,9 +186,9 @@ export const DBMS_OPPE2_PROBLEMS: Problem[] = [
         difficulty: 'Hard',
         description: `Select val and next val (LEAD).`,
         examples: [{ input: '', output: '1|2\n2|NULL' }],
-        starterCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (2);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (2);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1|2\n2|NULL' }],
         hint: 'LEAD(val)'
@@ -201,9 +201,9 @@ export const DBMS_OPPE2_PROBLEMS: Problem[] = [
         difficulty: 'Hard',
         description: `Calculate running sum.`,
         examples: [{ input: '', output: '1|1\n2|3' }],
-        starterCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (2);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (2);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1|1\n2|3' }],
         hint: 'SUM(val) OVER (ORDER BY val)'
@@ -216,9 +216,9 @@ export const DBMS_OPPE2_PROBLEMS: Problem[] = [
         difficulty: 'Hard',
         description: `Calculate running avg.`,
         examples: [{ input: '', output: '1.0|1.0\n2.0|1.5' }],
-        starterCode: `CREATE TABLE T (val REAL); INSERT INTO T VALUES (1), (2);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE T (val REAL); INSERT INTO T VALUES (1), (2);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1.0|1.0\n2.0|1.5' }],
         hint: 'AVG(val) OVER (ORDER BY val)'
@@ -231,11 +231,11 @@ export const DBMS_OPPE2_PROBLEMS: Problem[] = [
         difficulty: 'Medium',
         description: `Explain select * from T. (Mocked output check).`,
         examples: [{ input: '', output: 'Valid' }],
-        starterCode: `CREATE TABLE T (val INT);
--- Write your query below
+        starterCode: `-- Write your query below
 EXPLAIN QUERY PLAN SELECT * FROM T;
 SELECT 'Valid';
 `,
+        setupCode: `CREATE TABLE T (val INT);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'Valid' }],
         hint: 'EXPLAIN QUERY PLAN'
@@ -248,10 +248,10 @@ SELECT 'Valid';
         difficulty: 'Medium',
         description: `Analyze table T.`,
         examples: [{ input: '', output: '' }],
-        starterCode: `CREATE TABLE T (val INT);
--- Write your query below
+        starterCode: `-- Write your query below
 ANALYZE T;
 `,
+        setupCode: `CREATE TABLE T (val INT);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '' }],
         hint: 'ANALYZE'
@@ -352,10 +352,10 @@ PRAGMA foreign_key_check;
         difficulty: 'Medium',
         description: `Get info for table T.`,
         examples: [{ input: '', output: '0|val|INT|0||0' }],
-        starterCode: `CREATE TABLE T (val INT);
--- Write your query below
+        starterCode: `-- Write your query below
 PRAGMA table_info(T);
 `,
+        setupCode: `CREATE TABLE T (val INT);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '0|val|INT|0||0' }],
         hint: 'PRAGMA table_info'
@@ -368,10 +368,10 @@ PRAGMA table_info(T);
         difficulty: 'Medium',
         description: `List indexes on T.`,
         examples: [{ input: '', output: '0|idx|0|c|0' }],
-        starterCode: `CREATE TABLE T (val INT); CREATE INDEX idx ON T(val);
--- Write your query below
+        starterCode: `-- Write your query below
 PRAGMA index_list(T);
 `,
+        setupCode: `CREATE TABLE T (val INT); CREATE INDEX idx ON T(val);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '0|idx|0|c|0' }],
         hint: 'PRAGMA index_list'
@@ -384,10 +384,10 @@ PRAGMA index_list(T);
         difficulty: 'Medium',
         description: `Get info for index idx.`,
         examples: [{ input: '', output: '0|0|val' }],
-        starterCode: `CREATE TABLE T (val INT); CREATE INDEX idx ON T(val);
--- Write your query below
+        starterCode: `-- Write your query below
 PRAGMA index_info(idx);
 `,
+        setupCode: `CREATE TABLE T (val INT); CREATE INDEX idx ON T(val);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '0|0|val' }],
         hint: 'PRAGMA index_info'
@@ -532,11 +532,11 @@ SELECT json_valid('{"a":1}');
         difficulty: 'Medium',
         description: `Insert or replace (upsert).`,
         examples: [{ input: '', output: '1' }],
-        starterCode: `CREATE TABLE T (id INT PRIMARY KEY, val INT); INSERT INTO T VALUES (1, 1);
--- Write your query below
+        starterCode: `-- Write your query below
 INSERT INTO T VALUES (1, 2) ON CONFLICT(id) DO UPDATE SET val=excluded.val;
 SELECT val FROM T;
 `,
+        setupCode: `CREATE TABLE T (id INT PRIMARY KEY, val INT); INSERT INTO T VALUES (1, 1);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '2' }],
         hint: 'ON CONFLICT DO UPDATE'
@@ -549,10 +549,10 @@ SELECT val FROM T;
         difficulty: 'Medium',
         description: `Insert and return id.`,
         examples: [{ input: '', output: '1' }],
-        starterCode: `CREATE TABLE T (id INT);
--- Write your query below
+        starterCode: `-- Write your query below
 INSERT INTO T VALUES (1) RETURNING id;
 `,
+        setupCode: `CREATE TABLE T (id INT);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1' }],
         hint: 'RETURNING'
@@ -566,10 +566,10 @@ INSERT INTO T VALUES (1) RETURNING id;
         description: `Create table with generated column b = a*2. Insert 1. Select b.`,
         examples: [{ input: '', output: '2' }],
         starterCode: `-- Write your query below
-CREATE TABLE T (a INT, b INT GENERATED ALWAYS AS (a*2));
 INSERT INTO T VALUES (1);
 SELECT b FROM T;
 `,
+        setupCode: `CREATE TABLE T (a INT, b INT GENERATED ALWAYS AS (a*2));`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '2' }],
         hint: 'GENERATED ALWAYS AS'
@@ -582,10 +582,10 @@ SELECT b FROM T;
         difficulty: 'Hard',
         description: `Count where val > 1 using FILTER.`,
         examples: [{ input: '', output: '1' }],
-        starterCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (2);
--- Write your query below
+        starterCode: `-- Write your query below
 SELECT count(*) FILTER (WHERE val > 1) FROM T;
 `,
+        setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (2);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1' }],
         hint: 'FILTER (WHERE ...)'
@@ -598,9 +598,9 @@ SELECT count(*) FILTER (WHERE val > 1) FROM T;
         difficulty: 'Medium',
         description: `Order by val NULLS FIRST.`,
         examples: [{ input: '', output: 'NULL\n1' }],
-        starterCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (NULL);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (NULL);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'NULL\n1' }],
         hint: 'NULLS FIRST'
@@ -613,9 +613,9 @@ SELECT count(*) FILTER (WHERE val > 1) FROM T;
         difficulty: 'Medium',
         description: `Order by val NULLS LAST.`,
         examples: [{ input: '', output: '1\nNULL' }],
-        starterCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (NULL), (1);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (NULL), (1);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1\nNULL' }],
         hint: 'NULLS LAST'
@@ -657,10 +657,10 @@ VALUES (1), (2);
         difficulty: 'Easy',
         description: `Drop view V.`,
         examples: [{ input: '', output: '' }],
-        starterCode: `CREATE VIEW V AS SELECT 1;
--- Write your query below
+        starterCode: `-- Write your query below
 DROP VIEW V;
 `,
+        setupCode: `CREATE VIEW V AS SELECT 1;`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '' }],
         hint: 'DROP VIEW'
@@ -673,10 +673,10 @@ DROP VIEW V;
         difficulty: 'Medium',
         description: `Reindex T.`,
         examples: [{ input: '', output: '' }],
-        starterCode: `CREATE TABLE T (val INT);
--- Write your query below
+        starterCode: `-- Write your query below
 REINDEX T;
 `,
+        setupCode: `CREATE TABLE T (val INT);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '' }],
         hint: 'REINDEX'
@@ -690,10 +690,10 @@ REINDEX T;
         description: `Create strict table T. Insert 1. Select *.`,
         examples: [{ input: '', output: '1' }],
         starterCode: `-- Write your query below
-CREATE TABLE T (val INT) STRICT;
 INSERT INTO T VALUES (1);
 SELECT * FROM T;
 `,
+        setupCode: `CREATE TABLE T (val INT) STRICT;`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1' }],
         hint: 'STRICT'
@@ -707,10 +707,10 @@ SELECT * FROM T;
         description: `Create table without rowid. Insert 1. Select *.`,
         examples: [{ input: '', output: '1' }],
         starterCode: `-- Write your query below
-CREATE TABLE T (val INT PRIMARY KEY) WITHOUT ROWID;
 INSERT INTO T VALUES (1);
 SELECT * FROM T;
 `,
+        setupCode: `CREATE TABLE T (val INT PRIMARY KEY) WITHOUT ROWID;`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1' }],
         hint: 'WITHOUT ROWID'

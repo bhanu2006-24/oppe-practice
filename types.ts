@@ -17,6 +17,7 @@ export interface Problem {
   description: string;
   examples: { input: string; output: string; explanation?: string }[];
   starterCode: string;
+  setupCode?: string;
   testCases: TestCase[];
   functionName: string; // The name of the function to call for testing
   hint?: string;

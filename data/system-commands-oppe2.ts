@@ -16,6 +16,7 @@ else
     echo "Missing"
 fi
 `,
+        setupCode: `touch f`,
         functionName: 'bash',
         testCases: [{ input: '', expected: 'Missing' }],
         hint: 'Use [ -f file ].'
@@ -263,10 +264,10 @@ echo $?
         difficulty: 'Easy',
         description: `Check if 'd' is a directory. Print "Dir" or "No". Assume 'd' exists.`,
         examples: [{ input: '', output: 'Dir' }],
-        starterCode: `mkdir d
-# Write your script here
+        starterCode: `# Write your script here
 if [ -d d ]; then echo "Dir"; else echo "No"; fi
 `,
+        setupCode: `mkdir d`,
         functionName: 'bash',
         testCases: [{ input: '', expected: 'Dir' }],
         hint: '-d flag'
@@ -447,11 +448,11 @@ diff <(echo A) <(echo B)
         difficulty: 'Medium',
         description: `Declare readonly var r="A". Try to change it to "B". Print r. (Should print A, error suppressed).`,
         examples: [{ input: '', output: 'A' }],
-        starterCode: `readonly r="A"
-# Write your script here
+        starterCode: `# Write your script here
 r="B" 2>/dev/null
 echo $r
 `,
+        setupCode: `readonly r="A"`,
         functionName: 'bash',
         testCases: [{ input: '', expected: 'A' }],
         hint: 'readonly var'
@@ -464,11 +465,11 @@ echo $r
         difficulty: 'Easy',
         description: `Set v="A", then unset it. Print v (should be empty).`,
         examples: [{ input: '', output: '' }],
-        starterCode: `v="A"
-# Write your script here
+        starterCode: `# Write your script here
 unset v
 echo $v
 `,
+        setupCode: `v="A"`,
         functionName: 'bash',
         testCases: [{ input: '', expected: '' }],
         hint: 'unset var'
@@ -647,10 +648,10 @@ wc -m
         difficulty: 'Medium',
         description: `Append "B" to file 'f' (content "A") using tee. Print 'f'.`,
         examples: [{ input: '', output: 'A\nB' }],
-        starterCode: `echo "A" > f
-echo "B" | tee -a f > /dev/null
+        starterCode: `echo "B" | tee -a f > /dev/null
 cat f
 `,
+        setupCode: `echo "A" > f`,
         functionName: 'bash',
         testCases: [{ input: '', expected: 'A\nB' }],
         hint: 'tee -a'
@@ -663,10 +664,10 @@ cat f
         difficulty: 'Medium',
         description: `Paste 'f1' ("A") and 'f2' ("B") with comma delimiter.`,
         examples: [{ input: '', output: 'A,B' }],
-        starterCode: `echo "A" > f1
-echo "B" > f2
-paste -d "," f1 f2
+        starterCode: `paste -d "," f1 f2
 `,
+        setupCode: `echo "A" > f1
+echo "B" > f2`,
         functionName: 'bash',
         testCases: [{ input: '', expected: 'A,B' }],
         hint: 'paste -d'
@@ -721,9 +722,9 @@ paste -d "," f1 f2
         difficulty: 'Hard',
         description: `Find 'f' and cat it. Content "A".`,
         examples: [{ input: '', output: 'A' }],
-        starterCode: `echo "A" > f
-find . -name f -exec cat {} \\;
+        starterCode: `find . -name f -exec cat {} \\;
 `,
+        setupCode: `echo "A" > f`,
         functionName: 'bash',
         testCases: [{ input: '', expected: 'A' }],
         hint: '-exec ... {} \;'

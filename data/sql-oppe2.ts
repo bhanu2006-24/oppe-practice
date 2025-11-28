@@ -9,12 +9,12 @@ export const SQL_OPPE2_PROBLEMS: Problem[] = [
         difficulty: 'Medium',
         description: `Select student name and course name using INNER JOIN.`,
         examples: [{ input: '', output: 'Alice|Math\nBob|Science' }],
-        starterCode: `CREATE TABLE students (id INT, name TEXT);
+        starterCode: `-- Write your query below
+`,
+        setupCode: `CREATE TABLE students (id INT, name TEXT);
 CREATE TABLE courses (id INT, title TEXT, student_id INT);
 INSERT INTO students VALUES (1, 'Alice'), (2, 'Bob');
-INSERT INTO courses VALUES (101, 'Math', 1), (102, 'Science', 2);
--- Write your query below
-`,
+INSERT INTO courses VALUES (101, 'Math', 1), (102, 'Science', 2);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'Alice|Math\nBob|Science' }],
         hint: 'JOIN ON students.id = courses.student_id'
@@ -27,12 +27,12 @@ INSERT INTO courses VALUES (101, 'Math', 1), (102, 'Science', 2);
         difficulty: 'Medium',
         description: `Select all students and their courses (if any) using LEFT JOIN.`,
         examples: [{ input: '', output: 'Alice|Math\nBob|NULL' }],
-        starterCode: `CREATE TABLE students (id INT, name TEXT);
+        starterCode: `-- Write your query below
+`,
+        setupCode: `CREATE TABLE students (id INT, name TEXT);
 CREATE TABLE courses (id INT, title TEXT, student_id INT);
 INSERT INTO students VALUES (1, 'Alice'), (2, 'Bob');
-INSERT INTO courses VALUES (101, 'Math', 1);
--- Write your query below
-`,
+INSERT INTO courses VALUES (101, 'Math', 1);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'Alice|Math\nBob|NULL' }],
         hint: 'LEFT JOIN'
@@ -45,12 +45,12 @@ INSERT INTO courses VALUES (101, 'Math', 1);
         difficulty: 'Medium',
         description: `Select all courses and their students (if any) using RIGHT JOIN (Simulated with LEFT JOIN swapping tables as SQLite doesn't support RIGHT JOIN directly, but for standard SQL it's RIGHT JOIN. Here use LEFT JOIN courses).`,
         examples: [{ input: '', output: 'Math|Alice\nScience|NULL' }],
-        starterCode: `CREATE TABLE students (id INT, name TEXT);
+        starterCode: `-- Write your query below
+`,
+        setupCode: `CREATE TABLE students (id INT, name TEXT);
 CREATE TABLE courses (id INT, title TEXT, student_id INT);
 INSERT INTO students VALUES (1, 'Alice');
-INSERT INTO courses VALUES (101, 'Math', 1), (102, 'Science', 2);
--- Write your query below
-`,
+INSERT INTO courses VALUES (101, 'Math', 1), (102, 'Science', 2);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'Math|Alice\nScience|NULL' }],
         hint: 'FROM courses LEFT JOIN students'
@@ -63,12 +63,12 @@ INSERT INTO courses VALUES (101, 'Math', 1), (102, 'Science', 2);
         difficulty: 'Hard',
         description: `Select all students and courses matching or not. (Simulate FULL JOIN with UNION of LEFT Joins).`,
         examples: [{ input: '', output: 'Alice|Math\nBob|NULL\nNULL|Science' }],
-        starterCode: `CREATE TABLE students (id INT, name TEXT);
+        starterCode: `-- Write your query below
+`,
+        setupCode: `CREATE TABLE students (id INT, name TEXT);
 CREATE TABLE courses (id INT, title TEXT, student_id INT);
 INSERT INTO students VALUES (1, 'Alice'), (2, 'Bob');
-INSERT INTO courses VALUES (101, 'Math', 1), (103, 'Science', 3);
--- Write your query below
-`,
+INSERT INTO courses VALUES (101, 'Math', 1), (103, 'Science', 3);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'Alice|Math\nBob|NULL\nNULL|Science' }],
         hint: 'LEFT JOIN UNION ... LEFT JOIN'
@@ -81,12 +81,12 @@ INSERT INTO courses VALUES (101, 'Math', 1), (103, 'Science', 3);
         difficulty: 'Medium',
         description: `Select Cartesian product of students and courses.`,
         examples: [{ input: '', output: 'Alice|Math\nAlice|Science\nBob|Math\nBob|Science' }],
-        starterCode: `CREATE TABLE students (name TEXT);
+        starterCode: `-- Write your query below
+`,
+        setupCode: `CREATE TABLE students (name TEXT);
 CREATE TABLE courses (title TEXT);
 INSERT INTO students VALUES ('Alice'), ('Bob');
-INSERT INTO courses VALUES ('Math'), ('Science');
--- Write your query below
-`,
+INSERT INTO courses VALUES ('Math'), ('Science');`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'Alice|Math\nAlice|Science\nBob|Math\nBob|Science' }],
         hint: 'CROSS JOIN'
@@ -99,10 +99,10 @@ INSERT INTO courses VALUES ('Math'), ('Science');
         difficulty: 'Medium',
         description: `Select pairs of students from same city.`,
         examples: [{ input: '', output: 'Alice|Bob' }],
-        starterCode: `CREATE TABLE students (id INT, name TEXT, city TEXT);
-INSERT INTO students VALUES (1, 'Alice', 'NY'), (2, 'Bob', 'NY'), (3, 'Charlie', 'LA');
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE students (id INT, name TEXT, city TEXT);
+INSERT INTO students VALUES (1, 'Alice', 'NY'), (2, 'Bob', 'NY'), (3, 'Charlie', 'LA');`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'Alice|Bob' }],
         hint: 'JOIN students s1, students s2'
@@ -115,10 +115,10 @@ INSERT INTO students VALUES (1, 'Alice', 'NY'), (2, 'Bob', 'NY'), (3, 'Charlie',
         difficulty: 'Medium',
         description: `Select students with score > average score.`,
         examples: [{ input: '', output: 'Bob' }],
-        starterCode: `CREATE TABLE students (name TEXT, score INT);
-INSERT INTO students VALUES ('Alice', 40), ('Bob', 60);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE students (name TEXT, score INT);
+INSERT INTO students VALUES ('Alice', 40), ('Bob', 60);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'Bob' }],
         hint: 'WHERE score > (SELECT AVG(score)...)'
@@ -131,12 +131,12 @@ INSERT INTO students VALUES ('Alice', 40), ('Bob', 60);
         difficulty: 'Medium',
         description: `Select students enrolled in 'Math'.`,
         examples: [{ input: '', output: 'Alice' }],
-        starterCode: `CREATE TABLE students (id INT, name TEXT);
+        starterCode: `-- Write your query below
+`,
+        setupCode: `CREATE TABLE students (id INT, name TEXT);
 CREATE TABLE courses (student_id INT, title TEXT);
 INSERT INTO students VALUES (1, 'Alice'), (2, 'Bob');
-INSERT INTO courses VALUES (1, 'Math');
--- Write your query below
-`,
+INSERT INTO courses VALUES (1, 'Math');`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'Alice' }],
         hint: 'WHERE id IN (SELECT student_id ...)'
@@ -149,12 +149,12 @@ INSERT INTO courses VALUES (1, 'Math');
         difficulty: 'Hard',
         description: `Select students who have at least one course.`,
         examples: [{ input: '', output: 'Alice' }],
-        starterCode: `CREATE TABLE students (id INT, name TEXT);
+        starterCode: `-- Write your query below
+`,
+        setupCode: `CREATE TABLE students (id INT, name TEXT);
 CREATE TABLE courses (student_id INT);
 INSERT INTO students VALUES (1, 'Alice'), (2, 'Bob');
-INSERT INTO courses VALUES (1);
--- Write your query below
-`,
+INSERT INTO courses VALUES (1);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'Alice' }],
         hint: 'WHERE EXISTS (SELECT 1 ...)'
@@ -167,10 +167,10 @@ INSERT INTO courses VALUES (1);
         difficulty: 'Hard',
         description: `Select max average score per city.`,
         examples: [{ input: '', output: '60.0' }],
-        starterCode: `CREATE TABLE students (city TEXT, score INT);
-INSERT INTO students VALUES ('NY', 50), ('NY', 70), ('LA', 40);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE students (city TEXT, score INT);
+INSERT INTO students VALUES ('NY', 50), ('NY', 70), ('LA', 40);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '60.0' }],
         hint: 'FROM (SELECT AVG(score)...)'
@@ -183,10 +183,10 @@ INSERT INTO students VALUES ('NY', 50), ('NY', 70), ('LA', 40);
         difficulty: 'Hard',
         description: `Select students with score > average of their city.`,
         examples: [{ input: '', output: 'Bob' }],
-        starterCode: `CREATE TABLE students (name TEXT, city TEXT, score INT);
-INSERT INTO students VALUES ('Alice', 'NY', 40), ('Bob', 'NY', 60), ('Charlie', 'LA', 30);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE students (name TEXT, city TEXT, score INT);
+INSERT INTO students VALUES ('Alice', 'NY', 40), ('Bob', 'NY', 60), ('Charlie', 'LA', 30);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'Bob' }],
         hint: 'WHERE score > (SELECT AVG(score) FROM students s2 WHERE s1.city = s2.city)'
@@ -199,10 +199,10 @@ INSERT INTO students VALUES ('Alice', 'NY', 40), ('Bob', 'NY', 60), ('Charlie', 
         difficulty: 'Medium',
         description: `Create view V as select name from students. Select * from V.`,
         examples: [{ input: '', output: 'Alice' }],
-        starterCode: `CREATE TABLE students (name TEXT);
-INSERT INTO students VALUES ('Alice');
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE students (name TEXT);
+INSERT INTO students VALUES ('Alice');`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'Alice' }],
         hint: 'CREATE VIEW V AS ...'
@@ -215,10 +215,10 @@ INSERT INTO students VALUES ('Alice');
         difficulty: 'Hard',
         description: `Use CTE to select students with score > 50.`,
         examples: [{ input: '', output: 'Bob' }],
-        starterCode: `CREATE TABLE students (name TEXT, score INT);
-INSERT INTO students VALUES ('Alice', 40), ('Bob', 60);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE students (name TEXT, score INT);
+INSERT INTO students VALUES ('Alice', 40), ('Bob', 60);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'Bob' }],
         hint: 'WITH CTE AS ...'
@@ -231,10 +231,10 @@ INSERT INTO students VALUES ('Alice', 40), ('Bob', 60);
         difficulty: 'Hard',
         description: `Rank students by score desc.`,
         examples: [{ input: '', output: 'Bob|1\nAlice|2' }],
-        starterCode: `CREATE TABLE students (name TEXT, score INT);
-INSERT INTO students VALUES ('Alice', 40), ('Bob', 60);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE students (name TEXT, score INT);
+INSERT INTO students VALUES ('Alice', 40), ('Bob', 60);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'Bob|1\nAlice|2' }],
         hint: 'RANK() OVER (ORDER BY score DESC)'
@@ -247,10 +247,10 @@ INSERT INTO students VALUES ('Alice', 40), ('Bob', 60);
         difficulty: 'Hard',
         description: `Dense Rank students by score desc.`,
         examples: [{ input: '', output: 'Bob|1\nAlice|1\nCharlie|2' }],
-        starterCode: `CREATE TABLE students (name TEXT, score INT);
-INSERT INTO students VALUES ('Alice', 60), ('Bob', 60), ('Charlie', 40);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE students (name TEXT, score INT);
+INSERT INTO students VALUES ('Alice', 60), ('Bob', 60), ('Charlie', 40);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'Bob|1\nAlice|1\nCharlie|2' }],
         hint: 'DENSE_RANK()'
@@ -263,10 +263,10 @@ INSERT INTO students VALUES ('Alice', 60), ('Bob', 60), ('Charlie', 40);
         difficulty: 'Hard',
         description: `Row number students by score desc.`,
         examples: [{ input: '', output: 'Bob|1\nAlice|2' }],
-        starterCode: `CREATE TABLE students (name TEXT, score INT);
-INSERT INTO students VALUES ('Alice', 60), ('Bob', 60);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE students (name TEXT, score INT);
+INSERT INTO students VALUES ('Alice', 60), ('Bob', 60);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'Bob|1\nAlice|2' }],
         hint: 'ROW_NUMBER()'
@@ -279,10 +279,10 @@ INSERT INTO students VALUES ('Alice', 60), ('Bob', 60);
         difficulty: 'Hard',
         description: `Rank students within city by score desc.`,
         examples: [{ input: '', output: 'Bob|1\nAlice|2\nCharlie|1' }],
-        starterCode: `CREATE TABLE students (name TEXT, city TEXT, score INT);
-INSERT INTO students VALUES ('Alice', 'NY', 40), ('Bob', 'NY', 60), ('Charlie', 'LA', 50);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE students (name TEXT, city TEXT, score INT);
+INSERT INTO students VALUES ('Alice', 'NY', 40), ('Bob', 'NY', 60), ('Charlie', 'LA', 50);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'Bob|1\nAlice|2\nCharlie|1' }],
         hint: 'PARTITION BY city'
@@ -295,10 +295,10 @@ INSERT INTO students VALUES ('Alice', 'NY', 40), ('Bob', 'NY', 60), ('Charlie', 
         difficulty: 'Medium',
         description: `Select name and 'Pass' if score >= 50 else 'Fail'.`,
         examples: [{ input: '', output: 'Alice|Fail\nBob|Pass' }],
-        starterCode: `CREATE TABLE students (name TEXT, score INT);
-INSERT INTO students VALUES ('Alice', 40), ('Bob', 60);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE students (name TEXT, score INT);
+INSERT INTO students VALUES ('Alice', 40), ('Bob', 60);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'Alice|Fail\nBob|Pass' }],
         hint: 'CASE WHEN score >= 50 THEN ...'
@@ -311,10 +311,10 @@ INSERT INTO students VALUES ('Alice', 40), ('Bob', 60);
         difficulty: 'Medium',
         description: `Select NULLIF(score, 0). (Returns NULL if score is 0).`,
         examples: [{ input: '', output: 'NULL\n10' }],
-        starterCode: `CREATE TABLE students (score INT);
-INSERT INTO students VALUES (0), (10);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE students (score INT);
+INSERT INTO students VALUES (0), (10);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'NULL\n10' }],
         hint: 'NULLIF(score, 0)'
@@ -327,9 +327,9 @@ INSERT INTO students VALUES (0), (10);
         difficulty: 'Hard',
         description: `Begin transaction, insert 1, commit. Select *.`,
         examples: [{ input: '', output: '1' }],
-        starterCode: `CREATE TABLE T (A INT);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE T (A INT);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1' }],
         hint: 'BEGIN TRANSACTION; ... COMMIT;'
@@ -342,9 +342,9 @@ INSERT INTO students VALUES (0), (10);
         difficulty: 'Hard',
         description: `Begin transaction, insert 1, rollback. Select *. (Should be empty).`,
         examples: [{ input: '', output: '' }],
-        starterCode: `CREATE TABLE T (A INT);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE T (A INT);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '' }],
         hint: 'ROLLBACK;'
@@ -357,9 +357,9 @@ INSERT INTO students VALUES (0), (10);
         difficulty: 'Hard',
         description: `Begin, insert 1, savepoint S, insert 2, rollback to S, commit. Select *. (Should be 1).`,
         examples: [{ input: '', output: '1' }],
-        starterCode: `CREATE TABLE T (A INT);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE T (A INT);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1' }],
         hint: 'SAVEPOINT S; ROLLBACK TO S;'
@@ -372,9 +372,9 @@ INSERT INTO students VALUES (0), (10);
         difficulty: 'Medium',
         description: `Create index idx_name on students(name).`,
         examples: [{ input: '', output: '' }],
-        starterCode: `CREATE TABLE students (name TEXT);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE students (name TEXT);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '' }],
         hint: 'CREATE INDEX'
@@ -387,10 +387,10 @@ INSERT INTO students VALUES (0), (10);
         difficulty: 'Easy',
         description: `Drop index idx_name.`,
         examples: [{ input: '', output: '' }],
-        starterCode: `CREATE TABLE students (name TEXT);
-CREATE INDEX idx_name ON students(name);
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE students (name TEXT);
+CREATE INDEX idx_name ON students(name);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '' }],
         hint: 'DROP INDEX'
@@ -508,13 +508,13 @@ SELECT * FROM P JOIN C ON P.id = C.pid;
         difficulty: 'Hard',
         description: `Create trigger to log insert on T. Insert 1. Select log.`,
         examples: [{ input: '', output: '1' }],
-        starterCode: `CREATE TABLE T (A INT);
-CREATE TABLE Log (A INT);
--- Write your query below
+        starterCode: `-- Write your query below
 CREATE TRIGGER tr AFTER INSERT ON T BEGIN INSERT INTO Log VALUES (NEW.A); END;
 INSERT INTO T VALUES (1);
 SELECT * FROM Log;
 `,
+        setupCode: `CREATE TABLE T (A INT);
+CREATE TABLE Log (A INT);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1' }],
         hint: 'CREATE TRIGGER'
@@ -527,11 +527,11 @@ SELECT * FROM Log;
         difficulty: 'Medium',
         description: `Drop trigger tr.`,
         examples: [{ input: '', output: '' }],
-        starterCode: `CREATE TABLE T (A INT);
-CREATE TRIGGER tr AFTER INSERT ON T BEGIN INSERT INTO T VALUES (1); END;
--- Write your query below
+        starterCode: `-- Write your query below
 DROP TRIGGER tr;
 `,
+        setupCode: `CREATE TABLE T (A INT);
+CREATE TRIGGER tr AFTER INSERT ON T BEGIN INSERT INTO T VALUES (1); END;`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '' }],
         hint: 'DROP TRIGGER'
@@ -544,10 +544,10 @@ DROP TRIGGER tr;
         difficulty: 'Medium',
         description: `Select names starting with 'A' using GLOB.`,
         examples: [{ input: '', output: 'Alice' }],
-        starterCode: `CREATE TABLE students (name TEXT);
-INSERT INTO students VALUES ('Alice'), ('Bob');
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE students (name TEXT);
+INSERT INTO students VALUES ('Alice'), ('Bob');`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'Alice' }],
         hint: "GLOB 'A*'"
@@ -560,10 +560,10 @@ INSERT INTO students VALUES ('Alice'), ('Bob');
         difficulty: 'Medium',
         description: `Replace 'l' with 'L' in name.`,
         examples: [{ input: '', output: 'ALice' }],
-        starterCode: `CREATE TABLE students (name TEXT);
-INSERT INTO students VALUES ('Alice');
--- Write your query below
+        starterCode: `-- Write your query below
 `,
+        setupCode: `CREATE TABLE students (name TEXT);
+INSERT INTO students VALUES ('Alice');`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'ALice' }],
         hint: "REPLACE(name, 'l', 'L')"
@@ -712,10 +712,10 @@ SELECT TYPEOF(1);
         difficulty: 'Medium',
         description: `Get last insert rowid.`,
         examples: [{ input: '', output: '1' }],
-        starterCode: `CREATE TABLE T (A INT); INSERT INTO T VALUES (1);
--- Write your query below
+        starterCode: `-- Write your query below
 SELECT last_insert_rowid();
 `,
+        setupCode: `CREATE TABLE T (A INT); INSERT INTO T VALUES (1);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1' }],
         hint: 'last_insert_rowid()'
@@ -728,10 +728,10 @@ SELECT last_insert_rowid();
         difficulty: 'Medium',
         description: `Get number of changes (1 insert).`,
         examples: [{ input: '', output: '1' }],
-        starterCode: `CREATE TABLE T (A INT); INSERT INTO T VALUES (1);
--- Write your query below
+        starterCode: `-- Write your query below
 SELECT changes();
 `,
+        setupCode: `CREATE TABLE T (A INT); INSERT INTO T VALUES (1);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1' }],
         hint: 'changes()'

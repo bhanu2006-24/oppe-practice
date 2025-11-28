@@ -82,9 +82,9 @@ export const About: React.FC<AboutProps> = ({ onBack, onToggleTheme, isDark }) =
               <p className="text-slate-600 dark:text-slate-400 mb-4">
                 Built to help fellow students practice effectively. Open for contributions and feedback!
               </p>
-              <p className="text-xs text-slate-500 dark:text-slate-500 italic mb-6">
+              {/* <p className="text-xs text-slate-500 dark:text-slate-500 italic mb-6">
                 Note: LinkedIn is not working currently, you can message me on WhatsApp.
-              </p>
+              </p> */}
               <div className="flex items-center justify-center md:justify-start space-x-3 flex-wrap gap-y-3">
                 <a
                   href="https://github.com/bhanu2006-24"
@@ -96,7 +96,7 @@ export const About: React.FC<AboutProps> = ({ onBack, onToggleTheme, isDark }) =
                   GitHub
                 </a>
                 <a
-                  href="https://www.linkedin.com/in/bhanu-saini-3bb251391/"
+                  href="https://www.linkedin.com/in/bhanu-saini-644a66392/"
                   target="_blank"
                   rel="noreferrer"
                   className="flex items-center px-4 py-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors font-medium text-sm text-blue-700 dark:text-blue-400"
