@@ -66,9 +66,12 @@ sys.stdout = StringIO()
       const testRunnerScript = `
 def _run_test_safe():
     try:
+        # Use JSON.stringify to safely capture expected string which might contain quotes
+        expected_str = ${JSON.stringify(test.expected)}
+        
         # Check if function defined
         if '${functionName}' not in globals():
-            return (False, "Function '${functionName}' not defined", "${test.expected}")
+            return (False, "Function '${functionName}' not defined", expected_str)
             
         # Construct the function call
         # test.input is expected to be a valid python argument string like "(1, 2)" or "([1])"
@@ -77,8 +80,6 @@ def _run_test_safe():
         # Execute and capture result
         # We evaluate the expression in the global scope
         result = eval(expression, globals())
-        
-        expected_str = '${test.expected}'
         
         # Comparison Logic
         # 1. Compare 'None' specifically
@@ -95,7 +96,12 @@ def _run_test_safe():
         
         return (passed, str(result), expected_str)
     except Exception as e:
-        return (False, f"{type(e).__name__}: {str(e)}", "${test.expected}")
+        # If expected_str wasn't defined yet (e.g. error in defining it), fallback to safe string
+        try:
+            exp = expected_str
+        except:
+            exp = "Error parsing expected value"
+        return (False, f"{type(e).__name__}: {str(e)}", exp)
 
 _run_test_safe()
 `;
