@@ -10,6 +10,7 @@ import { Console } from './components/Console';
 import { About } from './components/About';
 import { Contribute } from './components/Contribute';
 import { initializePyodide, runPythonCode } from './services/pythonRuntime';
+import { executeCode } from './services/multiCompilerRuntime';
 import { Play, RotateCcw, Clock, Sun, Moon, Download, Menu, X } from 'lucide-react';
 
 // Declaration for confetti
@@ -188,9 +189,7 @@ const App: React.FC = () => {
         const casesToRun = currentProblem.testCases.length > 0 ? currentProblem.testCases : [{ input: "", expected: "" }];
 
         for (const testCase of casesToRun) {
-          const { output: runOutput, status: runStatus } = await import('./services/multiCompilerRuntime').then(m =>
-            m.executeCode(language, userCode, testCase.input)
-          );
+          const { output: runOutput, status: runStatus } = await executeCode(language, userCode, testCase.input);
 
           // Clean up output (trim whitespace for comparison)
           const cleanActual = runOutput.trim();

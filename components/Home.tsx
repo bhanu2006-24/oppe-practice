@@ -46,7 +46,7 @@ export const Home: React.FC<HomeProps> = ({
       id: 'DBMS',
       title: 'Database Management',
       level: 'Diploma',
-      description: 'SQL Logic, Schema Design, Joins (Real SQL).',
+      description: 'SQL Logic, Schema Design, Joins, Standard Queries (Real SQL).',
       icon: Database,
       color: 'teal',
       available: true
@@ -78,15 +78,16 @@ export const Home: React.FC<HomeProps> = ({
       color: 'slate',
       available: true
     },
-    {
-      id: 'SQL',
-      title: 'SQL (DBMS)',
-      level: 'Diploma',
-      description: 'Standard SQL queries. SELECT, JOIN, GROUP BY, Subqueries.',
-      icon: Database,
-      color: 'teal',
-      available: true
-    },
+    // SQL (DBMS) merged into Database Management
+    // {
+    //   id: 'SQL',
+    //   title: 'SQL (DBMS)',
+    //   level: 'Diploma',
+    //   description: 'Standard SQL queries. SELECT, JOIN, GROUP BY, Subqueries.',
+    //   icon: Database,
+    //   color: 'teal',
+    //   available: true
+    // },
     // Degree
     // Placeholder for Degree content which is coming soon
   ];

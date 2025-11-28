@@ -4,7 +4,7 @@ export const SQL_OPPE2_PROBLEMS: Problem[] = [
     {
         id: 'sql2-inner-join',
         title: 'Inner Join',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Select student name and course name using INNER JOIN.`,
@@ -22,7 +22,7 @@ INSERT INTO courses VALUES (101, 'Math', 1), (102, 'Science', 2);
     {
         id: 'sql2-left-join',
         title: 'Left Join',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Select all students and their courses (if any) using LEFT JOIN.`,
@@ -40,7 +40,7 @@ INSERT INTO courses VALUES (101, 'Math', 1);
     {
         id: 'sql2-right-join',
         title: 'Right Join',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Select all courses and their students (if any) using RIGHT JOIN (Simulated with LEFT JOIN swapping tables as SQLite doesn't support RIGHT JOIN directly, but for standard SQL it's RIGHT JOIN. Here use LEFT JOIN courses).`,
@@ -58,7 +58,7 @@ INSERT INTO courses VALUES (101, 'Math', 1), (102, 'Science', 2);
     {
         id: 'sql2-full-join',
         title: 'Full Join',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Hard',
         description: `Select all students and courses matching or not. (Simulate FULL JOIN with UNION of LEFT Joins).`,
@@ -76,7 +76,7 @@ INSERT INTO courses VALUES (101, 'Math', 1), (103, 'Science', 3);
     {
         id: 'sql2-cross-join',
         title: 'Cross Join',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Select Cartesian product of students and courses.`,
@@ -94,7 +94,7 @@ INSERT INTO courses VALUES ('Math'), ('Science');
     {
         id: 'sql2-self-join',
         title: 'Self Join',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Select pairs of students from same city.`,
@@ -110,7 +110,7 @@ INSERT INTO students VALUES (1, 'Alice', 'NY'), (2, 'Bob', 'NY'), (3, 'Charlie',
     {
         id: 'sql2-subquery-scalar',
         title: 'Scalar Subquery',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Select students with score > average score.`,
@@ -126,7 +126,7 @@ INSERT INTO students VALUES ('Alice', 40), ('Bob', 60);
     {
         id: 'sql2-subquery-in',
         title: 'Subquery IN',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Select students enrolled in 'Math'.`,
@@ -144,7 +144,7 @@ INSERT INTO courses VALUES (1, 'Math');
     {
         id: 'sql2-subquery-exists',
         title: 'Subquery EXISTS',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Hard',
         description: `Select students who have at least one course.`,
@@ -162,7 +162,7 @@ INSERT INTO courses VALUES (1);
     {
         id: 'sql2-subquery-from',
         title: 'Subquery in FROM',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Hard',
         description: `Select max average score per city.`,
@@ -178,7 +178,7 @@ INSERT INTO students VALUES ('NY', 50), ('NY', 70), ('LA', 40);
     {
         id: 'sql2-correlated-subquery',
         title: 'Correlated Subquery',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Hard',
         description: `Select students with score > average of their city.`,
@@ -194,7 +194,7 @@ INSERT INTO students VALUES ('Alice', 'NY', 40), ('Bob', 'NY', 60), ('Charlie', 
     {
         id: 'sql2-view',
         title: 'Create View',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Create view V as select name from students. Select * from V.`,
@@ -210,7 +210,7 @@ INSERT INTO students VALUES ('Alice');
     {
         id: 'sql2-cte',
         title: 'CTE',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Hard',
         description: `Use CTE to select students with score > 50.`,
@@ -226,7 +226,7 @@ INSERT INTO students VALUES ('Alice', 40), ('Bob', 60);
     {
         id: 'sql2-window-rank',
         title: 'Window RANK',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Hard',
         description: `Rank students by score desc.`,
@@ -242,7 +242,7 @@ INSERT INTO students VALUES ('Alice', 40), ('Bob', 60);
     {
         id: 'sql2-window-dense-rank',
         title: 'Window DENSE_RANK',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Hard',
         description: `Dense Rank students by score desc.`,
@@ -258,7 +258,7 @@ INSERT INTO students VALUES ('Alice', 60), ('Bob', 60), ('Charlie', 40);
     {
         id: 'sql2-window-row-number',
         title: 'Window ROW_NUMBER',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Hard',
         description: `Row number students by score desc.`,
@@ -274,7 +274,7 @@ INSERT INTO students VALUES ('Alice', 60), ('Bob', 60);
     {
         id: 'sql2-partition-by',
         title: 'Partition By',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Hard',
         description: `Rank students within city by score desc.`,
@@ -290,7 +290,7 @@ INSERT INTO students VALUES ('Alice', 'NY', 40), ('Bob', 'NY', 60), ('Charlie', 
     {
         id: 'sql2-case-when',
         title: 'Case When in Select',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Select name and 'Pass' if score >= 50 else 'Fail'.`,
@@ -306,7 +306,7 @@ INSERT INTO students VALUES ('Alice', 40), ('Bob', 60);
     {
         id: 'sql2-nullif',
         title: 'NULLIF',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Select NULLIF(score, 0). (Returns NULL if score is 0).`,
@@ -322,7 +322,7 @@ INSERT INTO students VALUES (0), (10);
     {
         id: 'sql2-transaction',
         title: 'Transaction',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Hard',
         description: `Begin transaction, insert 1, commit. Select *.`,
@@ -337,7 +337,7 @@ INSERT INTO students VALUES (0), (10);
     {
         id: 'sql2-rollback',
         title: 'Rollback',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Hard',
         description: `Begin transaction, insert 1, rollback. Select *. (Should be empty).`,
@@ -352,7 +352,7 @@ INSERT INTO students VALUES (0), (10);
     {
         id: 'sql2-savepoint',
         title: 'Savepoint',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Hard',
         description: `Begin, insert 1, savepoint S, insert 2, rollback to S, commit. Select *. (Should be 1).`,
@@ -367,7 +367,7 @@ INSERT INTO students VALUES (0), (10);
     {
         id: 'sql2-index',
         title: 'Create Index',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Create index idx_name on students(name).`,
@@ -382,7 +382,7 @@ INSERT INTO students VALUES (0), (10);
     {
         id: 'sql2-drop-index',
         title: 'Drop Index',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
         description: `Drop index idx_name.`,
@@ -398,7 +398,7 @@ CREATE INDEX idx_name ON students(name);
     {
         id: 'sql2-unique-constraint',
         title: 'Unique Constraint',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Create table T with unique col A. Try inserting duplicate (ignore error). Select *.`,
@@ -416,7 +416,7 @@ SELECT * FROM T;
     {
         id: 'sql2-check-constraint',
         title: 'Check Constraint',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Create table T with check A > 0. Insert 1. Select *.`,
@@ -433,7 +433,7 @@ SELECT * FROM T;
     {
         id: 'sql2-default-constraint',
         title: 'Default Constraint',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Create table T with default A=1. Insert default. Select *.`,
@@ -450,7 +450,7 @@ SELECT * FROM T;
     {
         id: 'sql2-not-null-constraint',
         title: 'Not Null Constraint',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Create table T with A INT NOT NULL. Insert 1. Select *.`,
@@ -467,7 +467,7 @@ SELECT * FROM T;
     {
         id: 'sql2-primary-key',
         title: 'Primary Key',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Create table T with id INT PRIMARY KEY. Insert 1. Select *.`,
@@ -484,7 +484,7 @@ SELECT * FROM T;
     {
         id: 'sql2-foreign-key',
         title: 'Foreign Key',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Hard',
         description: `Create table P (id PK) and C (pid FK). Insert 1 to P, 1 to C. Select *.`,
@@ -503,7 +503,7 @@ SELECT * FROM P JOIN C ON P.id = C.pid;
     {
         id: 'sql2-trigger',
         title: 'Trigger',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Hard',
         description: `Create trigger to log insert on T. Insert 1. Select log.`,
@@ -522,7 +522,7 @@ SELECT * FROM Log;
     {
         id: 'sql2-drop-trigger',
         title: 'Drop Trigger',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Drop trigger tr.`,
@@ -539,7 +539,7 @@ DROP TRIGGER tr;
     {
         id: 'sql2-glob',
         title: 'GLOB Operator',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Select names starting with 'A' using GLOB.`,
@@ -555,7 +555,7 @@ INSERT INTO students VALUES ('Alice'), ('Bob');
     {
         id: 'sql2-replace',
         title: 'Replace String',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Replace 'l' with 'L' in name.`,
@@ -571,7 +571,7 @@ INSERT INTO students VALUES ('Alice');
     {
         id: 'sql2-trim',
         title: 'Trim String',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
         description: `Trim spaces from ' A '.`,
@@ -587,7 +587,7 @@ SELECT TRIM(' A ');
     {
         id: 'sql2-ltrim',
         title: 'LTrim String',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
         description: `Left trim ' A'.`,
@@ -602,7 +602,7 @@ SELECT LTRIM(' A');
     {
         id: 'sql2-rtrim',
         title: 'RTrim String',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
         description: `Right trim 'A '.`,
@@ -617,7 +617,7 @@ SELECT RTRIM('A ');
     {
         id: 'sql2-instr',
         title: 'Instr',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Find position of 'l' in 'Alice'.`,
@@ -632,7 +632,7 @@ SELECT INSTR('Alice', 'l');
     {
         id: 'sql2-unicode',
         title: 'Unicode',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Get unicode of 'A'.`,
@@ -647,7 +647,7 @@ SELECT UNICODE('A');
     {
         id: 'sql2-char',
         title: 'Char',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Get char from 65.`,
@@ -662,7 +662,7 @@ SELECT CHAR(65);
     {
         id: 'sql2-hex',
         title: 'Hex',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Get hex of 'A'.`,
@@ -677,7 +677,7 @@ SELECT HEX('A');
     {
         id: 'sql2-quote',
         title: 'Quote',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Quote string 'A'.`,
@@ -692,7 +692,7 @@ SELECT QUOTE('A');
     {
         id: 'sql2-typeof',
         title: 'Typeof',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Get type of 1.`,
@@ -707,7 +707,7 @@ SELECT TYPEOF(1);
     {
         id: 'sql2-last-insert-rowid',
         title: 'Last Insert RowID',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Get last insert rowid.`,
@@ -723,7 +723,7 @@ SELECT last_insert_rowid();
     {
         id: 'sql2-changes',
         title: 'Changes',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Get number of changes (1 insert).`,
@@ -739,7 +739,7 @@ SELECT changes();
     {
         id: 'sql2-total-changes',
         title: 'Total Changes',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Get total changes.`,
@@ -755,7 +755,7 @@ SELECT total_changes();
     {
         id: 'sql2-sqlite-version',
         title: 'SQLite Version',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
         description: `Get version. (Mocked).`,
@@ -769,7 +769,7 @@ SELECT total_changes();
     {
         id: 'sql2-ifnull',
         title: 'IFNULL',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
         description: `Select IFNULL(NULL, 1).`,
@@ -784,7 +784,7 @@ SELECT IFNULL(NULL, 1);
     {
         id: 'sql2-nullif-2',
         title: 'NULLIF 2',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
         description: `Select NULLIF(1, 1).`,

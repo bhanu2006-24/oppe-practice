@@ -4,7 +4,7 @@ export const SQL_OPPE1_PROBLEMS: Problem[] = [
     {
         id: 'sql1-select-all',
         title: 'Select All',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Select all columns from the table 'students'.`,
@@ -20,7 +20,7 @@ INSERT INTO students VALUES (1, 'Alice'), (2, 'Bob');
     {
         id: 'sql1-select-col',
         title: 'Select Column',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Select only the 'name' column from 'students'.`,
@@ -36,7 +36,7 @@ INSERT INTO students VALUES (1, 'Alice'), (2, 'Bob');
     {
         id: 'sql1-where-eq',
         title: 'Where Equals',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Select names of students with id 1.`,
@@ -52,7 +52,7 @@ INSERT INTO students VALUES (1, 'Alice'), (2, 'Bob');
     {
         id: 'sql1-where-gt',
         title: 'Where Greater Than',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Select names of students with score > 50.`,
@@ -68,7 +68,7 @@ INSERT INTO students VALUES ('Alice', 40), ('Bob', 60);
     {
         id: 'sql1-order-asc',
         title: 'Order By Ascending',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Select names ordered by score ascending.`,
@@ -84,7 +84,7 @@ INSERT INTO students VALUES ('Bob', 60), ('Alice', 40);
     {
         id: 'sql1-order-desc',
         title: 'Order By Descending',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Select names ordered by score descending.`,
@@ -100,7 +100,7 @@ INSERT INTO students VALUES ('Alice', 40), ('Bob', 60);
     {
         id: 'sql1-limit',
         title: 'Limit Results',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Select first 1 name ordered by id.`,
@@ -116,7 +116,7 @@ INSERT INTO students VALUES (1, 'Alice'), (2, 'Bob');
     {
         id: 'sql1-distinct',
         title: 'Distinct Values',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Select distinct cities.`,
@@ -132,7 +132,7 @@ INSERT INTO users VALUES ('NY'), ('NY'), ('LA');
     {
         id: 'sql1-count',
         title: 'Count Rows',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Count total number of students.`,
@@ -148,7 +148,7 @@ INSERT INTO students VALUES (1), (2);
     {
         id: 'sql1-sum',
         title: 'Sum Values',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Calculate sum of scores.`,
@@ -164,7 +164,7 @@ INSERT INTO students VALUES (40), (60);
     {
         id: 'sql1-avg',
         title: 'Average Value',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Calculate average score.`,
@@ -180,7 +180,7 @@ INSERT INTO students VALUES (40), (60);
     {
         id: 'sql1-min',
         title: 'Minimum Value',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Find minimum score.`,
@@ -196,7 +196,7 @@ INSERT INTO students VALUES (40), (60);
     {
         id: 'sql1-max',
         title: 'Maximum Value',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Find maximum score.`,
@@ -212,7 +212,7 @@ INSERT INTO students VALUES (40), (60);
     {
         id: 'sql1-and',
         title: 'Logical AND',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Select names where score > 50 AND city = 'NY'.`,
@@ -228,7 +228,7 @@ INSERT INTO students VALUES ('Alice', 60, 'LA'), ('Bob', 60, 'NY');
     {
         id: 'sql1-or',
         title: 'Logical OR',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Select names where city is 'NY' OR 'LA'.`,
@@ -244,7 +244,7 @@ INSERT INTO students VALUES ('Alice', 'LA'), ('Bob', 'NY'), ('Charlie', 'TX');
     {
         id: 'sql1-not',
         title: 'Logical NOT',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Select names where city is NOT 'NY'.`,
@@ -260,7 +260,7 @@ INSERT INTO students VALUES ('Alice', 'LA'), ('Bob', 'NY');
     {
         id: 'sql1-in',
         title: 'IN Operator',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Select names where id IN (1, 3).`,
@@ -276,7 +276,7 @@ INSERT INTO students VALUES (1, 'Alice'), (2, 'Bob'), (3, 'Charlie');
     {
         id: 'sql1-between',
         title: 'BETWEEN Operator',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Select names where score BETWEEN 40 AND 60.`,
@@ -292,7 +292,7 @@ INSERT INTO students VALUES ('Alice', 40), ('Bob', 60), ('Charlie', 70);
     {
         id: 'sql1-like',
         title: 'LIKE Operator',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Select names starting with 'A'.`,
@@ -308,7 +308,7 @@ INSERT INTO students VALUES ('Alice'), ('Bob');
     {
         id: 'sql1-is-null',
         title: 'IS NULL',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Select names where email IS NULL.`,
@@ -324,7 +324,7 @@ INSERT INTO students VALUES ('Alice', 'a@b.com'), ('Bob', NULL);
     {
         id: 'sql1-is-not-null',
         title: 'IS NOT NULL',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Select names where email IS NOT NULL.`,
@@ -340,7 +340,7 @@ INSERT INTO students VALUES ('Alice', 'a@b.com'), ('Bob', NULL);
     {
         id: 'sql1-alias',
         title: 'Column Alias',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Select name AS 'Student Name'.`,
@@ -356,7 +356,7 @@ INSERT INTO students VALUES ('Alice');
     {
         id: 'sql1-concat',
         title: 'Concatenation',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Medium',
         description: `Select first_name || ' ' || last_name.`,
@@ -372,7 +372,7 @@ INSERT INTO students VALUES ('Alice', 'Smith');
     {
         id: 'sql1-upper',
         title: 'Upper Case',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Select name in uppercase.`,
@@ -388,7 +388,7 @@ INSERT INTO students VALUES ('Alice');
     {
         id: 'sql1-lower',
         title: 'Lower Case',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Select name in lowercase.`,
@@ -404,7 +404,7 @@ INSERT INTO students VALUES ('Alice');
     {
         id: 'sql1-length',
         title: 'String Length',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Select length of name.`,
@@ -420,7 +420,7 @@ INSERT INTO students VALUES ('Alice');
     {
         id: 'sql1-substr',
         title: 'Substring',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Medium',
         description: `Select first 3 chars of name.`,
@@ -436,7 +436,7 @@ INSERT INTO students VALUES ('Alice');
     {
         id: 'sql1-round',
         title: 'Round Number',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Select score rounded to 0 decimals.`,
@@ -452,7 +452,7 @@ INSERT INTO students VALUES (10.4);
     {
         id: 'sql1-arithmetic',
         title: 'Arithmetic',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Select score * 2.`,
@@ -468,7 +468,7 @@ INSERT INTO students VALUES (10);
     {
         id: 'sql1-group-by',
         title: 'Group By',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Medium',
         description: `Count students per city.`,
@@ -484,7 +484,7 @@ INSERT INTO students VALUES ('NY'), ('NY'), ('LA');
     {
         id: 'sql1-having',
         title: 'Having Clause',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Medium',
         description: `Select city with count > 1.`,
@@ -500,7 +500,7 @@ INSERT INTO students VALUES ('NY'), ('NY'), ('LA');
     {
         id: 'sql1-create-table',
         title: 'Create Table',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Medium',
         description: `Create table T with col A INT. Insert 1. Select *.`,
@@ -514,7 +514,7 @@ INSERT INTO students VALUES ('NY'), ('NY'), ('LA');
     {
         id: 'sql1-drop-table',
         title: 'Drop Table',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Drop table T. (Setup creates T).`,
@@ -529,7 +529,7 @@ INSERT INTO students VALUES ('NY'), ('NY'), ('LA');
     {
         id: 'sql1-insert',
         title: 'Insert Row',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Insert 1 into T (A INT). Select *.`,
@@ -544,7 +544,7 @@ INSERT INTO students VALUES ('NY'), ('NY'), ('LA');
     {
         id: 'sql1-update',
         title: 'Update Row',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Medium',
         description: `Update T set A=2 where A=1. Select *.`,
@@ -560,7 +560,7 @@ INSERT INTO T VALUES (1);
     {
         id: 'sql1-delete',
         title: 'Delete Row',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Medium',
         description: `Delete from T where A=1. Select *.`,
@@ -576,7 +576,7 @@ INSERT INTO T VALUES (1);
     {
         id: 'sql1-alter',
         title: 'Alter Table',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Hard',
         description: `Add column B INT to T. Select *.`,
@@ -592,7 +592,7 @@ INSERT INTO T VALUES (1);
     {
         id: 'sql1-select-expr',
         title: 'Select Expression',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Select 1+1.`,
@@ -606,7 +606,7 @@ INSERT INTO T VALUES (1);
     {
         id: 'sql1-cast',
         title: 'Cast Type',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Medium',
         description: `Cast '1' to INT.`,
@@ -620,7 +620,7 @@ INSERT INTO T VALUES (1);
     {
         id: 'sql1-coalesce',
         title: 'Coalesce',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Medium',
         description: `Select first non-null value from (NULL, 1).`,
@@ -634,7 +634,7 @@ INSERT INTO T VALUES (1);
     {
         id: 'sql1-case',
         title: 'Case Statement',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Hard',
         description: `Select CASE when 1=1 then 'A' else 'B'.`,
@@ -648,7 +648,7 @@ INSERT INTO T VALUES (1);
     {
         id: 'sql1-limit-offset',
         title: 'Limit Offset',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Medium',
         description: `Select 1 row skipping first 1.`,
@@ -664,7 +664,7 @@ INSERT INTO T VALUES (1), (2), (3);
     {
         id: 'sql1-union',
         title: 'Union',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Medium',
         description: `Union of select 1 and select 2.`,
@@ -678,7 +678,7 @@ INSERT INTO T VALUES (1), (2), (3);
     {
         id: 'sql1-union-all',
         title: 'Union All',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Medium',
         description: `Union All of select 1 and select 1.`,
@@ -692,7 +692,7 @@ INSERT INTO T VALUES (1), (2), (3);
     {
         id: 'sql1-intersect',
         title: 'Intersect',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Medium',
         description: `Intersect of select 1 and select 1.`,
@@ -706,7 +706,7 @@ INSERT INTO T VALUES (1), (2), (3);
     {
         id: 'sql1-except',
         title: 'Except',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Medium',
         description: `Select 1 EXCEPT select 2.`,
@@ -720,7 +720,7 @@ INSERT INTO T VALUES (1), (2), (3);
     {
         id: 'sql1-abs',
         title: 'Absolute Value',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Select ABS(-1).`,
@@ -734,7 +734,7 @@ INSERT INTO T VALUES (1), (2), (3);
     {
         id: 'sql1-random',
         title: 'Random',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Select a random number (mocked).`,
@@ -748,7 +748,7 @@ INSERT INTO T VALUES (1), (2), (3);
     {
         id: 'sql1-date',
         title: 'Date',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Select current date (mocked).`,
@@ -762,7 +762,7 @@ INSERT INTO T VALUES (1), (2), (3);
     {
         id: 'sql1-time',
         title: 'Time',
-        subject: 'SQL',
+        subject: 'DBMS',
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Select current time (mocked).`,
