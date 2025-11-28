@@ -55,7 +55,7 @@ export const Contribute: React.FC<ContributeProps> = ({ onBack, onToggleTheme, i
               </a>
 
               <a
-                href="https://wa.me/+918949731495"
+                href="https://forms.gle/gWPbEyCzBc1QKsds5"
                 target="_blank"
                 rel="noreferrer"
                 className="group p-6 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-blue-500 dark:hover:border-blue-500 hover:shadow-lg transition-all"
@@ -65,10 +65,10 @@ export const Contribute: React.FC<ContributeProps> = ({ onBack, onToggleTheme, i
                 </div>
                 <h3 className="text-xl font-bold mb-2">Suggest Questions</h3>
                 <p className="text-sm text-slate-500 dark:text-slate-400 mb-2">
-                  Have a good OPPE question in mind? Message us on WhatsApp or open an Issue on GitHub with the question details.
+                  Have a good OPPE question in mind? Fill out this Google Form or open an Issue on GitHub with the question details.
                 </p>
                 <p className="text-xs text-slate-400 dark:text-slate-500 italic">
-                  Note: LinkedIn is not working currently, you can message me on WhatsApp.
+                  Note: We have switched to Google Forms for better organization.
                 </p>
               </a>
             </div>
