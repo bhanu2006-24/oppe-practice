@@ -910,5 +910,208 @@ export const PYTHON_OPPE2_PROBLEMS: Problem[] = [
         functionName: 'can_construct',
         testCases: [{ input: '("a", "b")', expected: 'False' }, { input: '("aa", "aab")', expected: 'True' }],
         hint: 'Check counts.'
+    },
+
+    // ADDITIONAL FILE HANDLING QUESTIONS (10 more advanced questions)
+
+    // 51. Parse JSON String
+    {
+        id: 'py-oppe2-file-parse-json',
+        title: 'Parse JSON from File',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a function 'parse_json_content' that parses JSON string and returns the Python object. Return None on error.`,
+        examples: [{ input: '\'{"name": "John", "age": 30}\'', output: '{"name": "John", "age": 30}' }],
+        starterCode: `import json
+def parse_json_content(content):
+    # Write your code here
+    pass`,
+        functionName: 'parse_json_content',
+        testCases: [
+            { input: '(\'{"name": "John", "age": 30}\')', expected: '{"name": "John", "age": 30}' },
+            { input: '(\'invalid json\')', expected: 'None' }
+        ],
+        hint: 'Use json.loads() with try-except.'
+    },
+
+    // 52. Compare Two Files
+    {
+        id: 'py-oppe2-file-compare',
+        title: 'Compare File Contents',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a function 'compare_files' that returns True if two file contents are identical.`,
+        examples: [{ input: '"content1", "content1"', output: 'True' }],
+        starterCode: `def compare_files(content1, content2):
+    # Write your code here
+    pass`,
+        functionName: 'compare_files',
+        testCases: [
+            { input: '("content1", "content1")', expected: 'True' },
+            { input: '("content1", "content2")', expected: 'False' }
+        ],
+        hint: 'Simple comparison.'
+    },
+
+    // 53. Parse Log Lines
+    {
+        id: 'py-oppe2-file-parse-logs',
+        title: 'Parse Log File',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Hard',
+        description: `Write a function 'parse_logs' that extracts ERROR lines from log content and returns them as a list.`,
+        examples: [{ input: '"INFO: started\\nERROR: failed\\nINFO: ok"', output: '["ERROR: failed"]' }],
+        starterCode: `def parse_logs(content):
+    # Write your code here
+    pass`,
+        functionName: 'parse_logs',
+        testCases: [
+            { input: '("INFO: started\\nERROR: failed\\nINFO: ok")', expected: '["ERROR: failed"]' },
+            { input: '("INFO: all good")', expected: '[]' }
+        ],
+        hint: 'Filter lines containing "ERROR".'
+    },
+
+    // 54. Calculate File Checksum
+    {
+        id: 'py-oppe2-file-checksum',
+        title: 'Simple Checksum',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a function 'simple_checksum' that returns sum of ASCII values of all characters.`,
+        examples: [{ input: '"abc"', output: '294' }],
+        starterCode: `def simple_checksum(content):
+    # Write your code here
+    pass`,
+        functionName: 'simple_checksum',
+        testCases: [
+            { input: '("abc")', expected: '294' },
+            { input: '("a")', expected: '97' }
+        ],
+        hint: 'Sum ord(c) for all characters.'
+    },
+
+    // 55. Extract Email Addresses
+    {
+        id: 'py-oppe2-file-extract-emails',
+        title: 'Extract Email Addresses',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Hard',
+        description: `Write a function 'extract_emails' that finds all email addresses (simple: word@word.word format) in content.`,
+        examples: [{ input: '"contact: john@example.com or jane@test.org"', output: '["john@example.com", "jane@test.org"]' }],
+        starterCode: `def extract_emails(content):
+    # Write your code here
+    pass`,
+        functionName: 'extract_emails',
+        testCases: [
+            { input: '("contact: john@example.com or jane@test.org")', expected: '["john@example.com", "jane@test.org"]' },
+            { input: '("no emails here")', expected: '[]' }
+        ],
+        hint: 'Use regex or find patterns with @ and . characters.'
+    },
+
+    // 56. Validate CSV Format
+    {
+        id: 'py-oppe2-file-validate-csv',
+        title: 'Validate CSV Rows',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a function 'validate_csv' that checks if all rows have same number of columns. Returns True if valid.`,
+        examples: [{ input: '"a,b,c\\n1,2,3"', output: 'True' }],
+        starterCode: `def validate_csv(content):
+    # Write your code here
+    pass`,
+        functionName: 'validate_csv',
+        testCases: [
+            { input: '("a,b,c\\n1,2,3")', expected: 'True' },
+            { input: '("a,b\\n1,2,3")', expected: 'False' }
+        ],
+        hint: 'Count commas in each line.'
+    },
+
+    // 57. Word Frequency in File
+    {
+        id: 'py-oppe2-file-word-freq',
+        title: 'File Word Frequency',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a function 'file_word_frequency' that returns dict of word frequencies (case-insensitive).`,
+        examples: [{ input: '"Hello world\\nHello"', output: '{"hello": 2, "world": 1}' }],
+        starterCode: `def file_word_frequency(content):
+    # Write your code here
+    pass`,
+        functionName: 'file_word_frequency',
+        testCases: [
+            { input: '("Hello world\\nHello")', expected: '{"hello": 2, "world": 1}' },
+            { input: '("a b a")', expected: '{"a": 2, "b": 1}' }
+        ],
+        hint: 'Convert to lowercase, split, count.'
+    },
+
+    // 58. Top N Words
+    {
+        id: 'py-oppe2-file-top-words',
+        title: 'Top N Frequent Words',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Hard',
+        description: `Write a function 'top_n_words' that returns the top n most frequent words as list of tuples (word, count).`,
+        examples: [{ input: '"apple banana apple orange banana apple", 2', output: '[("apple", 3), ("banana", 2)]' }],
+        starterCode: `def top_n_words(content, n):
+    # Write your code here
+    pass`,
+        functionName: 'top_n_words',
+        testCases: [
+            { input: '("apple banana apple orange banana apple", 2)', expected: '[("apple", 3), ("banana", 2)]' },
+            { input: '("a b c", 1)', expected: '[("a", 1)]' }
+        ],
+        hint: 'Count words, sort by frequency, take top n.'
+    },
+
+    // 59. Format Table Data
+    {
+        id: 'py-oppe2-file-format-table',
+        title: 'Format Data as Table',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Hard',
+        description: `Write a function 'format_table' that takes CSV content and returns formatted table string with aligned columns.`,
+        examples: [{ input: '"name,age\\nJohn,25\\nJane,30"', output: '"name age\\nJohn 25 \\nJane 30 "' }],
+        starterCode: `def format_table(csv_content):
+    # Write your code here
+    pass`,
+        functionName: 'format_table',
+        testCases: [
+            { input: '("name,age\\nJohn,25")', expected: '"name age\\nJohn 25 "' }
+        ],
+        hint: 'Parse CSV, calculate column widths, format.'
+    },
+
+    // 60. Count File Types
+    {
+        id: 'py-oppe2-file-count-types',
+        title: 'Count File Extensions',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Write a function 'count_file_types' that takes content with filenames (one per line) and returns dict of extension counts.`,
+        examples: [{ input: '"file1.txt\\nfile2.txt\\nfile3.py"', output: '{".txt": 2, ".py": 1}' }],
+        starterCode: `def count_file_types(content):
+    # Write your code here
+    pass`,
+        functionName: 'count_file_types',
+        testCases: [
+            { input: '("file1.txt\\nfile2.txt\\nfile3.py")', expected: '{".txt": 2, ".py": 1}' },
+            { input: '("test.js")', expected: '{".js": 1}' }
+        ],
+        hint: 'Extract extensions and count.'
     }
 ];
+

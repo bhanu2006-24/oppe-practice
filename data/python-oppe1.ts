@@ -937,5 +937,309 @@ export const PYTHON_OPPE1_PROBLEMS: Problem[] = [
         functionName: 'c_to_f',
         testCases: [{ input: '(0)', expected: '32.0' }, { input: '(100)', expected: '212.0' }],
         hint: 'Formula application.'
+    },
+
+    // FILE HANDLING QUESTIONS (15 new questions)
+    
+    // 51. Count Lines in Content
+    {
+        id: 'py-oppe1-file-count-lines',
+        title: 'Count Lines in File Content',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Write a function 'count_lines' that takes file content as a string and returns the number of lines.`,
+        examples: [{ input: '"line1\\nline2\\nline3"', output: '3' }],
+        starterCode: `def count_lines(content):
+    # Write your code here
+    pass`,
+        functionName: 'count_lines',
+        testCases: [
+            { input: '("line1\\nline2\\nline3")', expected: '3' },
+            { input: '("single line")', expected: '1' },
+            { input: '("")', expected: '0' }
+        ],
+        hint: 'Split by newline and count.'
+    },
+    
+    // 52. Count Words in Content
+    {
+        id: 'py-oppe1-file-count-words',
+        title: 'Count Words in File Content',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Write a function 'count_words_file' that takes file content and returns total word count.`,
+        examples: [{ input: '"hello world\\npython"', output: '3' }],
+        starterCode: `def count_words_file(content):
+    # Write your code here
+    pass`,
+        functionName: 'count_words_file',
+        testCases: [
+            { input: '("hello world\\npython")', expected: '3' },
+            { input: '("one")', expected: '1' }
+        ],
+        hint: 'Split by whitespace and count.'
+    },
+    
+    // 53. Find Longest Line
+    {
+        id: 'py-oppe1-file-longest-line',
+        title: 'Find Longest Line',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Write a function 'find_longest_line' that returns the longest line in file content.`,
+        examples: [{ input: '"short\\nlonger line\\nok"', output: '"longer line"' }],
+        starterCode: `def find_longest_line(content):
+    # Write your code here
+    pass`,
+        functionName: 'find_longest_line',
+        testCases: [
+            { input: '("short\\nlonger line\\nok")', expected: '"longer line"' },
+            { input: '("a\\nbc")', expected: '"bc"' }
+        ],
+        hint: 'Use max with key=len on lines.'
+    },
+    
+    // 54. Search Word in Content
+    {
+        id: 'py-oppe1-file-search',
+        title: 'Search Word in File',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Write a function 'search_in_file' that returns True if word exists in content.`,
+        examples: [{ input: '"hello world\\npython", "python"', output: 'True' }],
+        starterCode: `def search_in_file(content, word):
+    # Write your code here
+    pass`,
+        functionName: 'search_in_file',
+        testCases: [
+            { input: '("hello world\\npython", "python")', expected: 'True' },
+            { input: '("hello world", "java")', expected: 'False' }
+        ],
+        hint: 'Check if word in content.'
+    },
+    
+    // 55. Count Specific Word
+    {
+        id: 'py-oppe1-file-word-count',
+        title: 'Count Specific Word',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Write a function 'count_word_occurrences' that counts occurrences of a specific word in content.`,
+        examples: [{ input: '"hello world hello", "hello"', output: '2' }],
+        starterCode: `def count_word_occurrences(content, word):
+    # Write your code here
+    pass`,
+        functionName: 'count_word_occurrences',
+        testCases: [
+            { input: '("hello world hello", "hello")', expected: '2' },
+            { input: '("python java python", "python")', expected: '2' }
+        ],
+        hint: 'Split content and count word.'
+    },
+    
+    // 56. File Stats
+    {
+        id: 'py-oppe1-file-stats',
+        title: 'File Statistics',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Write a function 'file_stats' that returns a tuple (lines, words, chars) for file content.`,
+        examples: [{ input: '"hello world\\npython"', output: '(2, 3, 19)' }],
+        starterCode: `def file_stats(content):
+    # Write your code here
+    pass`,
+        functionName: 'file_stats',
+        testCases: [
+            { input: '("hello world\\npython")', expected: '(2, 3, 19)' },
+            { input: '("test")', expected: '(1, 1, 4)' }
+        ],
+        hint: 'Count lines, words, and characters.'
+    },
+    
+    // 57. Filter Lines by Keyword
+    {
+        id: 'py-oppe1-file-filter',
+        title: 'Filter Lines by Keyword',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Write a function 'filter_lines' that returns lines containing a specific keyword.`,
+        examples: [{ input: '"hello world\\npython\\nhello python", "python"', output: '["python", "hello python"]' }],
+        starterCode: `def filter_lines(content, keyword):
+    # Write your code here
+    pass`,
+        functionName: 'filter_lines',
+        testCases: [
+            { input: '("hello world\\npython\\nhello python", "python")', expected: '["python", "hello python"]' },
+            { input: '("a\\nb\\nc", "x")', expected: '[]' }
+        ],
+        hint: 'Filter lines containing keyword.'
+    },
+    
+    // 58. Remove Empty Lines
+    {
+        id: 'py-oppe1-file-remove-empty',
+        title: 'Remove Empty Lines',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Write a function 'remove_empty_lines' that removes empty lines from content and returns as string.`,
+        examples: [{ input: '"line1\\n\\nline2"', output: '"line1\\nline2"' }],
+        starterCode: `def remove_empty_lines(content):
+    # Write your code here
+    pass`,
+        functionName: 'remove_empty_lines',
+        testCases: [
+            { input: '("line1\\n\\nline2")', expected: '"line1\\nline2"' },
+            { input: '("a\\n\\n\\nb")', expected: '"a\\nb"' }
+        ],
+        hint: 'Filter out empty lines and join.'
+    },
+    
+    // 59. Average Numbers in File
+    {
+        id: 'py-oppe1-file-avg-numbers',
+        title: 'Average Numbers in File',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Write a function 'avg_numbers' that parses numbers (one per line) and returns their average.`,
+        examples: [{ input: '"10\\n20\\n30"', output: '20.0' }],
+        starterCode: `def avg_numbers(content):
+    # Write your code here
+    pass`,
+        functionName: 'avg_numbers',
+        testCases: [
+            { input: '("10\\n20\\n30")', expected: '20.0' },
+            { input: '("5\\n15")', expected: '10.0' }
+        ],
+        hint: 'Split, convert to numbers, calculate average.'
+    },
+    
+    // 60. Replace Text in Content
+    {
+        id: 'py-oppe1-file-replace',
+        title: 'Replace Text in Content',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Write a function 'replace_in_file' that replaces old text with new text in content.`,
+        examples: [{ input: '"hello world", "world", "python"', output: '"hello python"' }],
+        starterCode: `def replace_in_file(content, old, new):
+    # Write your code here
+    pass`,
+        functionName: 'replace_in_file',
+        testCases: [
+            { input: '("hello world", "world", "python")', expected: '"hello python"' },
+            { input: '("test test", "test", "ok")', expected: '"ok ok"' }
+        ],
+        hint: 'Use string replace method.'
+    },
+    
+    // 61. Reverse Lines Order
+    {
+        id: 'py-oppe1-file-reverse-lines',
+        title: 'Reverse Lines Order',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Write a function 'reverse_lines' that reverses the order of lines in file content.`,
+        examples: [{ input: '"first\\nsecond\\nthird"', output: '"third\\nsecond\\nfirst"' }],
+        starterCode: `def reverse_lines(content):
+    # Write your code here
+    pass`,
+        functionName: 'reverse_lines',
+        testCases: [
+            { input: '("first\\nsecond\\nthird")', expected: '"third\\nsecond\\nfirst"' },
+            { input: '("a\\nb")', expected: '"b\\na"' }
+        ],
+        hint: 'Split, reverse list, join.'
+    },
+    
+    // 62. Parse CSV Line
+    {
+        id: 'py-oppe1-file-parse-csv',
+        title: 'Parse CSV Line',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Write a function 'parse_csv_line' that takes a CSV line and returns a list of values.`,
+        examples: [{ input: '"john,25,engineer"', output: '["john", "25", "engineer"]' }],
+        starterCode: `def parse_csv_line(line):
+    # Write your code here
+    pass`,
+        functionName: 'parse_csv_line',
+        testCases: [
+            { input: '("john,25,engineer")', expected: '["john", "25", "engineer"]' },
+            { input: '("a,b,c")', expected: '["a", "b", "c"]' }
+        ],
+        hint: 'Split by comma.'
+    },
+    
+    // 63. Count Blank Lines
+    {
+        id: 'py-oppe1-file-blank-lines',
+        title: 'Count Blank Lines',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Write a function 'count_blank_lines' that counts empty or whitespace-only lines.`,
+        examples: [{ input: '"line1\\n\\n  \\nline2"', output: '2' }],
+        starterCode: `def count_blank_lines(content):
+    # Write your code here
+    pass`,
+        functionName: 'count_blank_lines',
+        testCases: [
+            { input: '("line1\\n\\n  \\nline2")', expected: '2' },
+            { input: '("a\\nb")', expected: '0' }
+        ],
+        hint: 'Check if stripped line is empty.'
+    },
+    
+    // 64. Merge Two File Contents
+    {
+        id: 'py-oppe1-file-merge',
+        title: 'Merge File Contents',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Write a function 'merge_contents' that concatenates two file contents.`,
+        examples: [{ input: '"content1", "content2"', output: '"content1\\ncontent2"' }],
+        starterCode: `def merge_contents(content1, content2):
+    # Write your code here
+    pass`,
+        functionName: 'merge_contents',
+        testCases: [
+            { input: '("content1", "content2")', expected: '"content1\\ncontent2"' },
+            { input: '("a", "b")', expected: '"a\\nb"' }
+        ],
+        hint: 'Join with newline.'
+    },
+    
+    // 65. Extract Numbers from Content
+    {
+        id: 'py-oppe1-file-extract-nums',
+        title: 'Extract Numbers from Content',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Hard',
+        description: `Write a function 'extract_numbers' that extracts all numbers from content and returns as list of integers.`,
+        examples: [{ input: '"price is 100 and quantity is 5"', output: '[100, 5]' }],
+        starterCode: `def extract_numbers(content):
+    # Write your code here
+    pass`,
+        functionName: 'extract_numbers',
+        testCases: [
+            { input: '("price is 100 and quantity is 5")', expected: '[100, 5]' },
+            { input: '("no numbers here")', expected: '[]' }
+        ],
+        hint: 'Use regex or check if word.isdigit().'
     }
 ];
+
