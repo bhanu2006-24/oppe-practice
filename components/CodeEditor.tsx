@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Copy, Trash2, Type, Check, Search, X, ArrowUp, ArrowDown, Replace, WrapText, MoveVertical } from 'lucide-react';
+import { Copy, Check, Type, Search, X, ChevronUp, ChevronDown, AlignLeft, ArrowDownToLine, ArrowUpFromLine, Sparkles, WrapText, MoveVertical, Trash2, ArrowUp, ArrowDown, Replace } from 'lucide-react';
 
 interface CodeEditorProps {
   value: string;
@@ -274,7 +274,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
         newLine = currentLine.replace(commentPrefix.trim(), '').trimStart();
         // If it was just the prefix, it might be empty now, but usually we want to remove the prefix
         // A simple regex replace is safer
-        const regex = new RegExp(`^(\\s*)${commentPrefix.trim()}\\s?`);
+        const regex = new RegExp(`^ (\\s *)${commentPrefix.trim()} \\s ? `);
         newLine = currentLine.replace(regex, '$1');
       } else {
         // Comment
@@ -558,7 +558,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
   };
 
   const goToLine = () => {
-    const line = prompt(`Go to line (1-${lineCount}):`);
+    const line = prompt(`Go to line(1 - ${lineCount}): `);
     if (line) {
       const lineNum = parseInt(line);
       if (!isNaN(lineNum) && lineNum >= 1 && lineNum <= lineCount) {
@@ -631,6 +631,68 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
     onChange(newValue);
   };
 
+  const formatCode = () => {
+    let formatted = value;
+    const lang = language?.toLowerCase() || 'text';
+
+    if (lang === 'python') {
+      // Basic Python formatting: Fix indentation
+      const lines = formatted.split('\n');
+      let indentLevel = 0;
+      const formattedLines = lines.map(line => {
+        const trimmed = line.trim();
+        if (!trimmed) return '';
+
+        // Decrease indent for dedent keywords
+        if (trimmed.startsWith('return') || trimmed.startsWith('break') || trimmed.startsWith('continue') || trimmed.startsWith('pass') || trimmed.startsWith('raise')) {
+          // This is heuristic and imperfect for Python without a parser
+        }
+
+        // Check for block closer (dedent) - very basic heuristic
+        if (trimmed.startsWith('elif') || trimmed.startsWith('else:') || trimmed.startsWith('except') || trimmed.startsWith('finally')) {
+          indentLevel = Math.max(0, indentLevel - 1);
+        }
+
+        const indent = '    '.repeat(indentLevel);
+        const newLine = indent + trimmed;
+
+        // Increase indent for block openers
+        if (trimmed.endsWith(':')) {
+          indentLevel++;
+        }
+
+        return newLine;
+      });
+      formatted = formattedLines.join('\n');
+    } else if (['java', 'javascript', 'typescript', 'cpp', 'c'].includes(lang)) {
+      // Basic C-style formatting
+      const lines = formatted.split('\n');
+      let indentLevel = 0;
+      const formattedLines = lines.map(line => {
+        const trimmed = line.trim();
+        if (!trimmed) return '';
+
+        // Check for closing brace
+        if (trimmed.startsWith('}')) {
+          indentLevel = Math.max(0, indentLevel - 1);
+        }
+
+        const indent = '    '.repeat(indentLevel);
+        const newLine = indent + trimmed;
+
+        // Check for opening brace
+        if (trimmed.endsWith('{')) {
+          indentLevel++;
+        }
+
+        return newLine;
+      });
+      formatted = formattedLines.join('\n');
+    }
+
+    onChange(formatted);
+  };
+
   return (
     <div className="flex flex-col h-full w-full border border-slate-200 dark:border-slate-700 rounded-md overflow-hidden bg-slate-50 dark:bg-[#1e1e1e] relative group">
       {/* Toolbar */}
@@ -659,6 +721,13 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
             title="Go to Line"
           >
             <MoveVertical size={14} />
+          </button>
+          <button
+            onClick={formatCode}
+            className="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-[#3e3e42] text-slate-600 dark:text-slate-300 transition-colors"
+            title="Format Code"
+          >
+            <Sparkles size={14} />
           </button>
           <button
             onClick={toggleFontSize}
@@ -697,12 +766,12 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
               autoFocus
             />
             <div className="text-xs text-slate-400 min-w-[30px] text-center">
-              {searchMatches.length > 0 ? `${currentMatchIndex + 1}/${searchMatches.length}` : '0/0'}
-            </div>
+              {searchMatches.length > 0 ? `${currentMatchIndex + 1} /${searchMatches.length}` : '0/0'}
+            </div >
             <button onClick={findPrev} className="p-1 hover:bg-slate-200 dark:hover:bg-[#505055] rounded"><ArrowUp size={12} /></button>
             <button onClick={findNext} className="p-1 hover:bg-slate-200 dark:hover:bg-[#505055] rounded"><ArrowDown size={12} /></button>
             <button onClick={() => setShowSearch(false)} className="p-1 hover:bg-slate-200 dark:hover:bg-[#505055] rounded"><X size={12} /></button>
-          </div>
+          </div >
           <div className="flex items-center gap-2">
             <input
               type="text"
@@ -714,7 +783,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
             <button onClick={replaceCurrent} className="p-1 hover:bg-slate-200 dark:hover:bg-[#505055] rounded" title="Replace"><Replace size={12} /></button>
             <button onClick={replaceAll} className="px-2 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded text-[10px]">All</button>
           </div>
-        </div>
+        </div >
       )}
 
       <div className={`relative flex flex-1 overflow-hidden font-mono ${fontSize} transition-colors duration-200`}>
@@ -812,6 +881,6 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
           )}
         </div>
       </div>
-    </div>
+    </div >
   );
 };

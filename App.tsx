@@ -275,6 +275,61 @@ const App: React.FC = () => {
     }
   }, [isPyodideReady, userCode, currentProblem, solvedProblems]);
 
+  const handleRunCustom = useCallback(async (customInput: string) => {
+    if (!currentProblem) return;
+
+    // Only block for Python runtime if we are running Python
+    const isPython = ['Python', 'PDSA', 'ML_Practice'].includes(currentProblem.subject);
+    if (isPython && !isPyodideReady) return;
+
+    setStatus(ExecutionStatus.RUNNING);
+    setOutput("");
+    // Don't clear test results when running custom input, so user can switch back to tests tab
+
+    try {
+      await new Promise(r => setTimeout(r, 300)); // UI Feedback delay
+
+      if (isPython) {
+        // For custom input, we need a slightly different execution path or just run the code with input mocking
+        // Since runPythonCode expects test cases, we can mock a single test case
+        const { results, output: runOutput } = await runPythonCode(
+          userCode,
+          currentProblem.functionName,
+          [{ input: customInput, expected: "" }] // Dummy expected
+        );
+
+        // We only care about the output for custom run
+        setOutput(runOutput);
+        setStatus(ExecutionStatus.COMPLETED);
+      } else {
+        // Handle Non-Python Languages
+        const langMap: Record<string, string> = {
+          'Java': 'java',
+          'System_Commands': 'bash',
+          'SQL': 'sql',
+          'DBMS': 'sql'
+        };
+
+        const language = langMap[currentProblem.subject];
+        if (!language) {
+          throw new Error(`Unsupported subject: ${currentProblem.subject}`);
+        }
+
+        const codeToRun = currentProblem.setupCode
+          ? `${currentProblem.setupCode}\n${userCode}`
+          : userCode;
+
+        const { output: runOutput, status: runStatus } = await executeCode(language, codeToRun, customInput);
+
+        setOutput(runOutput);
+        setStatus(runStatus);
+      }
+    } catch (error: any) {
+      setStatus(ExecutionStatus.ERROR);
+      setOutput(prev => prev + `\nExecution Error: ${error.message}`);
+    }
+  }, [isPyodideReady, userCode, currentProblem]);
+
   const triggerConfetti = () => {
     if (typeof confetti === 'function') {
       confetti({
@@ -569,6 +624,7 @@ const App: React.FC = () => {
                 status={status}
                 output={output}
                 testResults={testResults}
+                onRunCustom={handleRunCustom}
               />
             </div>
           </div>
