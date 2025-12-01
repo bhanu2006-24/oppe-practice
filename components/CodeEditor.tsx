@@ -1,9 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Copy, Trash2, Type, Check } from 'lucide-react';
 
 interface CodeEditorProps {
   value: string;
   onChange: (value: string) => void;
   language?: string;
+}
+
+interface Suggestion {
+  text: string;
+  type: 'keyword' | 'variable' | 'snippet';
+  snippet?: string;
 }
 
 const KEYWORDS_BY_LANG: Record<string, string[]> = {
@@ -47,6 +54,29 @@ const KEYWORDS_BY_LANG: Record<string, string[]> = {
   ]
 };
 
+const SNIPPETS_BY_LANG: Record<string, Record<string, string>> = {
+  python: {
+    'def': 'def function_name():\n    pass',
+    'if': 'if condition:\n    pass',
+    'for': 'for item in iterable:\n    pass',
+    'class': 'class ClassName:\n    def __init__(self):\n        pass',
+    'try': 'try:\n    pass\nexcept Exception as e:\n    print(e)',
+    'print': 'print()'
+  },
+  java: {
+    'sout': 'System.out.println();',
+    'psvm': 'public static void main(String[] args) {\n    \n}',
+    'for': 'for (int i = 0; i < n; i++) {\n    \n}',
+    'if': 'if (condition) {\n    \n}'
+  },
+  javascript: {
+    'log': 'console.log();',
+    'func': 'function name(params) {\n    \n}',
+    'if': 'if (condition) {\n    \n}',
+    'for': 'for (let i = 0; i < n; i++) {\n    \n}'
+  }
+};
+
 const DEFAULT_KEYWORDS = [
   ...KEYWORDS_BY_LANG.python,
   ...KEYWORDS_BY_LANG.java,
@@ -56,14 +86,15 @@ const DEFAULT_KEYWORDS = [
 
 export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, language }) => {
   const [lineCount, setLineCount] = useState(1);
-  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [suggestionIndex, setSuggestionIndex] = useState(0);
   const [coords, setCoords] = useState({ top: 0, left: 0 });
+  const [fontSize, setFontSize] = useState<'text-sm' | 'text-base' | 'text-lg'>('text-sm');
+  const [copied, setCopied] = useState(false);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const lineNumbersRef = useRef<HTMLDivElement>(null);
-  const measureRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const lines = value.split('\n').length;
@@ -82,12 +113,6 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
     const textBeforeCursor = value.substring(0, cursorPos);
     const lines = textBeforeCursor.split('\n');
     const currentLineContent = lines[lines.length - 1];
-
-    // Create a span to measure the width of the current line content
-    const span = document.createElement('span');
-    span.textContent = currentLineContent;
-    span.style.font = getComputedStyle(textareaRef.current).font;
-    span.style.whiteSpace = 'pre';
 
     // We need to account for scroll position
     const lineHeight = parseInt(getComputedStyle(textareaRef.current).lineHeight);
@@ -111,7 +136,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
     }
   };
 
-  const applySuggestion = (suggestion: string) => {
+  const applySuggestion = (suggestion: Suggestion) => {
     if (!textareaRef.current) return;
 
     const start = textareaRef.current.selectionStart;
@@ -122,13 +147,22 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
 
     if (match) {
       const wordStart = start - match[1].length;
-      const newValue = value.substring(0, wordStart) + suggestion + value.substring(end);
+      const textToInsert = suggestion.snippet || suggestion.text;
+
+      const newValue = value.substring(0, wordStart) + textToInsert + value.substring(end);
       onChange(newValue);
       setShowSuggestions(false);
 
       setTimeout(() => {
         if (textareaRef.current) {
-          textareaRef.current.selectionStart = textareaRef.current.selectionEnd = wordStart + suggestion.length;
+          // If snippet has cursor placeholder logic, we could handle it here.
+          // For now, just place cursor at end of insertion.
+          let cursorOffset = textToInsert.length;
+          if (suggestion.snippet && suggestion.snippet.includes('()')) {
+            cursorOffset = textToInsert.indexOf('(') + 1;
+          }
+
+          textareaRef.current.selectionStart = textareaRef.current.selectionEnd = wordStart + cursorOffset;
           textareaRef.current.focus();
         }
       }, 0);
@@ -268,14 +302,36 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
     if (match) {
       const currentWord = match[1];
       if (currentWord.length >= 1) {
-        // Get keywords for current language
-        const langKeywords = language && KEYWORDS_BY_LANG[language.toLowerCase()]
-          ? KEYWORDS_BY_LANG[language.toLowerCase()]
-          : DEFAULT_KEYWORDS;
+        const langLower = language?.toLowerCase() || 'text';
 
-        const matches = langKeywords.filter(k => k.toLowerCase().startsWith(currentWord.toLowerCase()) && k !== currentWord).slice(0, 5);
-        if (matches.length > 0) {
-          setSuggestions(matches);
+        // 1. Keywords
+        const langKeywords = KEYWORDS_BY_LANG[langLower] || DEFAULT_KEYWORDS;
+        const keywordMatches: Suggestion[] = langKeywords
+          .filter(k => k.toLowerCase().startsWith(currentWord.toLowerCase()) && k !== currentWord)
+          .map(k => ({ text: k, type: 'keyword' }));
+
+        // 2. Snippets
+        const langSnippets = SNIPPETS_BY_LANG[langLower] || {};
+        const snippetMatches: Suggestion[] = Object.keys(langSnippets)
+          .filter(k => k.toLowerCase().startsWith(currentWord.toLowerCase()))
+          .map(k => ({ text: k, type: 'snippet', snippet: langSnippets[k] }));
+
+        // 3. Dynamic Variables (scan code)
+        const variableMatches: Suggestion[] = [];
+        const uniqueWords = new Set<string>(val.match(/\b[a-zA-Z_]\w*\b/g) || []);
+        uniqueWords.forEach(word => {
+          if (word.toLowerCase().startsWith(currentWord.toLowerCase()) &&
+            word !== currentWord &&
+            !langKeywords.includes(word)) {
+            variableMatches.push({ text: word, type: 'variable' });
+          }
+        });
+
+        // Combine and deduplicate
+        const allSuggestions = [...snippetMatches, ...keywordMatches, ...variableMatches].slice(0, 8);
+
+        if (allSuggestions.length > 0) {
+          setSuggestions(allSuggestions);
           setShowSuggestions(true);
           setSuggestionIndex(0);
           updateCursorCoords(cursor);
@@ -290,62 +346,119 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
     }
   };
 
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(value);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const clearEditor = () => {
+    if (window.confirm('Are you sure you want to clear the editor?')) {
+      onChange('');
+    }
+  };
+
+  const toggleFontSize = () => {
+    setFontSize(prev => {
+      if (prev === 'text-sm') return 'text-base';
+      if (prev === 'text-base') return 'text-lg';
+      return 'text-sm';
+    });
+  };
+
   return (
-    <div className="relative flex h-full w-full bg-slate-50 dark:bg-[#1e1e1e] font-mono text-sm overflow-hidden transition-colors duration-200">
-      {/* Line Numbers */}
-      <div
-        ref={lineNumbersRef}
-        className="w-12 bg-slate-100 dark:bg-[#1e1e1e] border-r border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-500 text-right pr-3 pt-4 select-none overflow-hidden"
-      >
-        {Array.from({ length: Math.max(lineCount, 20) }).map((_, i) => (
-          <div key={i} className="leading-6 h-6">{i + 1}</div>
-        ))}
+    <div className="flex flex-col h-full w-full border border-slate-200 dark:border-slate-700 rounded-md overflow-hidden bg-slate-50 dark:bg-[#1e1e1e]">
+      {/* Toolbar */}
+      <div className="flex items-center justify-between px-4 py-2 bg-slate-100 dark:bg-[#252526] border-b border-slate-200 dark:border-slate-700">
+        <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+          {language || 'Editor'}
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={toggleFontSize}
+            className="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-[#3e3e42] text-slate-600 dark:text-slate-300 transition-colors"
+            title="Toggle Font Size"
+          >
+            <Type size={14} />
+          </button>
+          <button
+            onClick={copyToClipboard}
+            className="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-[#3e3e42] text-slate-600 dark:text-slate-300 transition-colors"
+            title="Copy Code"
+          >
+            {copied ? <Check size={14} className="text-green-500" /> : <Copy size={14} />}
+          </button>
+          <button
+            onClick={clearEditor}
+            className="p-1.5 rounded hover:bg-red-100 dark:hover:bg-red-900/30 text-slate-600 dark:text-slate-300 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+            title="Clear Editor"
+          >
+            <Trash2 size={14} />
+          </button>
+        </div>
       </div>
 
-      {/* Text Area */}
-      <div className="relative flex-1 h-full">
-        <textarea
-          ref={textareaRef}
-          value={value}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-          onScroll={handleScroll}
-          className={`w-full h-full bg-transparent text-slate-800 dark:text-slate-200 p-4 pt-4 outline-none resize-none whitespace-pre border-none leading-6 editor-font custom-scrollbar language-${language || 'text'}`}
-          spellCheck={false}
-          autoCapitalize="off"
-          autoComplete="off"
-          autoCorrect="off"
-          data-language={language}
-        />
+      <div className={`relative flex flex-1 overflow-hidden font-mono ${fontSize} transition-colors duration-200`}>
+        {/* Line Numbers */}
+        <div
+          ref={lineNumbersRef}
+          className="w-12 bg-slate-100 dark:bg-[#1e1e1e] border-r border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-500 text-right pr-3 pt-4 select-none overflow-hidden"
+        >
+          {Array.from({ length: Math.max(lineCount, 20) }).map((_, i) => (
+            <div key={i} className="leading-6 h-6">{i + 1}</div>
+          ))}
+        </div>
 
-        {/* Suggestions Popup */}
-        {showSuggestions && (
-          <div
-            className="absolute z-50 bg-[#252526] border border-[#454545] rounded-md shadow-xl overflow-hidden min-w-[200px] flex flex-col"
-            style={{
-              top: `${coords.top + 24}px`, // Offset by line height roughly
-              left: `${coords.left}px`
-            }}
-          >
-            {suggestions.map((suggestion, index) => (
-              <div
-                key={suggestion}
-                className={`px-3 py-1.5 cursor-pointer text-sm flex items-center gap-2 ${index === suggestionIndex
+        {/* Text Area */}
+        <div className="relative flex-1 h-full">
+          <textarea
+            ref={textareaRef}
+            value={value}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            onScroll={handleScroll}
+            className={`w-full h-full bg-transparent text-slate-800 dark:text-slate-200 p-4 pt-4 outline-none resize-none whitespace-pre border-none leading-6 editor-font custom-scrollbar language-${language || 'text'}`}
+            spellCheck={false}
+            autoCapitalize="off"
+            autoComplete="off"
+            autoCorrect="off"
+            data-language={language}
+          />
+
+          {/* Suggestions Popup */}
+          {showSuggestions && (
+            <div
+              className="absolute z-50 bg-[#252526] border border-[#454545] rounded-md shadow-xl overflow-hidden min-w-[200px] flex flex-col"
+              style={{
+                top: `${coords.top + 24}px`, // Offset by line height roughly
+                left: `${coords.left}px`
+              }}
+            >
+              {suggestions.map((suggestion, index) => (
+                <div
+                  key={`${suggestion.text}-${index}`}
+                  className={`px-3 py-1.5 cursor-pointer text-sm flex items-center gap-2 ${index === suggestionIndex
                     ? 'bg-[#04395e] text-white'
                     : 'text-[#cccccc] hover:bg-[#2a2d2e]'
-                  }`}
-                onClick={() => applySuggestion(suggestion)}
-              >
-                <span className="text-xs opacity-70">⚀</span>
-                <span className="font-mono">{suggestion}</span>
+                    }`}
+                  onClick={() => applySuggestion(suggestion)}
+                >
+                  <span className={`text-xs opacity-70 w-4 text-center ${suggestion.type === 'snippet' ? 'text-yellow-400' :
+                    suggestion.type === 'keyword' ? 'text-blue-400' : 'text-green-400'
+                    }`}>
+                    {suggestion.type === 'snippet' ? '⬚' : suggestion.type === 'keyword' ? '🗝' : '𝑥'}
+                  </span>
+                  <span className="font-mono">{suggestion.text}</span>
+                  {suggestion.type === 'snippet' && <span className="text-xs opacity-50 ml-auto">Snippet</span>}
+                </div>
+              ))}
+              <div className="px-3 py-1 bg-[#1e1e1e] text-[10px] text-[#858585] border-t border-[#454545] flex justify-between">
+                <span>Tab/Enter to select</span>
+                <span>{suggestionIndex + 1}/{suggestions.length}</span>
               </div>
-            ))}
-            <div className="px-3 py-1 bg-[#1e1e1e] text-[10px] text-[#858585] border-t border-[#454545] flex justify-between">
-              <span>Tab/Enter to select</span>
-              <span>{suggestionIndex + 1}/{suggestions.length}</span>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
