@@ -156,7 +156,7 @@ export const PYTHON_OPPE2_PROBLEMS: Problem[] = [
         testCases: [
             { input: '(["flower", "flow", "flight"])', expected: '"fl"' },
             { input: '(["dog", "racecar", "car"])', expected: '""' },
-            { input: '(["interspecies", "interstellar", "interstate"])', expected: '"inter"' }
+            { input: '(["interspecies", "interstellar", "interstate"])', expected: '"inters"' }
         ],
         hint: 'Sort list, compare first and last strings.'
     },
@@ -984,12 +984,12 @@ Calculate and return the total amount spent.`,
         examLevel: 'OPPE 2',
         difficulty: 'Hard',
         description: `Write a function 'find_saddle_point' that returns coordinates (r, c) of a saddle point (min in row, max in col). Return None if none.`,
-        examples: [{ input: '[[1,2],[3,4]]', output: 'None' }, { input: '[[3, 7, 8], [9, 11, 13], [15, 16, 17]]', output: '(1, 1)' }],
+        examples: [{ input: '[[1,2],[3,4]]', output: '(1, 0)' }, { input: '[[3, 7, 8], [9, 11, 13], [15, 16, 17]]', output: '(2, 0)' }],
         starterCode: `def find_saddle_point(M):
     # Write your code here
     pass`,
         functionName: 'find_saddle_point',
-        testCases: [{ input: '([[1,2],[3,4]])', expected: 'None' }, { input: '([[3,8],[4,6]])', expected: 'None' }, { input: '([[3, 7, 8], [9, 11, 13], [15, 16, 17]])', expected: '(1, 1)' }],
+        testCases: [{ input: '([[1,2],[3,4]])', expected: '(1, 0)' }, { input: '([[3,8],[4,6]])', expected: '(1, 0)' }, { input: '([[3, 7, 8], [9, 11, 13], [15, 16, 17]])', expected: '(2, 0)' }],
         hint: 'Check all elements.'
     },
     // 17. Rotate Matrix 90
