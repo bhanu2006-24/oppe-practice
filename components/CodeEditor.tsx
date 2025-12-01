@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Copy, Trash2, Type, Check } from 'lucide-react';
+import { Copy, Trash2, Type, Check, Search, X, ArrowUp, ArrowDown, Replace } from 'lucide-react';
 
 interface CodeEditorProps {
   value: string;
@@ -93,6 +93,17 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
   const [fontSize, setFontSize] = useState<'text-sm' | 'text-base' | 'text-lg'>('text-sm');
   const [copied, setCopied] = useState(false);
 
+  // Search & Replace State
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [replaceQuery, setReplaceQuery] = useState('');
+  const [searchMatches, setSearchMatches] = useState<number[]>([]);
+  const [currentMatchIndex, setCurrentMatchIndex] = useState(-1);
+
+  // Active Line & Bracket Matching
+  const [activeLine, setActiveLine] = useState(0);
+  const [matchingBracketIndex, setMatchingBracketIndex] = useState<number | null>(null);
+
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const lineNumbersRef = useRef<HTMLDivElement>(null);
 
@@ -100,6 +111,27 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
     const lines = value.split('\n').length;
     setLineCount(lines);
   }, [value]);
+
+  // Search Logic
+  useEffect(() => {
+    if (!searchQuery) {
+      setSearchMatches([]);
+      setCurrentMatchIndex(-1);
+      return;
+    }
+    const matches: number[] = [];
+    let pos = value.indexOf(searchQuery);
+    while (pos !== -1) {
+      matches.push(pos);
+      pos = value.indexOf(searchQuery, pos + 1);
+    }
+    setSearchMatches(matches);
+    if (matches.length > 0) {
+      setCurrentMatchIndex(0);
+    } else {
+      setCurrentMatchIndex(-1);
+    }
+  }, [searchQuery, value]);
 
   const handleScroll = () => {
     if (textareaRef.current && lineNumbersRef.current) {
@@ -113,6 +145,9 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
     const textBeforeCursor = value.substring(0, cursorPos);
     const lines = textBeforeCursor.split('\n');
     const currentLineContent = lines[lines.length - 1];
+
+    // Calculate active line
+    setActiveLine(lines.length - 1);
 
     // We need to account for scroll position
     const lineHeight = parseInt(getComputedStyle(textareaRef.current).lineHeight);
@@ -136,6 +171,45 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
     }
   };
 
+  const findMatchingBracket = (index: number) => {
+    const char = value[index];
+    const pairs: Record<string, string> = { '(': ')', '[': ']', '{': '}', ')': '(', ']': '[', '}': '{' };
+
+    if (!pairs[char]) {
+      setMatchingBracketIndex(null);
+      return;
+    }
+
+    const isOpen = ['(', '[', '{'].includes(char);
+    const target = pairs[char];
+    let depth = 0;
+
+    if (isOpen) {
+      for (let i = index + 1; i < value.length; i++) {
+        if (value[i] === char) depth++;
+        else if (value[i] === target) {
+          if (depth === 0) {
+            setMatchingBracketIndex(i);
+            return;
+          }
+          depth--;
+        }
+      }
+    } else {
+      for (let i = index - 1; i >= 0; i--) {
+        if (value[i] === char) depth++;
+        else if (value[i] === target) {
+          if (depth === 0) {
+            setMatchingBracketIndex(i);
+            return;
+          }
+          depth--;
+        }
+      }
+    }
+    setMatchingBracketIndex(null);
+  };
+
   const applySuggestion = (suggestion: Suggestion) => {
     if (!textareaRef.current) return;
 
@@ -155,8 +229,6 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
 
       setTimeout(() => {
         if (textareaRef.current) {
-          // If snippet has cursor placeholder logic, we could handle it here.
-          // For now, just place cursor at end of insertion.
           let cursorOffset = textToInsert.length;
           if (suggestion.snippet && suggestion.snippet.includes('()')) {
             cursorOffset = textToInsert.indexOf('(') + 1;
@@ -172,6 +244,13 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     const start = e.currentTarget.selectionStart;
     const end = e.currentTarget.selectionEnd;
+
+    // Search Shortcut
+    if ((e.metaKey || e.ctrlKey) && e.key === 'f') {
+      e.preventDefault();
+      setShowSearch(true);
+      return;
+    }
 
     // Handle Suggestions Navigation
     if (showSuggestions) {
@@ -293,8 +372,11 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
     const val = e.target.value;
     onChange(val);
 
-    // Suggestion logic
     const cursor = e.target.selectionStart;
+    updateCursorCoords(cursor);
+    findMatchingBracket(cursor - 1); // Check bracket before cursor
+
+    // Suggestion logic
     const textBeforeCursor = val.substring(0, cursor);
     const lastWordRegex = /\b(\w+)$/;
     const match = textBeforeCursor.match(lastWordRegex);
@@ -334,7 +416,6 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
           setSuggestions(allSuggestions);
           setShowSuggestions(true);
           setSuggestionIndex(0);
-          updateCursorCoords(cursor);
         } else {
           setShowSuggestions(false);
         }
@@ -366,14 +447,72 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
     });
   };
 
+  // Search Functions
+  const findNext = () => {
+    if (searchMatches.length === 0) return;
+    const nextIndex = (currentMatchIndex + 1) % searchMatches.length;
+    setCurrentMatchIndex(nextIndex);
+
+    // Scroll to match
+    if (textareaRef.current) {
+      const matchPos = searchMatches[nextIndex];
+      textareaRef.current.selectionStart = matchPos;
+      textareaRef.current.selectionEnd = matchPos + searchQuery.length;
+      textareaRef.current.focus();
+
+      // Calculate scroll position (approximate)
+      const lines = value.substring(0, matchPos).split('\n').length;
+      const lineHeight = 24; // approx
+      textareaRef.current.scrollTop = (lines * lineHeight) - 100;
+    }
+  };
+
+  const findPrev = () => {
+    if (searchMatches.length === 0) return;
+    const prevIndex = (currentMatchIndex - 1 + searchMatches.length) % searchMatches.length;
+    setCurrentMatchIndex(prevIndex);
+
+    if (textareaRef.current) {
+      const matchPos = searchMatches[prevIndex];
+      textareaRef.current.selectionStart = matchPos;
+      textareaRef.current.selectionEnd = matchPos + searchQuery.length;
+      textareaRef.current.focus();
+
+      const lines = value.substring(0, matchPos).split('\n').length;
+      const lineHeight = 24;
+      textareaRef.current.scrollTop = (lines * lineHeight) - 100;
+    }
+  };
+
+  const replaceCurrent = () => {
+    if (currentMatchIndex === -1 || searchMatches.length === 0) return;
+    const matchPos = searchMatches[currentMatchIndex];
+    const newValue = value.substring(0, matchPos) + replaceQuery + value.substring(matchPos + searchQuery.length);
+    onChange(newValue);
+    // Logic to update matches will trigger via useEffect
+  };
+
+  const replaceAll = () => {
+    if (!searchQuery) return;
+    const newValue = value.replaceAll(searchQuery, replaceQuery);
+    onChange(newValue);
+  };
+
   return (
-    <div className="flex flex-col h-full w-full border border-slate-200 dark:border-slate-700 rounded-md overflow-hidden bg-slate-50 dark:bg-[#1e1e1e]">
+    <div className="flex flex-col h-full w-full border border-slate-200 dark:border-slate-700 rounded-md overflow-hidden bg-slate-50 dark:bg-[#1e1e1e] relative group">
       {/* Toolbar */}
       <div className="flex items-center justify-between px-4 py-2 bg-slate-100 dark:bg-[#252526] border-b border-slate-200 dark:border-slate-700">
         <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
           {language || 'Editor'}
         </div>
         <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowSearch(!showSearch)}
+            className={`p-1.5 rounded hover:bg-slate-200 dark:hover:bg-[#3e3e42] transition-colors ${showSearch ? 'bg-slate-200 dark:bg-[#3e3e42] text-blue-500' : 'text-slate-600 dark:text-slate-300'}`}
+            title="Find & Replace (Cmd/Ctrl+F)"
+          >
+            <Search size={14} />
+          </button>
           <button
             onClick={toggleFontSize}
             className="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-[#3e3e42] text-slate-600 dark:text-slate-300 transition-colors"
@@ -398,6 +537,39 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
         </div>
       </div>
 
+      {/* Search Popup */}
+      {showSearch && (
+        <div className="absolute top-10 right-4 z-40 bg-white dark:bg-[#252526] shadow-xl border border-slate-200 dark:border-slate-600 rounded-md p-2 flex flex-col gap-2 w-72">
+          <div className="flex items-center gap-2">
+            <input
+              type="text"
+              placeholder="Find"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="flex-1 bg-slate-100 dark:bg-[#3e3e42] border-none rounded px-2 py-1 text-xs outline-none text-slate-800 dark:text-slate-200"
+              autoFocus
+            />
+            <div className="text-xs text-slate-400 min-w-[30px] text-center">
+              {searchMatches.length > 0 ? `${currentMatchIndex + 1}/${searchMatches.length}` : '0/0'}
+            </div>
+            <button onClick={findPrev} className="p-1 hover:bg-slate-200 dark:hover:bg-[#505055] rounded"><ArrowUp size={12} /></button>
+            <button onClick={findNext} className="p-1 hover:bg-slate-200 dark:hover:bg-[#505055] rounded"><ArrowDown size={12} /></button>
+            <button onClick={() => setShowSearch(false)} className="p-1 hover:bg-slate-200 dark:hover:bg-[#505055] rounded"><X size={12} /></button>
+          </div>
+          <div className="flex items-center gap-2">
+            <input
+              type="text"
+              placeholder="Replace"
+              value={replaceQuery}
+              onChange={(e) => setReplaceQuery(e.target.value)}
+              className="flex-1 bg-slate-100 dark:bg-[#3e3e42] border-none rounded px-2 py-1 text-xs outline-none text-slate-800 dark:text-slate-200"
+            />
+            <button onClick={replaceCurrent} className="p-1 hover:bg-slate-200 dark:hover:bg-[#505055] rounded" title="Replace"><Replace size={12} /></button>
+            <button onClick={replaceAll} className="px-2 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded text-[10px]">All</button>
+          </div>
+        </div>
+      )}
+
       <div className={`relative flex flex-1 overflow-hidden font-mono ${fontSize} transition-colors duration-200`}>
         {/* Line Numbers */}
         <div
@@ -405,12 +577,22 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
           className="w-12 bg-slate-100 dark:bg-[#1e1e1e] border-r border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-500 text-right pr-3 pt-4 select-none overflow-hidden"
         >
           {Array.from({ length: Math.max(lineCount, 20) }).map((_, i) => (
-            <div key={i} className="leading-6 h-6">{i + 1}</div>
+            <div key={i} className={`leading-6 h-6 ${i === activeLine ? 'text-slate-800 dark:text-slate-200 font-bold' : ''}`}>{i + 1}</div>
           ))}
         </div>
 
         {/* Text Area */}
         <div className="relative flex-1 h-full">
+          {/* Active Line Highlight */}
+          <div
+            className="absolute left-0 right-0 pointer-events-none bg-slate-200/50 dark:bg-white/5"
+            style={{
+              top: `${(activeLine * 24) + 16 - (textareaRef.current?.scrollTop || 0)}px`, // 24px line height, 16px padding top
+              height: '24px',
+              display: textareaRef.current ? 'block' : 'none'
+            }}
+          />
+
           {/* Indent Guides */}
           <div
             className="absolute inset-0 pointer-events-none"
@@ -433,7 +615,13 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
             onChange={handleChange}
             onKeyDown={handleKeyDown}
             onScroll={handleScroll}
-            className={`w-full h-full bg-transparent text-slate-800 dark:text-slate-200 p-4 pt-4 outline-none resize-none whitespace-pre border-none leading-6 editor-font custom-scrollbar language-${language || 'text'}`}
+            onClick={() => {
+              if (textareaRef.current) {
+                updateCursorCoords(textareaRef.current.selectionStart);
+                findMatchingBracket(textareaRef.current.selectionStart - 1);
+              }
+            }}
+            className={`w-full h-full bg-transparent text-slate-800 dark:text-slate-200 p-4 pt-4 outline-none resize-none whitespace-pre border-none leading-6 editor-font custom-scrollbar language-${language || 'text'} relative z-10`}
             spellCheck={false}
             autoCapitalize="off"
             autoComplete="off"
@@ -455,13 +643,13 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
                 <div
                   key={`${suggestion.text}-${index}`}
                   className={`px-3 py-1.5 cursor-pointer text-sm flex items-center gap-2 ${index === suggestionIndex
-                    ? 'bg-[#04395e] text-white'
-                    : 'text-[#cccccc] hover:bg-[#2a2d2e]'
+                      ? 'bg-[#04395e] text-white'
+                      : 'text-[#cccccc] hover:bg-[#2a2d2e]'
                     }`}
                   onClick={() => applySuggestion(suggestion)}
                 >
                   <span className={`text-xs opacity-70 w-4 text-center ${suggestion.type === 'snippet' ? 'text-yellow-400' :
-                    suggestion.type === 'keyword' ? 'text-blue-400' : 'text-green-400'
+                      suggestion.type === 'keyword' ? 'text-blue-400' : 'text-green-400'
                     }`}>
                     {suggestion.type === 'snippet' ? '⬚' : suggestion.type === 'keyword' ? '🗝' : '𝑥'}
                   </span>

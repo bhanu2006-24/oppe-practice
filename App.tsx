@@ -128,7 +128,11 @@ const App: React.FC = () => {
 
   const loadProblem = (problem: Problem) => {
     setCurrentProblem(problem);
-    setUserCode(problem.starterCode);
+
+    // Check for cached code
+    const cachedCode = localStorage.getItem(`problem_code_${problem.id}`);
+    setUserCode(cachedCode || problem.starterCode);
+
     setTestResults([]);
     setOutput("");
     setStatus(ExecutionStatus.IDLE);
@@ -391,7 +395,15 @@ const App: React.FC = () => {
             </button>
 
             <button
-              onClick={() => setUserCode(currentProblem?.starterCode || "")}
+              onClick={() => {
+                if (window.confirm('Reset code to starter template? This will clear your changes.')) {
+                  const starter = currentProblem?.starterCode || "";
+                  setUserCode(starter);
+                  if (currentProblem) {
+                    localStorage.removeItem(`problem_code_${currentProblem.id}`);
+                  }
+                }
+              }}
               className="hidden sm:flex items-center px-2 sm:px-3 py-1.5 text-xs font-medium text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 rounded transition-colors"
               title="Reset to starter code"
             >
@@ -428,7 +440,12 @@ const App: React.FC = () => {
               <div className="absolute inset-0">
                 <CodeEditor
                   value={userCode}
-                  onChange={setUserCode}
+                  onChange={(newCode) => {
+                    setUserCode(newCode);
+                    if (currentProblem) {
+                      localStorage.setItem(`problem_code_${currentProblem.id}`, newCode);
+                    }
+                  }}
                   language={currentProblem ? (
                     ['Python', 'PDSA', 'ML_Practice'].includes(currentProblem.subject) ? 'python' :
                       currentProblem.subject === 'Java' ? 'java' :
