@@ -6,7 +6,7 @@ export const JAVA_OPPE2_PROBLEMS: Problem[] = [
         "id": "java-endterm-dec2024-q247",
         "title": "GUI Event Handling",
         "subject": "Java",
-        "examLevel": "End Term",
+        "examLevel": "OPPE 2",
         "difficulty": "Medium",
         "description": "Complete the 'actionPerformed' method in a Swing/AWT application. You have two buttons, 'Play' and 'Pause'. You need to identify which button triggered the event using the 'ActionEvent e'. If 'Play' is clicked, set the boolean variable 'play' to true. If 'Pause' is clicked, set it to false.",
         "examples": [
@@ -41,7 +41,7 @@ export const JAVA_OPPE2_PROBLEMS: Problem[] = [
         "id": "java-endterm-dec2024-q230",
         "title": "Shallow Cloning Trap",
         "subject": "Java",
-        "examLevel": "End Term",
+        "examLevel": "OPPE 2",
         "difficulty": "Hard",
         "description": "Analyze the cloning behavior of the 'LocoPilot' class. The class contains a primitive array 'int[] trips'. The default 'super.clone()' performs a shallow copy. If the cloned object modifies an index in the 'trips' array, determine if the original object's array is also affected. Predict the output of the code.",
         "examples": [
@@ -72,7 +72,7 @@ export const JAVA_OPPE2_PROBLEMS: Problem[] = [
         "id": "java-endterm-dec2024-q231",
         "title": "Serialization with Transient",
         "subject": "Java",
-        "examLevel": "End Term",
+        "examLevel": "OPPE 2",
         "difficulty": "Medium",
         "description": "Predict the state of a 'StockPurchase' object after it is serialized and then deserialized. The class implements 'Serializable' but marks certain fields as 'transient'. \n1. 'stPrice' is a normal double.\n2. 'stSymbol' is a 'transient' String.\n3. 'stPin' is a 'transient' int, but the class has a custom 'writeObject' method that manually writes 'stPin'.",
         "examples": [
@@ -99,7 +99,7 @@ export const JAVA_OPPE2_PROBLEMS: Problem[] = [
         "id": "java-endterm-dec2024-q227",
         "title": "Inheritance & Method Visibility",
         "subject": "Java",
-        "examLevel": "End Term",
+        "examLevel": "OPPE 2",
         "difficulty": "Easy",
         "description": "Identify the compilation error in a hierarchy of Beverage classes. \n1. 'Beverage' class has methods 'ingredient()' and 'price()'.\n2. 'Coffee' extends 'Beverage'.\n3. 'Latte' extends 'Coffee' and adds a new method 'maker()'.\n\nCode: 'Coffee drink = new Latte(); drink.maker();'",
         "examples": [
@@ -126,7 +126,7 @@ export const JAVA_OPPE2_PROBLEMS: Problem[] = [
         "id": "java-endterm-dec2024-q236",
         "title": "Access Modifiers Logic",
         "subject": "Java",
-        "examLevel": "End Term",
+        "examLevel": "OPPE 2",
         "difficulty": "Medium",
         "description": "Determine which lines cause a compilation error based on access modifiers. \n- 'speed()' is public.\n- 'fuel()' is protected.\n- 'capacity()' is private.\nCode attempts to access all three from a 'Test' class in a different package (inheriting from Vehicle).",
         "examples": [
@@ -153,7 +153,7 @@ export const JAVA_OPPE2_PROBLEMS: Problem[] = [
         "id": "java-endterm-dec2024-q228",
         "title": "Chained Exceptions Logic",
         "subject": "Java",
-        "examLevel": "End Term",
+        "examLevel": "OPPE 2",
         "difficulty": "Medium",
         "description": "Analyze a Chained Exception scenario. A 'FileProcessingException' is thrown, but it was caused by an 'InvalidFileFormatException'. The catch block prints the message of the top-level exception and the cause of the exception. Determine the order of messages printed.",
         "examples": [
@@ -180,7 +180,7 @@ export const JAVA_OPPE2_PROBLEMS: Problem[] = [
         "id": "java-endterm-dec2024-q241",
         "title": "Infinite Stream Processing",
         "subject": "Java",
-        "examLevel": "End Term",
+        "examLevel": "OPPE 2",
         "difficulty": "Hard",
         "description": "Predict the output of a Stream pipeline that starts with an infinite iterator. \nPipeline: \n1. Start with 1. Iterate by multiplying by 2 (1, 2, 4, 8...).\n2. Map: Add 1 to each number (2, 3, 5, 9...).\n3. Filter: Keep numbers divisible by 3.\n4. Limit: First 3 numbers.",
         "examples": [
@@ -207,7 +207,7 @@ export const JAVA_OPPE2_PROBLEMS: Problem[] = [
         "id": "java-endterm-dec2024-q237",
         "title": "Thread Join & Synchronization",
         "subject": "Java",
-        "examLevel": "End Term",
+        "examLevel": "OPPE 2",
         "difficulty": "Medium",
         "description": "Determine the output of a multi-threaded program using 'Thread.join()'. \n1. Main thread inserts 'Apple', 'Banana', 'Carrot' into a map.\n2. A new thread 't' starts, sleeps/waits, and inserts 'Egg'.\n3. Main thread calls 't.join()'.\n4. Main thread iterates and prints the map.",
         "examples": [
@@ -234,7 +234,7 @@ export const JAVA_OPPE2_PROBLEMS: Problem[] = [
         "id": "java-endterm-dec2024-q234",
         "title": "Generic Wildcards",
         "subject": "Java",
-        "examLevel": "End Term",
+        "examLevel": "OPPE 2",
         "difficulty": "Medium",
         "description": "Implement a method 'printLargestMammal' that accepts a list of Animal objects. The method needs to iterate through the list and find the largest mammal. Use Upper Bounded Wildcards correctly to ensure the list can contain Animals or any subclass of Animal.",
         "examples": [
@@ -257,7 +257,7 @@ export const JAVA_OPPE2_PROBLEMS: Problem[] = [
         "id": "java-endterm-dec2024-q229",
         "title": "Assertion Logic",
         "subject": "Java",
-        "examLevel": "End Term",
+        "examLevel": "OPPE 2",
         "difficulty": "Easy",
         "description": "Analyze an assertion statement. The program asserts `p * t * r < 100` and `p > 0`. You are given inputs where `t` is negative. Determine which assertion causes the program to terminate with an `AssertionError`.",
         "examples": [
@@ -280,7 +280,7 @@ export const JAVA_OPPE2_PROBLEMS: Problem[] = [
         "id": "java-endterm-dec2024-q233",
         "title": "ReentrantLock & Concurrency",
         "subject": "Java",
-        "examLevel": "End Term",
+        "examLevel": "OPPE 2",
         "difficulty": "Hard",
         "description": "Two threads (Ram and Ravi) attempt to buy items from a shared stock using a `ReentrantLock`. Analyze the race condition. If Ram buys first and depletes the stock, Ravi's condition `stock > quantity` might fail. Determine the output based on locking order.",
         "examples": [
@@ -303,7 +303,7 @@ export const JAVA_OPPE2_PROBLEMS: Problem[] = [
         "id": "java-endterm-dec2024-q238",
         "title": "Method Overloading & Erasure",
         "subject": "Java",
-        "examLevel": "End Term",
+        "examLevel": "OPPE 2",
         "difficulty": "Medium",
         "description": "Identify the compilation error when overloading methods with Generic Lists. You have `display(List<Integer>)` and `display(List<String>)`. Due to Type Erasure, both look like `display(List)` to the JVM.",
         "examples": [
@@ -326,7 +326,7 @@ export const JAVA_OPPE2_PROBLEMS: Problem[] = [
         "id": "java-endterm-dec2024-q239",
         "title": "Copy Constructor & Mutation",
         "subject": "Java",
-        "examLevel": "End Term",
+        "examLevel": "OPPE 2",
         "difficulty": "Medium",
         "description": "A 'Director' class has a copy constructor. Object D2 is created as a copy of D1. D2 changes its name. Check if D1's name also changes (Deep vs Shallow copy logic in manual constructors).",
         "examples": [
@@ -349,7 +349,7 @@ export const JAVA_OPPE2_PROBLEMS: Problem[] = [
         "id": "java-endterm-dec2024-q243",
         "title": "Optional Class Handling",
         "subject": "Java",
-        "examLevel": "End Term",
+        "examLevel": "OPPE 2",
         "difficulty": "Medium",
         "description": "Use `Optional.ofNullable` to handle potential null values in a list of Vehicle objects without throwing a `NullPointerException`. Iterate through a list where some vehicles are null.",
         "examples": [
@@ -372,7 +372,7 @@ export const JAVA_OPPE2_PROBLEMS: Problem[] = [
         "id": "java-endterm-dec2024-q244",
         "title": "Stream Collectors Statistics",
         "subject": "Java",
-        "examLevel": "End Term",
+        "examLevel": "OPPE 2",
         "difficulty": "Medium",
         "description": "Use `Collectors.summarizingInt` on a Stream of integers (2, 4, 6... 20). The code prints `getAverage()`, `getSum()`, and `getMax()`. Calculate the correct statistics.",
         "examples": [
@@ -395,7 +395,7 @@ export const JAVA_OPPE2_PROBLEMS: Problem[] = [
         "id": "java-endterm-dec2024-q245",
         "title": "LinkedList & ArrayList Interaction",
         "subject": "Java",
-        "examLevel": "End Term",
+        "examLevel": "OPPE 2",
         "difficulty": "Easy",
         "description": "An ArrayList `AL` contains [1, 2]. A LinkedList `LL` is assigned the reference of `AL` (polymorphism via List interface). `AL` removes index 1. What does `LL` print?",
         "examples": [
@@ -418,7 +418,7 @@ export const JAVA_OPPE2_PROBLEMS: Problem[] = [
         "id": "java-endterm-dec2024-q246",
         "title": "Final Keyword Errors",
         "subject": "Java",
-        "examLevel": "End Term",
+        "examLevel": "OPPE 2",
         "difficulty": "Easy",
         "description": "Identify compilation errors involves the `final` keyword. 1) A method is marked final but a subclass tries to override it. 2) A class tries to extend multiple classes (Java doesn't support multiple inheritance of state).",
         "examples": [
@@ -441,7 +441,7 @@ export const JAVA_OPPE2_PROBLEMS: Problem[] = [
         "id": "java-endterm-dec2024-q248",
         "title": "Comparable & Type Erasure",
         "subject": "Java",
-        "examLevel": "End Term",
+        "examLevel": "OPPE 2",
         "difficulty": "Medium",
         "description": "Analyze generic method signatures after Type Erasure. A method `<T extends Comparable<T>> void sort(T[] a)` converts to `void sort(Comparable[] a)` after compilation, not `void sort(Object[] a)`.",
         "examples": [
