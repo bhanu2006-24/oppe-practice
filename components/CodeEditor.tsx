@@ -37,6 +37,31 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
           textareaRef.current.selectionStart = textareaRef.current.selectionEnd = start + 4;
         }
       }, 0);
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      const start = e.currentTarget.selectionStart;
+      const end = e.currentTarget.selectionEnd;
+      const currentLineStart = value.lastIndexOf('\n', start - 1) + 1;
+      const currentLine = value.substring(currentLineStart, start);
+
+      // Calculate indentation
+      const match = currentLine.match(/^(\s*)/);
+      let indentation = match ? match[1] : '';
+
+      // Check if we should increase indentation (basic check for block openers)
+      const trimmedLine = currentLine.trim();
+      if (trimmedLine.endsWith('{') || trimmedLine.endsWith(':') || trimmedLine.endsWith('(') || trimmedLine.endsWith('[')) {
+        indentation += '    ';
+      }
+
+      const newValue = value.substring(0, start) + '\n' + indentation + value.substring(end);
+      onChange(newValue);
+
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.selectionStart = textareaRef.current.selectionEnd = start + 1 + indentation.length;
+        }
+      }, 0);
     }
   };
 
