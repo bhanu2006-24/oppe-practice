@@ -5,6 +5,7 @@ interface CodeEditorProps {
   value: string;
   onChange: (value: string) => void;
   language?: string;
+  onRun?: () => void;
 }
 
 interface Suggestion {
@@ -84,7 +85,7 @@ const DEFAULT_KEYWORDS = [
   ...KEYWORDS_BY_LANG.bash
 ];
 
-export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, language }) => {
+export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, language, onRun }) => {
   const [lineCount, setLineCount] = useState(1);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -351,6 +352,13 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
           textareaRef.current.selectionStart = textareaRef.current.selectionEnd = newCursor;
         }
       }, 0);
+      return;
+    }
+
+    // Run Code Shortcut (Cmd/Ctrl + Enter)
+    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+      e.preventDefault();
+      if (onRun) onRun();
       return;
     }
 
@@ -782,13 +790,13 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
                 <div
                   key={`${suggestion.text}-${index}`}
                   className={`px-3 py-1.5 cursor-pointer text-sm flex items-center gap-2 ${index === suggestionIndex
-                      ? 'bg-[#04395e] text-white'
-                      : 'text-[#cccccc] hover:bg-[#2a2d2e]'
+                    ? 'bg-[#04395e] text-white'
+                    : 'text-[#cccccc] hover:bg-[#2a2d2e]'
                     }`}
                   onClick={() => applySuggestion(suggestion)}
                 >
                   <span className={`text-xs opacity-70 w-4 text-center ${suggestion.type === 'snippet' ? 'text-yellow-400' :
-                      suggestion.type === 'keyword' ? 'text-blue-400' : 'text-green-400'
+                    suggestion.type === 'keyword' ? 'text-blue-400' : 'text-green-400'
                     }`}>
                     {suggestion.type === 'snippet' ? '⬚' : suggestion.type === 'keyword' ? '🗝' : '𝑥'}
                   </span>
