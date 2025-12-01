@@ -38,17 +38,26 @@ const LANGUAGES: { id: Language; name: string }[] = [
 
 export const Playground: React.FC<PlaygroundProps> = ({ onExit, onToggleTheme, isDark }) => {
   const [language, setLanguage] = useState<Language>('python');
-  const [code, setCode] = useState<string>(DEFAULT_CODE['python']);
+  const [code, setCode] = useState<string>(() => {
+    const saved = localStorage.getItem(`playground_code_python`);
+    return saved || DEFAULT_CODE['python'];
+  });
   const [output, setOutput] = useState<string>("");
   const [status, setStatus] = useState<ExecutionStatus>(ExecutionStatus.IDLE);
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
 
   const handleLanguageChange = (lang: Language) => {
     setLanguage(lang);
-    setCode(DEFAULT_CODE[lang]);
+    const saved = localStorage.getItem(`playground_code_${lang}`);
+    setCode(saved || DEFAULT_CODE[lang]);
     setOutput("");
     setStatus(ExecutionStatus.IDLE);
     setIsLangMenuOpen(false);
+  };
+
+  const handleCodeChange = (newCode: string) => {
+    setCode(newCode);
+    localStorage.setItem(`playground_code_${language}`, newCode);
   };
 
   const handleRun = async () => {
@@ -196,7 +205,7 @@ export const Playground: React.FC<PlaygroundProps> = ({ onExit, onToggleTheme, i
       {/* Workspace */}
       <div className="flex-1 flex flex-col overflow-hidden">
         <div className="flex-1 relative border-b border-slate-200 dark:border-slate-700">
-          <CodeEditor value={code} onChange={setCode} />
+          <CodeEditor value={code} onChange={handleCodeChange} language={language} />
         </div>
         <div className="h-1/3 min-h-[150px]">
           <Console status={status} output={output} testResults={[]} />

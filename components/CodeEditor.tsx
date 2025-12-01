@@ -411,6 +411,22 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
 
         {/* Text Area */}
         <div className="relative flex-1 h-full">
+          {/* Indent Guides */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: `repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 3ch,
+                var(--indent-guide-color) 3ch,
+                transparent 3.1ch
+              )`,
+              backgroundSize: '4ch 100%',
+              opacity: 0.1,
+              left: '1rem' // Match padding
+            }}
+          />
           <textarea
             ref={textareaRef}
             value={value}
@@ -423,6 +439,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
             autoComplete="off"
             autoCorrect="off"
             data-language={language}
+            style={{ '--indent-guide-color': 'currentColor' } as React.CSSProperties}
           />
 
           {/* Suggestions Popup */}
