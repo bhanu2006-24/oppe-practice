@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Copy, Trash2, Type, Check, Search, X, ArrowUp, ArrowDown, Replace } from 'lucide-react';
+import { Copy, Trash2, Type, Check, Search, X, ArrowUp, ArrowDown, Replace, WrapText, MoveVertical } from 'lucide-react';
 
 interface CodeEditorProps {
   value: string;
@@ -103,6 +103,9 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
   // Active Line & Bracket Matching
   const [activeLine, setActiveLine] = useState(0);
   const [matchingBracketIndex, setMatchingBracketIndex] = useState<number | null>(null);
+
+  // Pro Features
+  const [wordWrap, setWordWrap] = useState(false);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const lineNumbersRef = useRef<HTMLDivElement>(null);
@@ -249,6 +252,105 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
     if ((e.metaKey || e.ctrlKey) && e.key === 'f') {
       e.preventDefault();
       setShowSearch(true);
+      return;
+    }
+
+    // Toggle Comment (Cmd/Ctrl + /)
+    if ((e.metaKey || e.ctrlKey) && e.key === '/') {
+      e.preventDefault();
+      const currentLineStart = value.lastIndexOf('\n', start - 1) + 1;
+      const currentLineEnd = value.indexOf('\n', start);
+      const actualEnd = currentLineEnd === -1 ? value.length : currentLineEnd;
+      const currentLine = value.substring(currentLineStart, actualEnd);
+
+      let commentPrefix = '// ';
+      if (language === 'python' || language === 'bash') commentPrefix = '# ';
+      if (language === 'sql') commentPrefix = '-- ';
+
+      let newLine = '';
+      if (currentLine.trimStart().startsWith(commentPrefix.trim())) {
+        // Uncomment
+        newLine = currentLine.replace(commentPrefix.trim(), '').trimStart();
+        // If it was just the prefix, it might be empty now, but usually we want to remove the prefix
+        // A simple regex replace is safer
+        const regex = new RegExp(`^(\\s*)${commentPrefix.trim()}\\s?`);
+        newLine = currentLine.replace(regex, '$1');
+      } else {
+        // Comment
+        newLine = commentPrefix + currentLine;
+      }
+
+      const newValue = value.substring(0, currentLineStart) + newLine + value.substring(actualEnd);
+      onChange(newValue);
+      // Restore cursor
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.selectionStart = textareaRef.current.selectionEnd = currentLineStart + newLine.length;
+        }
+      }, 0);
+      return;
+    }
+
+    // Duplicate Line (Shift + Alt + Down)
+    if (e.shiftKey && e.altKey && e.key === 'ArrowDown') {
+      e.preventDefault();
+      const currentLineStart = value.lastIndexOf('\n', start - 1) + 1;
+      const currentLineEnd = value.indexOf('\n', start);
+      const actualEnd = currentLineEnd === -1 ? value.length : currentLineEnd;
+      const currentLine = value.substring(currentLineStart, actualEnd);
+
+      const newValue = value.substring(0, actualEnd) + '\n' + currentLine + value.substring(actualEnd);
+      onChange(newValue);
+      return;
+    }
+
+    // Move Line Up (Alt + Up)
+    if (e.altKey && e.key === 'ArrowUp') {
+      e.preventDefault();
+      const currentLineStart = value.lastIndexOf('\n', start - 1) + 1;
+      if (currentLineStart === 0) return; // Already at top
+
+      const prevLineStart = value.lastIndexOf('\n', currentLineStart - 2) + 1;
+      const currentLineEnd = value.indexOf('\n', start);
+      const actualEnd = currentLineEnd === -1 ? value.length : currentLineEnd;
+
+      const prevLine = value.substring(prevLineStart, currentLineStart - 1);
+      const currentLine = value.substring(currentLineStart, actualEnd);
+
+      const newValue = value.substring(0, prevLineStart) + currentLine + '\n' + prevLine + value.substring(actualEnd);
+      onChange(newValue);
+      // Move cursor
+      setTimeout(() => {
+        if (textareaRef.current) {
+          const newCursor = prevLineStart + (start - currentLineStart);
+          textareaRef.current.selectionStart = textareaRef.current.selectionEnd = newCursor;
+        }
+      }, 0);
+      return;
+    }
+
+    // Move Line Down (Alt + Down)
+    if (e.altKey && e.key === 'ArrowDown') {
+      e.preventDefault();
+      const currentLineEnd = value.indexOf('\n', start);
+      if (currentLineEnd === -1) return; // Already at bottom
+
+      const currentLineStart = value.lastIndexOf('\n', start - 1) + 1;
+      const nextLineEnd = value.indexOf('\n', currentLineEnd + 1);
+      const actualNextEnd = nextLineEnd === -1 ? value.length : nextLineEnd;
+
+      const currentLine = value.substring(currentLineStart, currentLineEnd);
+      const nextLine = value.substring(currentLineEnd + 1, actualNextEnd);
+
+      const newValue = value.substring(0, currentLineStart) + nextLine + '\n' + currentLine + value.substring(actualNextEnd);
+      onChange(newValue);
+      // Move cursor
+      setTimeout(() => {
+        if (textareaRef.current) {
+          const newCursor = currentLineStart + nextLine.length + 1 + (start - currentLineStart);
+          textareaRef.current.selectionStart = textareaRef.current.selectionEnd = newCursor;
+        }
+      }, 0);
       return;
     }
 
@@ -447,6 +549,29 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
     });
   };
 
+  const goToLine = () => {
+    const line = prompt(`Go to line (1-${lineCount}):`);
+    if (line) {
+      const lineNum = parseInt(line);
+      if (!isNaN(lineNum) && lineNum >= 1 && lineNum <= lineCount) {
+        // Calculate position
+        const lines = value.split('\n');
+        let pos = 0;
+        for (let i = 0; i < lineNum - 1; i++) {
+          pos += lines[i].length + 1; // +1 for newline
+        }
+
+        if (textareaRef.current) {
+          textareaRef.current.selectionStart = textareaRef.current.selectionEnd = pos;
+          textareaRef.current.focus();
+          // Scroll
+          const lineHeight = 24;
+          textareaRef.current.scrollTop = (lineNum * lineHeight) - 100;
+        }
+      }
+    }
+  };
+
   // Search Functions
   const findNext = () => {
     if (searchMatches.length === 0) return;
@@ -512,6 +637,20 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
             title="Find & Replace (Cmd/Ctrl+F)"
           >
             <Search size={14} />
+          </button>
+          <button
+            onClick={() => setWordWrap(!wordWrap)}
+            className={`p-1.5 rounded hover:bg-slate-200 dark:hover:bg-[#3e3e42] transition-colors ${wordWrap ? 'bg-slate-200 dark:bg-[#3e3e42] text-blue-500' : 'text-slate-600 dark:text-slate-300'}`}
+            title="Toggle Word Wrap"
+          >
+            <WrapText size={14} />
+          </button>
+          <button
+            onClick={goToLine}
+            className="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-[#3e3e42] text-slate-600 dark:text-slate-300 transition-colors"
+            title="Go to Line"
+          >
+            <MoveVertical size={14} />
           </button>
           <button
             onClick={toggleFontSize}
@@ -621,7 +760,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
                 findMatchingBracket(textareaRef.current.selectionStart - 1);
               }
             }}
-            className={`w-full h-full bg-transparent text-slate-800 dark:text-slate-200 p-4 pt-4 outline-none resize-none whitespace-pre border-none leading-6 editor-font custom-scrollbar language-${language || 'text'} relative z-10`}
+            className={`w-full h-full bg-transparent text-slate-800 dark:text-slate-200 p-4 pt-4 outline-none resize-none ${wordWrap ? 'whitespace-pre-wrap' : 'whitespace-pre'} border-none leading-6 editor-font custom-scrollbar language-${language || 'text'} relative z-10`}
             spellCheck={false}
             autoCapitalize="off"
             autoComplete="off"
