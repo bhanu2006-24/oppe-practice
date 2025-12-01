@@ -7,19 +7,19 @@ export const SYSTEM_COMMANDS_OPPE2_PROBLEMS: Problem[] = [
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
-        description: `Write a script that checks if a file 'f' exists. If yes, print "Exists", else print "Missing".`,
-        examples: [{ input: '', output: 'Missing' }],
+        description: `Write a script that checks if the input string is "A". If yes, print "Yes", else print "No".`,
+        examples: [{ input: 'A', output: 'Yes' }],
         starterCode: `# Write your script here
-if [ -f f ]; then
-    echo "Exists"
+read s
+if [ "$s" = "A" ]; then
+    echo "Yes"
 else
-    echo "Missing"
+    echo "No"
 fi
 `,
-        setupCode: `touch f`,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'Missing' }],
-        hint: 'Use [ -f file ].'
+        testCases: [{ input: 'A', expected: 'Yes' }, { input: 'B', expected: 'No' }],
+        hint: 'if [ "$s" = "A" ]'
     },
     {
         id: 'bash2-for-loop',
@@ -27,16 +27,17 @@ fi
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
-        description: `Write a script to print numbers 1 to 5 using a for loop.`,
-        examples: [{ input: '', output: '1\n2\n3\n4\n5' }],
+        description: `Write a script to print numbers 1 to the input number using a for loop.`,
+        examples: [{ input: '3', output: '1\n2\n3' }],
         starterCode: `# Write your script here
-for i in {1..5}; do
+read n
+for ((i=1; i<=n; i++)); do
     echo $i
 done
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: '1\n2\n3\n4\n5' }],
-        hint: 'for i in {1..5}'
+        testCases: [{ input: '3', expected: '1\n2\n3' }, { input: '2', expected: '1\n2' }],
+        hint: 'for ((i=1; i<=n; i++))'
     },
     {
         id: 'bash2-while-loop',
@@ -44,18 +45,19 @@ done
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
-        description: `Write a script to print numbers 1 to 3 using a while loop.`,
-        examples: [{ input: '', output: '1\n2\n3' }],
+        description: `Write a script to print numbers 1 to the input number using a while loop.`,
+        examples: [{ input: '3', output: '1\n2\n3' }],
         starterCode: `# Write your script here
+read n
 i=1
-while [ $i -le 3 ]; do
+while [ $i -le $n ]; do
     echo $i
     ((i++))
 done
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: '1\n2\n3' }],
-        hint: 'while [ $i -le 3 ]'
+        testCases: [{ input: '3', expected: '1\n2\n3' }, { input: '2', expected: '1\n2' }],
+        hint: 'while [ $i -le $n ]'
     },
     {
         id: 'bash2-function',
@@ -63,17 +65,18 @@ done
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
-        description: `Define a function 'greet' that prints "Hello". Call it.`,
-        examples: [{ input: '', output: 'Hello' }],
+        description: `Define a function 'greet' that prints the argument passed to it. Call it with input.`,
+        examples: [{ input: 'Hello', output: 'Hello' }],
         starterCode: `# Write your script here
 greet() {
-    echo "Hello"
+    echo $1
 }
-greet
+read name
+greet $name
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'Hello' }],
-        hint: 'func() { ... }'
+        testCases: [{ input: 'Hello', expected: 'Hello' }, { input: 'World', expected: 'World' }],
+        hint: 'func() { echo $1; }'
     },
     {
         id: 'bash2-args',
@@ -81,14 +84,13 @@ greet
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
-        description: `Write a script that prints the first argument passed to it. (Simulate passing "Arg1").`,
-        examples: [{ input: '', output: 'Arg1' }],
-        starterCode: `set -- "Arg1"
-# Write your script here
+        description: `Write a script that prints the first argument passed to it.`,
+        examples: [{ input: 'Arg1', output: 'Arg1' }],
+        starterCode: `# Write your script here
 echo $1
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'Arg1' }],
+        testCases: [{ input: 'Arg1', expected: 'Arg1' }, { input: 'Test', expected: 'Test' }],
         hint: 'Use $1.'
     },
     {
@@ -97,17 +99,17 @@ echo $1
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
-        description: `Write a script that checks variable 'fruit'. If "apple", print "Red". If "banana", print "Yellow". Set fruit="apple".`,
-        examples: [{ input: '', output: 'Red' }],
-        starterCode: `fruit="apple"
-# Write your script here
+        description: `Write a script that reads a fruit name. If "apple", print "Red". If "banana", print "Yellow".`,
+        examples: [{ input: 'apple', output: 'Red' }],
+        starterCode: `# Write your script here
+read fruit
 case $fruit in
     "apple") echo "Red" ;;
     "banana") echo "Yellow" ;;
 esac
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'Red' }],
+        testCases: [{ input: 'apple', expected: 'Red' }, { input: 'banana', expected: 'Yellow' }],
         hint: 'case $var in ... esac'
     },
     {
@@ -116,15 +118,14 @@ esac
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
-        description: `Read a line from stdin and print it. Input is "Hello".`,
-        examples: [{ input: '', output: 'Hello' }],
-        starterCode: `echo "Hello" | {
-    read line
-    echo $line
-}
+        description: `Read a line from stdin and print it.`,
+        examples: [{ input: 'Hello', output: 'Hello' }],
+        starterCode: `# Write your script here
+read line
+echo $line
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'Hello' }],
+        testCases: [{ input: 'Hello', expected: 'Hello' }, { input: 'World', expected: 'World' }],
         hint: 'read var'
     },
     {
@@ -133,13 +134,14 @@ esac
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
-        description: `Calculate 5 + 3 using arithmetic expansion and print result.`,
-        examples: [{ input: '', output: '8' }],
+        description: `Read two numbers and print their sum using arithmetic expansion.`,
+        examples: [{ input: '5 3', output: '8' }],
         starterCode: `# Write your script here
-echo $((5 + 3))
+read a b
+echo $((a + b))
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: '8' }],
+        testCases: [{ input: '5 3', expected: '8' }, { input: '10 20', expected: '30' }],
         hint: '$((...))'
     },
     {
@@ -148,14 +150,14 @@ echo $((5 + 3))
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
-        description: `Print the length of string "Hello".`,
-        examples: [{ input: '', output: '5' }],
-        starterCode: `s="Hello"
-# Write your script here
+        description: `Read a string and print its length.`,
+        examples: [{ input: 'Hello', output: '5' }],
+        starterCode: `# Write your script here
+read s
 echo \${#s}
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: '5' }],
+        testCases: [{ input: 'Hello', expected: '5' }, { input: 'Hi', expected: '2' }],
         hint: '${#var}'
     },
     {
@@ -164,14 +166,14 @@ echo \${#s}
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
-        description: `Extract "ell" from "Hello". (Start index 1, length 3).`,
-        examples: [{ input: '', output: 'ell' }],
-        starterCode: `s="Hello"
-# Write your script here
+        description: `Read a string and print substring starting at index 1 with length 3.`,
+        examples: [{ input: 'Hello', output: 'ell' }],
+        starterCode: `# Write your script here
+read s
 echo \${s:1:3}
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'ell' }],
+        testCases: [{ input: 'Hello', expected: 'ell' }, { input: 'World', expected: 'orl' }],
         hint: '${var:start:len}'
     },
     {
@@ -180,14 +182,14 @@ echo \${s:1:3}
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
-        description: `Create an array with "A" and "B". Print the second element.`,
-        examples: [{ input: '', output: 'B' }],
+        description: `Read two words into an array and print the second element.`,
+        examples: [{ input: 'A B', output: 'B' }],
         starterCode: `# Write your script here
-arr=("A" "B")
+read -a arr
 echo \${arr[1]}
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'B' }],
+        testCases: [{ input: 'A B', expected: 'B' }, { input: 'X Y', expected: 'Y' }],
         hint: '${arr[index]}'
     },
     {
@@ -196,14 +198,14 @@ echo \${arr[1]}
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
-        description: `Print the number of elements in array ("A" "B").`,
-        examples: [{ input: '', output: '2' }],
-        starterCode: `arr=("A" "B")
-# Write your script here
+        description: `Read words into an array and print the number of elements.`,
+        examples: [{ input: 'A B', output: '2' }],
+        starterCode: `# Write your script here
+read -a arr
 echo \${#arr[@]}
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: '2' }],
+        testCases: [{ input: 'A B', expected: '2' }, { input: 'A B C', expected: '3' }],
         hint: '${#arr[@]}'
     },
     {
@@ -212,16 +214,16 @@ echo \${#arr[@]}
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
-        description: `Loop through array ("A" "B") and print each element.`,
-        examples: [{ input: '', output: 'A\nB' }],
-        starterCode: `arr=("A" "B")
-# Write your script here
+        description: `Read words into an array and loop through to print each element.`,
+        examples: [{ input: 'A B', output: 'A\nB' }],
+        starterCode: `# Write your script here
+read -a arr
 for i in "\${arr[@]}"; do
     echo $i
 done
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'A\nB' }],
+        testCases: [{ input: 'A B', expected: 'A\nB' }, { input: '1 2', expected: '1\n2' }],
         hint: 'for i in "${arr[@]}"'
     },
     {
@@ -230,14 +232,15 @@ done
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
-        description: `Store output of 'echo Hi' in variable and print it.`,
-        examples: [{ input: '', output: 'Hi' }],
+        description: `Read a string, store it in a variable using command substitution (echo), and print it.`,
+        examples: [{ input: 'Hi', output: 'Hi' }],
         starterCode: `# Write your script here
-v=$(echo Hi)
+read s
+v=$(echo $s)
 echo $v
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'Hi' }],
+        testCases: [{ input: 'Hi', expected: 'Hi' }, { input: 'Test', expected: 'Test' }],
         hint: '$(...)'
     },
     {
@@ -246,14 +249,15 @@ echo $v
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
-        description: `Run 'true' command and print its exit status.`,
-        examples: [{ input: '', output: '0' }],
-        starterCode: `true
-# Write your script here
+        description: `Run 'true' or 'false' based on input (0 or 1) and print exit status. (Input 0 -> true, 1 -> false).`,
+        examples: [{ input: '0', output: '0' }],
+        starterCode: `# Write your script here
+read n
+if [ "$n" -eq 0 ]; then true; else false; fi
 echo $?
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: '0' }],
+        testCases: [{ input: '0', expected: '0' }, { input: '1', expected: '1' }],
         hint: '$?'
     },
     {
@@ -278,13 +282,14 @@ if [ -d d ]; then echo "Dir"; else echo "No"; fi
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
-        description: `Check if "a" equals "a". Print "Yes".`,
-        examples: [{ input: '', output: 'Yes' }],
+        description: `Read two strings and check if they are equal. Print "Yes" or "No".`,
+        examples: [{ input: 'a a', output: 'Yes' }],
         starterCode: `# Write your script here
-if [ "a" = "a" ]; then echo "Yes"; fi
+read a b
+if [ "$a" = "$b" ]; then echo "Yes"; else echo "No"; fi
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'Yes' }],
+        testCases: [{ input: 'a a', expected: 'Yes' }, { input: 'a b', expected: 'No' }],
         hint: '[ "$a" = "$b" ]'
     },
     {
@@ -293,13 +298,14 @@ if [ "a" = "a" ]; then echo "Yes"; fi
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
-        description: `Check if 10 is greater than 5. Print "Yes".`,
-        examples: [{ input: '', output: 'Yes' }],
+        description: `Read two numbers and check if first is greater than second. Print "Yes" or "No".`,
+        examples: [{ input: '10 5', output: 'Yes' }],
         starterCode: `# Write your script here
-if [ 10 -gt 5 ]; then echo "Yes"; fi
+read a b
+if [ $a -gt $b ]; then echo "Yes"; else echo "No"; fi
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'Yes' }],
+        testCases: [{ input: '10 5', expected: 'Yes' }, { input: '5 10', expected: 'No' }],
         hint: '-gt'
     },
     {
@@ -308,13 +314,14 @@ if [ 10 -gt 5 ]; then echo "Yes"; fi
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
-        description: `Check if 1=1 AND 2=2. Print "Yes".`,
-        examples: [{ input: '', output: 'Yes' }],
+        description: `Read two numbers. Check if both are positive (>0). Print "Yes" or "No".`,
+        examples: [{ input: '1 1', output: 'Yes' }],
         starterCode: `# Write your script here
-if [ 1 -eq 1 ] && [ 2 -eq 2 ]; then echo "Yes"; fi
+read a b
+if [ $a -gt 0 ] && [ $b -gt 0 ]; then echo "Yes"; else echo "No"; fi
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'Yes' }],
+        testCases: [{ input: '1 1', expected: 'Yes' }, { input: '1 0', expected: 'No' }],
         hint: '&& operator'
     },
     {
@@ -323,13 +330,14 @@ if [ 1 -eq 1 ] && [ 2 -eq 2 ]; then echo "Yes"; fi
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
-        description: `Check if 1=1 OR 1=2. Print "Yes".`,
-        examples: [{ input: '', output: 'Yes' }],
+        description: `Read two numbers. Check if at least one is positive (>0). Print "Yes" or "No".`,
+        examples: [{ input: '1 0', output: 'Yes' }],
         starterCode: `# Write your script here
-if [ 1 -eq 1 ] || [ 1 -eq 2 ]; then echo "Yes"; fi
+read a b
+if [ $a -gt 0 ] || [ $b -gt 0 ]; then echo "Yes"; else echo "No"; fi
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'Yes' }],
+        testCases: [{ input: '1 0', expected: 'Yes' }, { input: '0 0', expected: 'No' }],
         hint: '|| operator'
     },
     {
@@ -338,13 +346,14 @@ if [ 1 -eq 1 ] || [ 1 -eq 2 ]; then echo "Yes"; fi
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Hard',
-        description: `Check if "abc" matches regex "a.*". Print "Match".`,
-        examples: [{ input: '', output: 'Match' }],
+        description: `Read a string. Check if it starts with "a". Print "Match" or "No".`,
+        examples: [{ input: 'abc', output: 'Match' }],
         starterCode: `# Write your script here
-if [[ "abc" =~ a.* ]]; then echo "Match"; fi
+read s
+if [[ "$s" =~ ^a.* ]]; then echo "Match"; else echo "No"; fi
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'Match' }],
+        testCases: [{ input: 'abc', expected: 'Match' }, { input: 'bca', expected: 'No' }],
         hint: '[[ str =~ regex ]]'
     },
     {
@@ -353,13 +362,14 @@ if [[ "abc" =~ a.* ]]; then echo "Match"; fi
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
-        description: `Print value of 'v'. If unset, print "Def".`,
+        description: `Read a value. Print it. If empty, print "Def".`,
         examples: [{ input: '', output: 'Def' }],
         starterCode: `# Write your script here
+read v
 echo \${v:-Def}
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'Def' }],
+        testCases: [{ input: '', expected: 'Def' }, { input: 'Val', expected: 'Val' }],
         hint: '${var:-default}'
     },
     {
@@ -368,16 +378,18 @@ echo \${v:-Def}
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
-        description: `Use cat and heredoc to print "Line1\nLine2".`,
-        examples: [{ input: '', output: 'Line1\nLine2' }],
+        description: `Read two lines and print them using heredoc.`,
+        examples: [{ input: 'L1\nL2', output: 'L1\nL2' }],
         starterCode: `# Write your script here
+read l1
+read l2
 cat <<EOF
-Line1
-Line2
+$l1
+$l2
 EOF
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'Line1\nLine2' }],
+        testCases: [{ input: 'L1\nL2', expected: 'L1\nL2' }, { input: 'A\nB', expected: 'A\nB' }],
         hint: '<<EOF ... EOF'
     },
     {
@@ -401,13 +413,14 @@ ls nonexist 2>&1
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
-        description: `Run 'echo Hi' but discard output (print nothing).`,
-        examples: [{ input: '', output: '' }],
+        description: `Read input, echo it, but discard output (print nothing).`,
+        examples: [{ input: 'Hi', output: '' }],
         starterCode: `# Write your script here
-echo Hi > /dev/null
+read s
+echo $s > /dev/null
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: '' }],
+        testCases: [{ input: 'Hi', expected: '' }, { input: 'Test', expected: '' }],
         hint: '> /dev/null'
     },
     {
@@ -416,13 +429,14 @@ echo Hi > /dev/null
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
-        description: `Print "A1 A2" using brace expansion.`,
-        examples: [{ input: '', output: 'A1 A2' }],
+        description: `Read a string and print it with suffixes 1 and 2 using brace expansion.`,
+        examples: [{ input: 'A', output: 'A1 A2' }],
         starterCode: `# Write your script here
-echo A{1,2}
+read s
+echo $s{1,2}
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'A1 A2' }],
+        testCases: [{ input: 'A', expected: 'A1 A2' }, { input: 'B', expected: 'B1 B2' }],
         hint: 'A{1,2}'
     },
     {
@@ -431,13 +445,14 @@ echo A{1,2}
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Hard',
-        description: `Compare output of 'echo A' and 'echo B' using diff and process substitution.`,
-        examples: [{ input: '', output: '1c1\n< A\n---\n> B' }],
+        description: `Read two strings and compare them using diff and process substitution.`,
+        examples: [{ input: 'A B', output: '1c1\n< A\n---\n> B' }],
         starterCode: `# Write your script here
-diff <(echo A) <(echo B)
+read a b
+diff <(echo $a) <(echo $b)
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: '1c1\n< A\n---\n> B' }],
+        testCases: [{ input: 'A B', expected: '1c1\n< A\n---\n> B' }, { input: 'X Y', expected: '1c1\n< X\n---\n> Y' }],
         hint: '<(cmd)'
     },
     {
@@ -446,15 +461,16 @@ diff <(echo A) <(echo B)
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
-        description: `Declare readonly var r="A". Try to change it to "B". Print r. (Should print A, error suppressed).`,
-        examples: [{ input: '', output: 'A' }],
+        description: `Declare readonly var r="A". Try to change it to input. Print r. (Should print A, error suppressed).`,
+        examples: [{ input: 'B', output: 'A' }],
         starterCode: `# Write your script here
-r="B" 2>/dev/null
+read val
+r="$val" 2>/dev/null
 echo $r
 `,
         setupCode: `readonly r="A"`,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'A' }],
+        testCases: [{ input: 'B', expected: 'A' }, { input: 'C', expected: 'A' }],
         hint: 'readonly var'
     },
     {
@@ -463,15 +479,16 @@ echo $r
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
-        description: `Set v="A", then unset it. Print v (should be empty).`,
-        examples: [{ input: '', output: '' }],
+        description: `Read input into 'v', then unset it. Print 'v' (should be empty).`,
+        examples: [{ input: 'A', output: '' }],
         starterCode: `# Write your script here
+read v
 unset v
 echo $v
 `,
-        setupCode: `v="A"`,
+        setupCode: ``,
         functionName: 'bash',
-        testCases: [{ input: '', expected: '' }],
+        testCases: [{ input: 'A', expected: '' }, { input: 'B', expected: '' }],
         hint: 'unset var'
     },
     {
@@ -480,14 +497,15 @@ echo $v
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
-        description: `Export var E="Exp". Print it.`,
-        examples: [{ input: '', output: 'Exp' }],
+        description: `Read input, export it as variable E, and print it.`,
+        examples: [{ input: 'Exp', output: 'Exp' }],
         starterCode: `# Write your script here
-export E="Exp"
+read val
+export E="$val"
 echo $E
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'Exp' }],
+        testCases: [{ input: 'Exp', expected: 'Exp' }, { input: 'Test', expected: 'Test' }],
         hint: 'export var'
     },
     {
@@ -496,13 +514,14 @@ echo $E
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
-        description: `Remove suffix .txt from "file.txt".`,
-        examples: [{ input: '', output: 'file' }],
+        description: `Read a filename and remove the .txt suffix.`,
+        examples: [{ input: 'file.txt', output: 'file' }],
         starterCode: `# Write your script here
-basename file.txt .txt
+read f
+basename $f .txt
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'file' }],
+        testCases: [{ input: 'file.txt', expected: 'file' }, { input: 'data.txt', expected: 'data' }],
         hint: 'basename name suffix'
     },
     {
@@ -511,13 +530,14 @@ basename file.txt .txt
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
-        description: `Get directory of "/a/b/c".`,
-        examples: [{ input: '', output: '/a/b' }],
+        description: `Read a path and print its directory name.`,
+        examples: [{ input: '/a/b/c', output: '/a/b' }],
         starterCode: `# Write your script here
-dirname /a/b/c
+read p
+dirname $p
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: '/a/b' }],
+        testCases: [{ input: '/a/b/c', expected: '/a/b' }, { input: '/x/y/z', expected: '/x/y' }],
         hint: 'dirname'
     },
     {
@@ -526,13 +546,13 @@ dirname /a/b/c
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
-        description: `Squeeze repeated spaces in "A  B" to single space.`,
-        examples: [{ input: '', output: 'A B' }],
-        starterCode: `echo "A  B" | # Write your script here
+        description: `Read input and squeeze repeated spaces to single space.`,
+        examples: [{ input: 'A  B', output: 'A B' }],
+        starterCode: `# Write your script here
 tr -s " "
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'A B' }],
+        testCases: [{ input: 'A  B', expected: 'A B' }, { input: 'X   Y', expected: 'X Y' }],
         hint: 'tr -s'
     },
     {
@@ -541,13 +561,13 @@ tr -s " "
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
-        description: `Count lines containing "a" in "a\nb\na".`,
-        examples: [{ input: '', output: '2' }],
-        starterCode: `printf "a\\nb\\na" | # Write your script here
+        description: `Count lines containing "a" in input.`,
+        examples: [{ input: 'a\nb\na', output: '2' }],
+        starterCode: `# Write your script here
 grep -c "a"
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: '2' }],
+        testCases: [{ input: 'a\nb\na', expected: '2' }, { input: 'a\na\na', expected: '3' }],
         hint: 'grep -c'
     },
     {
@@ -556,13 +576,13 @@ grep -c "a"
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
-        description: `Print lines NOT containing "a" in "a\nb".`,
-        examples: [{ input: '', output: 'b' }],
-        starterCode: `printf "a\\nb" | # Write your script here
+        description: `Print lines NOT containing "a" in input.`,
+        examples: [{ input: 'a\nb', output: 'b' }],
+        starterCode: `# Write your script here
 grep -v "a"
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'b' }],
+        testCases: [{ input: 'a\nb', expected: 'b' }, { input: 'x\ny\na', expected: 'x\ny' }],
         hint: 'grep -v'
     },
     {
@@ -571,13 +591,13 @@ grep -v "a"
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
-        description: `Print 2nd line of "1\n2\n3" using head and tail.`,
-        examples: [{ input: '', output: '2' }],
-        starterCode: `printf "1\\n2\\n3" | # Write your script here
+        description: `Print the 2nd line of input using head and tail.`,
+        examples: [{ input: '1\n2\n3', output: '2' }],
+        starterCode: `# Write your script here
 head -n 2 | tail -n 1
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: '2' }],
+        testCases: [{ input: '1\n2\n3', expected: '2' }, { input: 'A\nB\nC', expected: 'B' }],
         hint: 'head | tail'
     },
     {
@@ -586,13 +606,13 @@ head -n 2 | tail -n 1
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
-        description: `Sort "10\n2" numerically.`,
-        examples: [{ input: '', output: '2\n10' }],
-        starterCode: `printf "10\\n2" | # Write your script here
+        description: `Sort input numerically.`,
+        examples: [{ input: '10\n2', output: '2\n10' }],
+        starterCode: `# Write your script here
 sort -n
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: '2\n10' }],
+        testCases: [{ input: '10\n2', expected: '2\n10' }, { input: '5\n1', expected: '1\n5' }],
         hint: 'sort -n'
     },
     {
@@ -601,13 +621,13 @@ sort -n
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
-        description: `Sort "A\nA" and remove duplicates.`,
-        examples: [{ input: '', output: 'A' }],
-        starterCode: `printf "A\\nA" | # Write your script here
+        description: `Sort input and remove duplicates.`,
+        examples: [{ input: 'A\nA', output: 'A' }],
+        starterCode: `# Write your script here
 sort -u
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'A' }],
+        testCases: [{ input: 'A\nA', expected: 'A' }, { input: 'B\nB\nC', expected: 'B\nC' }],
         hint: 'sort -u'
     },
     {
@@ -616,13 +636,13 @@ sort -u
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
-        description: `Count words in "A B".`,
-        examples: [{ input: '', output: '2' }],
-        starterCode: `echo "A B" | # Write your script here
+        description: `Count words in input.`,
+        examples: [{ input: 'A B', output: '2' }],
+        starterCode: `# Write your script here
 wc -w
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: '2' }],
+        testCases: [{ input: 'A B', expected: '2' }, { input: '1 2 3', expected: '3' }],
         hint: 'wc -w'
     },
     {
@@ -631,13 +651,13 @@ wc -w
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
-        description: `Count chars in "A". (Includes newline).`,
-        examples: [{ input: '', output: '2' }],
-        starterCode: `echo "A" | # Write your script here
+        description: `Count chars in input (including newline).`,
+        examples: [{ input: 'A', output: '2' }],
+        starterCode: `# Write your script here
 wc -m
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: '2' }],
+        testCases: [{ input: 'A', expected: '2' }, { input: 'AB', expected: '3' }],
         hint: 'wc -m'
     },
     {
@@ -646,14 +666,15 @@ wc -m
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
-        description: `Append "B" to file 'f' (content "A") using tee. Print 'f'.`,
-        examples: [{ input: '', output: 'A\nB' }],
-        starterCode: `echo "B" | tee -a f > /dev/null
+        description: `Append input to file 'f' (content "A") using tee. Print 'f'.`,
+        examples: [{ input: 'B', output: 'A\nB' }],
+        starterCode: `# Write your script here
+tee -a f > /dev/null
 cat f
 `,
         setupCode: `echo "A" > f`,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'A\nB' }],
+        testCases: [{ input: 'B', expected: 'A\nB' }, { input: 'C', expected: 'A\nC' }],
         hint: 'tee -a'
     },
     {
@@ -678,12 +699,13 @@ echo "B" > f2`,
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
-        description: `Cut bytes 1-2 from "ABC".`,
-        examples: [{ input: '', output: 'AB' }],
-        starterCode: `echo "ABC" | cut -b 1-2
+        description: `Cut bytes 1-2 from input.`,
+        examples: [{ input: 'ABC', output: 'AB' }],
+        starterCode: `# Write your script here
+cut -b 1-2
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'AB' }],
+        testCases: [{ input: 'ABC', expected: 'AB' }, { input: '1234', expected: '12' }],
         hint: 'cut -b 1-2'
     },
     {
@@ -692,12 +714,13 @@ echo "B" > f2`,
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Hard',
-        description: `Print line if first column > 1. Input "1\n2".`,
-        examples: [{ input: '', output: '2' }],
-        starterCode: `printf "1\\n2" | awk '$1 > 1'
+        description: `Print line if first column > 1.`,
+        examples: [{ input: '1\n2', output: '2' }],
+        starterCode: `# Write your script here
+awk '$1 > 1'
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: '2' }],
+        testCases: [{ input: '1\n2', expected: '2' }, { input: '0\n5', expected: '5' }],
         hint: 'awk \'$1 > 1\''
     },
     {
@@ -706,12 +729,13 @@ echo "B" > f2`,
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
-        description: `Delete 1st line of "A\nB".`,
-        examples: [{ input: '', output: 'B' }],
-        starterCode: `printf "A\\nB" | sed '1d'
+        description: `Delete 1st line of input.`,
+        examples: [{ input: 'A\nB', output: 'B' }],
+        starterCode: `# Write your script here
+sed '1d'
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'B' }],
+        testCases: [{ input: 'A\nB', expected: 'B' }, { input: '1\n2\n3', expected: '2\n3' }],
         hint: 'sed \'1d\''
     },
     {
@@ -735,12 +759,13 @@ echo "B" > f2`,
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
-        description: `Pass 1 arg at a time to echo. Input "A B".`,
-        examples: [{ input: '', output: 'A\nB' }],
-        starterCode: `echo "A B" | xargs -n 1 echo
+        description: `Pass 1 arg at a time to echo from input.`,
+        examples: [{ input: 'A B', output: 'A\nB' }],
+        starterCode: `# Write your script here
+xargs -n 1 echo
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'A\nB' }],
+        testCases: [{ input: 'A B', expected: 'A\nB' }, { input: '1 2', expected: '1\n2' }],
         hint: 'xargs -n 1'
     },
     {
@@ -749,12 +774,14 @@ echo "B" > f2`,
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
-        description: `Print 1, 3, 5 (step 2).`,
-        examples: [{ input: '', output: '1\n3\n5' }],
-        starterCode: `seq 1 2 5
+        description: `Print sequence from 1 to input end with step 2.`,
+        examples: [{ input: '5', output: '1\n3\n5' }],
+        starterCode: `# Write your script here
+read n
+seq 1 2 $n
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: '1\n3\n5' }],
+        testCases: [{ input: '5', expected: '1\n3\n5' }, { input: '6', expected: '1\n3\n5' }],
         hint: 'seq start step end'
     },
     {
@@ -763,12 +790,13 @@ echo "B" > f2`,
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
-        description: `Pick 1 random line from "A".`,
-        examples: [{ input: '', output: 'A' }],
-        starterCode: `echo "A" | shuf -n 1
+        description: `Pick 1 random line from input.`,
+        examples: [{ input: 'A', output: 'A' }],
+        starterCode: `# Write your script here
+shuf -n 1
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'A' }],
+        testCases: [{ input: 'A', expected: 'A' }],
         hint: 'shuf -n'
     },
     {
@@ -777,12 +805,13 @@ echo "B" > f2`,
         subject: 'System_Commands',
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
-        description: `Reverse "AB".`,
-        examples: [{ input: '', output: 'BA' }],
-        starterCode: `echo "AB" | rev
+        description: `Reverse characters of input line.`,
+        examples: [{ input: 'AB', output: 'BA' }],
+        starterCode: `# Write your script here
+rev
 `,
         functionName: 'bash',
-        testCases: [{ input: '', expected: 'BA' }],
+        testCases: [{ input: 'AB', expected: 'BA' }, { input: '123', expected: '321' }],
         hint: 'rev'
-    }
+    },
 ];

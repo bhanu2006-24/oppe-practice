@@ -71,7 +71,7 @@ export const ProblemDetail: React.FC<ProblemDetailProps> = ({ problem }) => {
 
         {problem.hint && (
           <div className="pt-4">
-            <button 
+            <button
               onClick={() => setShowHint(!showHint)}
               className="flex items-center text-xs font-bold text-orange-500 hover:text-orange-600 transition-colors"
             >
@@ -89,9 +89,9 @@ export const ProblemDetail: React.FC<ProblemDetailProps> = ({ problem }) => {
         <div className="pt-4 border-t border-slate-200 dark:border-slate-800">
           <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-2">Constraints:</h3>
           <ul className="list-disc list-inside text-sm text-slate-600 dark:text-slate-400 space-y-1">
-             <li>Time Limit: 2000ms</li>
-             <li>Memory Limit: 128MB</li>
-             <li>Standard Python 3.11 environment</li>
+            <li>Time Limit: 2000ms</li>
+            <li>Memory Limit: 128MB</li>
+            <li>if found any bug.. or want to contribute.. plz contact</li>
           </ul>
         </div>
       </div>
