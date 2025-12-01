@@ -1,6 +1,578 @@
 import { Problem } from '../types';
 
 export const JAVA_OPPE2_PROBLEMS: Problem[] = [
+    // --- END TERM DEC 2024 PYQ ---
+    {
+    "id": "java-endterm-dec2024-q247",
+    "title": "GUI Event Handling",
+    "subject": "Java",
+    "examLevel": "End Term",
+    "difficulty": "Medium",
+    "description": "Complete the 'actionPerformed' method in a Swing/AWT application. You have two buttons, 'Play' and 'Pause'. You need to identify which button triggered the event using the 'ActionEvent e'. Fill in the missing logic to check the source of the event.",
+    "examples": [
+        {
+            "input": "If 'Play' button is clicked -> Set variable 'play' to true.",
+            "output": ""
+        },
+        {
+            "input": "If 'Pause' button is clicked -> Set variable 'play' to false.",
+            "output": ""
+        }
+    ],
+    "starterCode": "public void actionPerformed(ActionEvent e) {\n    // Write logic to check if e.getSource() is btnPlay or btnPause\n    // Alternatively, check e.getActionCommand()\n}",
+    "functionName": "actionPerformed",
+    "testCases": [
+        {
+            "input": "If 'Play' button is clicked -> Set variable 'play' to true.",
+            "expected": ""
+        },
+        {
+            "input": "If 'Pause' button is clicked -> Set variable 'play' to false.",
+            "expected": ""
+        }
+    ],
+    "hint": "Use 'e.getSource() == btnPlay' or 'e.getActionCommand().equals(\"Play\")'."
+},
+    {
+    "id": "java-endterm-dec2024-q230",
+    "title": "Shallow Cloning Trap",
+    "subject": "Java",
+    "examLevel": "End Term",
+    "difficulty": "Hard",
+    "description": "Analyze the cloning behavior of the 'LocoPilot' class. The class contains a primitive array 'int[] trips'. The default 'super.clone()' performs a shallow copy. If the cloned object modifies an index in the 'trips' array, determine if the original object's array is also affected.",
+    "examples": [
+        {
+            "input": "Original: trips = {20, 25, 30}",
+            "output": ""
+        },
+        {
+            "input": "Clone created. Clone modifies trips[1] to 40.",
+            "output": ""
+        },
+        {
+            "input": "Result: Both Original and Clone see trips[1] as 40 because the array reference was copied, not the array itself.",
+            "output": ""
+        }
+    ],
+    "starterCode": "class LocoPilot implements Cloneable {\n    String name;\n    int[] trips;\n    // Constructor and clone method using super.clone()\n}\n\n// Main logic:\n// LocoPilot lp1 = new LocoPilot(\"Arjun\", new int[]{20, 25, 30});\n// LocoPilot lp2 = (LocoPilot) lp1.clone();\n// lp2.trips[1] = 40;\n// System.out.println(lp1.trips[1]);",
+    "functionName": "main",
+    "testCases": [
+        {
+            "input": "Original: trips = {20, 25, 30}",
+            "expected": ""
+        },
+        {
+            "input": "Clone created. Clone modifies trips[1] to 40.",
+            "expected": ""
+        },
+        {
+            "input": "Result: Both Original and Clone see trips[1] as 40 because the array reference was copied, not the array itself.",
+            "expected": ""
+        }
+    ],
+    "hint": "Arrays are mutable objects. 'super.clone()' does not create a new copy of the array found inside the object; it copies the reference."
+},
+    {
+    "id": "java-endterm-dec2024-q231",
+    "title": "Serialization with Transient",
+    "subject": "Java",
+    "examLevel": "End Term",
+    "difficulty": "Medium",
+    "description": "Predict the state of a 'StockPurchase' object after it is serialized and then deserialized. The class implements 'Serializable' but marks certain fields as 'transient'. \n1. 'stPrice' is a normal double.\n2. 'stSymbol' is a 'transient' String.\n3. 'stPin' is a 'transient' int, but the class has a custom 'writeObject' method that manually writes 'stPin'.",
+    "examples": [
+        {
+            "input": "Original: Price=500.75, Symbol='AAPL', Pin=123",
+            "output": ""
+        },
+        {
+            "input": "Deserialized: Price=500.75 (Persisted), Symbol=null (Transient & ignored), Pin=123 (Manually handled in writeObject)",
+            "output": ""
+        }
+    ],
+    "starterCode": "class StockPurchase implements Serializable {\n    double stPrice;\n    transient String stSymbol;\n    private transient int stPin;\n    \n    // Custom writeObject method handles stPin manually\n    private void writeObject(ObjectOutputStream out) throws IOException {\n        out.defaultWriteObject();\n        out.writeInt(stPin * 1000); // Obfuscation logic\n    }\n}",
+    "functionName": "writeObject",
+    "testCases": [
+        {
+            "input": "Original: Price=500.75, Symbol='AAPL', Pin=123",
+            "expected": ""
+        },
+        {
+            "input": "Deserialized: Price=500.75 (Persisted), Symbol=null (Transient & ignored), Pin=123 (Manually handled in writeObject)",
+            "expected": ""
+        }
+    ],
+    "hint": "Transient fields are skipped by default serialization. However, 'writeObject' can manually save them. Strings that are transient and not manually saved will become null."
+},
+    {
+    "id": "java-endterm-dec2024-q227",
+    "title": "Inheritance & Method Visibility",
+    "subject": "Java",
+    "examLevel": "End Term",
+    "difficulty": "Easy",
+    "description": "Identify the compilation error in a hierarchy of Beverage classes. \n1. 'Beverage' class has methods 'ingredient()' and 'price()'.\n2. 'Coffee' extends 'Beverage'.\n3. 'Latte' extends 'Coffee' and adds a new method 'maker()'.\n\nCode: 'Coffee drink = new Latte(); drink.maker();'",
+    "examples": [
+        {
+            "input": "Input: Coffee drink = new Latte(); drink.maker();",
+            "output": ""
+        },
+        {
+            "input": "Output: Compilation Error. The reference type 'Coffee' does not define the method 'maker()'.",
+            "output": ""
+        }
+    ],
+    "starterCode": "class Coffee extends Beverage { ... }\nclass Latte extends Coffee {\n    void maker() { System.out.println(\"Making Latte\"); }\n}\n\npublic class Test {\n    public static void main(String[] args) {\n        Coffee drink = new Latte();\n        drink.maker(); // Fix this line\n    }\n}",
+    "functionName": "main",
+    "testCases": [
+        {
+            "input": "Input: Coffee drink = new Latte(); drink.maker();",
+            "expected": ""
+        },
+        {
+            "input": "Output: Compilation Error. The reference type 'Coffee' does not define the method 'maker()'.",
+            "expected": ""
+        }
+    ],
+    "hint": "You cannot call a method that exists only in the child class (Latte) if the reference variable is of the parent type (Coffee), unless you cast it."
+},
+    {
+    "id": "java-endterm-dec2024-q236",
+    "title": "Access Modifiers Logic",
+    "subject": "Java",
+    "examLevel": "End Term",
+    "difficulty": "Medium",
+    "description": "Determine which lines cause a compilation error based on access modifiers. \n- 'speed()' is public.\n- 'fuel()' is protected.\n- 'capacity()' is private.\nCode attempts to access all three from a 'Test' class in a different package (inheriting from Vehicle).",
+    "examples": [
+        {
+            "input": "vehicle.speed(); // Allowed (Public)",
+            "output": ""
+        },
+        {
+            "input": "vehicle.fuel(); // Allowed (Protected, accessed via inheritance in subclass)",
+            "output": ""
+        },
+        {
+            "input": "vehicle.capacity(); // Error (Private is not visible outside the class)",
+            "output": ""
+        }
+    ],
+    "starterCode": "class Vehicle {\n    public void speed() {}\n    protected void fuel() {}\n    private void capacity() {}\n}\n\nclass Car extends Vehicle {\n    void testAccess() {\n        // Which calls are valid?\n    }\n}",
+    "functionName": "testAccess",
+    "testCases": [
+        {
+            "input": "vehicle.speed(); // Allowed (Public)",
+            "expected": ""
+        },
+        {
+            "input": "vehicle.fuel(); // Allowed (Protected, accessed via inheritance in subclass)",
+            "expected": ""
+        },
+        {
+            "input": "vehicle.capacity(); // Error (Private is not visible outside the class)",
+            "expected": ""
+        }
+    ],
+    "hint": "Private members are never accessible outside their own class file."
+},
+    {
+    "id": "java-endterm-dec2024-q228",
+    "title": "Chained Exceptions Logic",
+    "subject": "Java",
+    "examLevel": "End Term",
+    "difficulty": "Medium",
+    "description": "Analyze a Chained Exception scenario. A 'FileProcessingException' is thrown, but it was caused by an 'InvalidFileFormatException'. The catch block prints the message of the top-level exception and the cause of the exception. Determine the order of messages printed.",
+    "examples": [
+        {
+            "input": "Process starts -> Calls validateFile() -> Throws InvalidFileFormatException ('Error processing').",
+            "output": ""
+        },
+        {
+            "input": "Catch block wraps it in FileProcessingException ('File format not supported') and throws it up.",
+            "output": ""
+        },
+        {
+            "input": "Final Output: Prints 'File format not supported' then 'Error processing'.",
+            "output": ""
+        }
+    ],
+    "starterCode": "try {\n    processFile();\n} catch (FileProcessingException e) {\n    System.out.println(e.getMessage());\n    System.out.println(e.getCause().getMessage());\n}\n\n// processFile() catches InvalidFileFormatException \n// and throws new FileProcessingException(msg, cause);",
+    "functionName": "main",
+    "testCases": [
+        {
+            "input": "Process starts -> Calls validateFile() -> Throws InvalidFileFormatException ('Error processing').",
+            "expected": ""
+        },
+        {
+            "input": "Catch block wraps it in FileProcessingException ('File format not supported') and throws it up.",
+            "expected": ""
+        },
+        {
+            "input": "Final Output: Prints 'File format not supported' then 'Error processing'.",
+            "expected": ""
+        }
+    ],
+    "hint": "The 'getCause()' method retrieves the original exception that triggered the current one. Execution flow goes deep into the stack and bubbles up."
+},
+    {
+    "id": "java-endterm-dec2024-q241",
+    "title": "Infinite Stream Processing",
+    "subject": "Java",
+    "examLevel": "End Term",
+    "difficulty": "Hard",
+    "description": "Predict the output of a Stream pipeline that starts with an infinite iterator. \nPipeline: \n1. Start with 1. Iterate by multiplying by 2 (1, 2, 4, 8...).\n2. Map: Add 1 to each number (2, 3, 5, 9...).\n3. Filter: Keep numbers divisible by 3.\n4. Limit: First 3 numbers.",
+    "examples": [
+        {
+            "input": "Sequence: 1 -> 2 -> 4 -> 8 -> 16 -> 32 -> 64...",
+            "output": ""
+        },
+        {
+            "input": "Map (+1): 2 -> 3 -> 5 -> 9 -> 17 -> 33 -> 65...",
+            "output": ""
+        },
+        {
+            "input": "Filter (%3==0): 3, 9, 33...",
+            "output": ""
+        },
+        {
+            "input": "Output: 3, 9, 33",
+            "output": ""
+        }
+    ],
+    "starterCode": "Stream.iterate(1, n -> n * 2)\n      .map(n -> n + 1)\n      .filter(n -> n % 3 == 0)\n      .limit(3)\n      .forEach(System.out::println);",
+    "functionName": "streamPipeline",
+    "testCases": [
+        {
+            "input": "Sequence: 1 -> 2 -> 4 -> 8 -> 16 -> 32 -> 64...",
+            "expected": ""
+        },
+        {
+            "input": "Map (+1): 2 -> 3 -> 5 -> 9 -> 17 -> 33 -> 65...",
+            "expected": ""
+        },
+        {
+            "input": "Filter (%3==0): 3, 9, 33...",
+            "expected": ""
+        },
+        {
+            "input": "Output: 3, 9, 33",
+            "expected": ""
+        }
+    ],
+    "hint": "Trace the math carefully: (1*2)+1 = 3 (Pass). (2*2)+1 = 5 (Fail). (4*2)+1 = 9 (Pass)."
+},
+    {
+    "id": "java-endterm-dec2024-q237",
+    "title": "Thread Join & Synchronization",
+    "subject": "Java",
+    "examLevel": "End Term",
+    "difficulty": "Medium",
+    "description": "Determine the output of a multi-threaded program using 'Thread.join()'. \n1. Main thread inserts 'Apple', 'Banana', 'Carrot' into a map.\n2. A new thread 't' starts, sleeps/waits, and inserts 'Egg'.\n3. Main thread calls 't.join()'.\n4. Main thread iterates and prints the map.",
+    "examples": [
+        {
+            "input": "Without join(): 'Egg' might appear randomly or not at all depending on speed.",
+            "output": ""
+        },
+        {
+            "input": "With join(): Main thread waits for 't' to finish inserting 'Egg'.",
+            "output": ""
+        },
+        {
+            "input": "Output: Apple, Banana, Carrot, Egg (Order guaranteed due to join).",
+            "output": ""
+        }
+    ],
+    "starterCode": "Thread t = new Thread(new Example());\nt.start();\nt.join(); // Key line\n// Print Map content",
+    "functionName": "main",
+    "testCases": [
+        {
+            "input": "Without join(): 'Egg' might appear randomly or not at all depending on speed.",
+            "expected": ""
+        },
+        {
+            "input": "With join(): Main thread waits for 't' to finish inserting 'Egg'.",
+            "expected": ""
+        },
+        {
+            "input": "Output: Apple, Banana, Carrot, Egg (Order guaranteed due to join).",
+            "expected": ""
+        }
+    ],
+    "hint": "The 'join()' method forces the calling thread (Main) to wait until the referenced thread (t) terminates."
+},
+    {
+    "id": "java-endterm-dec2024-q234",
+    "title": "Generic Wildcards",
+    "subject": "Java",
+    "examLevel": "End Term",
+    "difficulty": "Medium",
+    "description": "Select the correct method header for a function 'printLargestMammal' that accepts a list of Animal objects. The method needs to iterate through the list and find the largest mammal. Use Upper Bounded Wildcards correctly to ensure the list can contain Animals or any subclass of Animal.",
+    "examples": [
+        {
+            "input": "List<Animal> -> Valid",
+            "output": ""
+        },
+        {
+            "input": "List<Mammal> -> Valid (if wildcard used)",
+            "output": ""
+        },
+        {
+            "input": "List<String> -> Invalid",
+            "output": ""
+        }
+    ],
+    "starterCode": "// Option A: public static void print(List<Animal> list)\n// Option B: public static void print(List<? extends Animal> list)\n// Option C: public static <T> void print(List<T> list)",
+    "functionName": "printLargestMammal",
+    "testCases": [
+        {
+            "input": "List<Animal> -> Valid",
+            "expected": ""
+        },
+        {
+            "input": "List<Mammal> -> Valid (if wildcard used)",
+            "expected": ""
+        },
+        {
+            "input": "List<String> -> Invalid",
+            "expected": ""
+        }
+    ],
+    "hint": "Use 'List<? extends Animal>' (Upper Bounded Wildcard) to accept a list of Animal OR any of its subclasses like Mammal or Bird."
+},
+    {
+    "id": "java-endterm-dec2024-q229",
+    "title": "Assertion Logic",
+    "subject": "Java",
+    "examLevel": "End Term",
+    "difficulty": "Easy",
+    "description": "Analyze an assertion statement. The program asserts `p * t * r < 100` and `p > 0`. You are given inputs where `t` is negative. Determine which assertion causes the program to terminate with an `AssertionError`.",
+    "examples": [],
+    "starterCode": "public void calculate(double p, double t, double r) {\n    assert p * t * r < 100 : \"Calculation Error\";\n    assert p > 0 : \"Principal Error\";\n    assert t > 0 : \"Time Error\"; // This fails if t is negative\n}",
+    "functionName": "calculate",
+    "testCases": [],
+    "hint": "Assertions are enabled via '-ea'. If the condition is false, the program stops immediately."
+},
+    {
+    "id": "java-endterm-dec2024-q233",
+    "title": "ReentrantLock & Concurrency",
+    "subject": "Java",
+    "examLevel": "End Term",
+    "difficulty": "Hard",
+    "description": "Two threads (Ram and Ravi) attempt to buy items from a shared stock using a `ReentrantLock`. Analyze the race condition. If Ram buys first and depletes the stock, Ravi's condition `stock > quantity` might fail. Determine the output based on locking order.",
+    "examples": [],
+    "starterCode": "ReentrantLock lock = new ReentrantLock();\npublic void buy(String name, int qty) {\n    lock.lock();\n    try {\n        if (stock >= qty) { ... } \n        else { ... }\n    } finally { lock.unlock(); }\n}",
+    "functionName": "buy",
+    "testCases": [],
+    "hint": "With a Lock, only one thread enters the critical section. If Stock=5, Ram takes 3 (Stock=2). Ravi needs 4. Ravi fails."
+},
+    {
+    "id": "java-endterm-dec2024-q238",
+    "title": "Method Overloading & Erasure",
+    "subject": "Java",
+    "examLevel": "End Term",
+    "difficulty": "Medium",
+    "description": "Identify the compilation error when overloading methods with Generic Lists. You have `display(List<Integer>)` and `display(List<String>)`. Due to Type Erasure, both look like `display(List)` to the JVM.",
+    "examples": [],
+    "starterCode": "class Test {\n    public void display(List<Integer> list) { ... }\n    public void display(List<String> list) { ... } // Compilation Error\n}",
+    "functionName": "display",
+    "testCases": [],
+    "hint": "In Java, generic type parameters are erased at runtime. You cannot overload methods where the only difference is the generic type parameter."
+},
+    {
+    "id": "java-endterm-dec2024-q239",
+    "title": "Copy Constructor & Mutation",
+    "subject": "Java",
+    "examLevel": "End Term",
+    "difficulty": "Medium",
+    "description": "A 'Director' class has a copy constructor. Object D2 is created as a copy of D1. D2 changes its name. Check if D1's name also changes (Deep vs Shallow copy logic in manual constructors).",
+    "examples": [],
+    "starterCode": "public Director(Director other) {\n    this.name = other.name; // String is immutable, so this is safe\n    this.projectCount = other.projectCount;\n}",
+    "functionName": "main",
+    "testCases": [],
+    "hint": "Strings are immutable. Changing D2.name assigns a new String reference to D2, leaving D1 unaffected."
+},
+    {
+    "id": "java-endterm-dec2024-q243",
+    "title": "Optional Class Handling",
+    "subject": "Java",
+    "examLevel": "End Term",
+    "difficulty": "Medium",
+    "description": "Use `Optional.ofNullable` to handle potential null values in a list of Vehicle objects without throwing a `NullPointerException`. Iterate through a list where some vehicles are null.",
+    "examples": [],
+    "starterCode": "for (Vehicle v : vList) {\n    Optional<String> op = Optional.ofNullable(v).map(val -> val.fuelType);\n    System.out.println(op.orElse(\"\"));\n}",
+    "functionName": "main",
+    "testCases": [],
+    "hint": "If `v` is null, `ofNullable` returns an empty Optional. `map` is skipped. `orElse` prints the default."
+},
+    {
+    "id": "java-endterm-dec2024-q244",
+    "title": "Stream Collectors Statistics",
+    "subject": "Java",
+    "examLevel": "End Term",
+    "difficulty": "Medium",
+    "description": "Use `Collectors.summarizingInt` on a Stream of integers (2, 4, 6... 20). The code prints `getAverage()`, `getSum()`, and `getMax()`. Calculate the correct statistics.",
+    "examples": [],
+    "starterCode": "IntSummaryStatistics stats = list.stream()\n    .collect(Collectors.summarizingInt(x -> x));\nSystem.out.println(stats.getAverage());",
+    "functionName": "main",
+    "testCases": [],
+    "hint": "SummarizingInt returns an object containing count, sum, min, average, and max all at once."
+},
+    {
+    "id": "java-endterm-dec2024-q245",
+    "title": "LinkedList & ArrayList Interaction",
+    "subject": "Java",
+    "examLevel": "End Term",
+    "difficulty": "Easy",
+    "description": "An ArrayList `AL` contains [1, 2]. A LinkedList `LL` is assigned the reference of `AL` (polymorphism via List interface). `AL` removes index 1. What does `LL` print?",
+    "examples": [],
+    "starterCode": "List<String> AL = new ArrayList<>();\nList<String> LL = AL; // Reference copy\nAL.remove(1);\nSystem.out.println(LL);",
+    "functionName": "main",
+    "testCases": [],
+    "hint": "Since LL and AL point to the same object in heap memory, changes in AL reflect in LL."
+},
+    {
+    "id": "java-endterm-dec2024-q246",
+    "title": "Final Keyword Errors",
+    "subject": "Java",
+    "examLevel": "End Term",
+    "difficulty": "Easy",
+    "description": "Identify compilation errors involves the `final` keyword. 1) A method is marked final but a subclass tries to override it. 2) A class tries to extend multiple classes (Java doesn't support multiple inheritance of state).",
+    "examples": [],
+    "starterCode": "class Engine {\n    final void start() { ... }\n}\nclass Car extends Engine {\n    void start() { ... } // Error: Cannot override final method\n}",
+    "functionName": "start",
+    "testCases": [],
+    "hint": "Final methods cannot be overridden. Classes cannot extend more than one parent class."
+},
+    {
+    "id": "java-endterm-dec2024-q248",
+    "title": "Comparable & Type Erasure",
+    "subject": "Java",
+    "examLevel": "End Term",
+    "difficulty": "Medium",
+    "description": "Analyze generic method signatures after Type Erasure. A method `<T extends Comparable<T>> void sort(T[] a)` converts to `void sort(Comparable[] a)` after compilation, not `void sort(Object[] a)`.",
+    "examples": [],
+    "starterCode": "// Before Erasure:\npublic <T extends Comparable<T>> void sort(T[] list)\n// After Erasure:\npublic void sort(Comparable[] list)",
+    "functionName": "sort",
+    "testCases": [],
+    "hint": "Bounded generics erase to their bound (Comparable), not to Object."
+},
+
+    // --- JAN 2025 PYQ ---
+    {
+    "id": "java-oppe2-jan2025-q1",
+    "title": "Filter Research Articles",
+    "subject": "Java",
+    "examLevel": "OPPE 2",
+    "difficulty": "Medium",
+    "description": "Write a Java program to filter a list of ResearchArticle objects. You need to define the 'articleProcessor' method that takes an ArrayList of ResearchArticle and returns a Stream of ResearchArticle. The filtering criteria are: 1) The article should be published recently, specifically the gap between 2023 and the publication year should be less than 3 years (2023 - year < 3). 2) The article must have more than 100 citations.",
+    "examples": [
+        {
+            "input": "Articles [('AI', 2021, 202), ('ML', 2018, 90), ('DL', 2022, 200)]",
+            "output": "Stream containing [('AI', 2021, 202), ('DL', 2022, 200)]"
+        }
+    ],
+    "starterCode": "import java.util.*;\nimport java.util.stream.*;\n\nclass ResearchArticle {\n    String name;\n    int year;\n    int citations;\n    \n    public ResearchArticle(String name, int year, int citations) {\n        this.name = name;\n        this.year = year;\n        this.citations = citations;\n    }\n    \n    public String toString() {\n        return \"(\" + name + \", \" + year + \", \" + citations + \")\";\n    }\n}\n\npublic class Main {\n    public static Stream<ResearchArticle> articleProcessor(ArrayList<ResearchArticle> articles) {\n        // Write your code here\n        return Stream.empty();\n    }\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // Reading input\n        // Format: N lines of: Name Year Citations\n        // Example input is complex in description, let's assume simple line based\n        ArrayList<ResearchArticle> articles = new ArrayList<>();\n        while (sc.hasNext()) {\n            String line = sc.nextLine();\n            if (line.trim().isEmpty()) continue;\n            String[] parts = line.split(\" \");\n            if (parts.length >= 3) {\n                String name = parts[0];\n                int year = Integer.parseInt(parts[1]);\n                int citations = Integer.parseInt(parts[2]);\n                articles.add(new ResearchArticle(name, year, citations));\n            }\n        }\n        \n        Stream<ResearchArticle> result = articleProcessor(articles);\n        result.forEach(System.out::println);\n    }\n}",
+    "functionName": "articleProcessor",
+    "testCases": [
+        {
+            "input": "AI 2021 202\nML 2018 90\nDL 2022 200",
+            "expected": "(AI, 2021, 202)\n(DL, 2022, 200)"
+        }
+    ],
+    "hint": "Use the .stream() method on the list and apply .filter() with the two conditions."
+},
+    {
+    "id": "java-oppe2-jan2025-q2",
+    "title": "Deep Clone Movie",
+    "subject": "Java",
+    "examLevel": "OPPE 2",
+    "difficulty": "Hard",
+    "description": "Implement the 'clone' method in the 'Director' and 'Movie' classes to achieve a deep copy. The Movie class contains a Director object. When a Movie is cloned, the Director object inside it must also be cloned so that changes to the cloned Movie's Director do not affect the original Movie's Director.",
+    "examples": [
+        {
+            "input": "Original: Movie('Inception', Director('Christopher Nolan', 20))",
+            "output": ""
+        },
+        {
+            "input": "Clone: Movie('Inception', Director('Jonathan Nolan', 15))",
+            "output": ""
+        },
+        {
+            "input": "Result: Original Director remains 'Christopher Nolan', Clone becomes 'Jonathan Nolan'.",
+            "output": ""
+        }
+    ],
+    "starterCode": "import java.util.*;\n\nclass Director implements Cloneable {\n    String name;\n    int age;\n    \n    public Director(String name, int age) {\n        this.name = name;\n        this.age = age;\n    }\n    \n    public Object clone() throws CloneNotSupportedException {\n        // Implement deep clone\n        return super.clone();\n    }\n    \n    public String toString() { return name + \" (\" + age + \")\"; }\n}\n\nclass Movie implements Cloneable {\n    String title;\n    Director director;\n    \n    public Movie(String title, Director director) {\n        this.title = title;\n        this.director = director;\n    }\n    \n    public Object clone() throws CloneNotSupportedException {\n        // Implement deep clone\n        return super.clone();\n    }\n    \n    public String toString() { return \"Movie('\" + title + \"', Director('\" + director.name + \"', \" + director.age + \"))\"; }\n}\n\npublic class Main {\n    public static void main(String[] args) throws CloneNotSupportedException {\n        Director d = new Director(\"Christopher Nolan\", 20);\n        Movie m1 = new Movie(\"Inception\", d);\n        Movie m2 = (Movie) m1.clone();\n        \n        // Modify clone\n        m2.director.name = \"Jonathan Nolan\";\n        m2.director.age = 15;\n        \n        System.out.println(\"Original: \" + m1);\n        System.out.println(\"Clone: \" + m2);\n    }\n}",
+    "functionName": "clone",
+    "testCases": [
+        {
+            "input": "",
+            "expected": "Original: Movie('Inception', Director('Christopher Nolan', 20))\nClone: Movie('Inception', Director('Jonathan Nolan', 15))"
+        }
+    ],
+    "hint": "In the Movie.clone() method, after calling super.clone(), manually clone the director object and assign it to the new Movie instance."
+},
+    {
+    "id": "java-oppe2-jan2025-q3",
+    "title": "Odd Number Exception",
+    "subject": "Java",
+    "examLevel": "OPPE 2",
+    "difficulty": "Easy",
+    "description": "Write a Java program that takes an integer array as input. Iterating through the array, if any element is an odd number, throw a user-defined exception named 'OddNumberException' with the message 'Odd number found'. If all numbers are even, print 'No odd number found'. You must implement the OddNumberException class.",
+    "examples": [
+        {
+            "input": "[2, 4, 5, 6, 7]",
+            "output": "Exception: Odd number found"
+        },
+        {
+            "input": "[2, 4, 6, 8]",
+            "output": "No odd number found"
+        }
+    ],
+    "starterCode": "import java.util.*;\n\nclass OddNumberException extends Exception {\n    public OddNumberException(String message) {\n        super(message);\n    }\n}\n\nclass ArrayChecker {\n    public void checkForOddNumbers(int[] numArr) throws OddNumberException {\n        // Write logic to check for odd numbers\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // Read space separated integers\n        String line = sc.nextLine();\n        String[] parts = line.split(\" \");\n        int[] nums = new int[parts.length];\n        for (int i = 0; i < parts.length; i++) {\n            nums[i] = Integer.parseInt(parts[i]);\n        }\n        \n        ArrayChecker checker = new ArrayChecker();\n        try {\n            checker.checkForOddNumbers(nums);\n            System.out.println(\"No odd number found\");\n        } catch (OddNumberException e) {\n            System.out.println(\"Exception: \" + e.getMessage());\n        }\n    }\n}",
+    "functionName": "checkForOddNumbers",
+    "testCases": [
+        {
+            "input": "2 4 5 6 7",
+            "expected": "Exception: Odd number found"
+        },
+        {
+            "input": "2 4 6 8",
+            "expected": "No odd number found"
+        }
+    ],
+    "hint": "Extend the Exception class. In the checker loop, use 'num % 2 != 0' to detect odd numbers and throw the new exception."
+},
+    {
+    "id": "java-oppe2-jan2025-q4",
+    "title": "Highest Tax Generic Method",
+    "subject": "Java",
+    "examLevel": "OPPE 2",
+    "difficulty": "Medium",
+    "description": "Create a program to find the object with the highest tax from a list of products. 1) Define an interface 'Taxable' with a method 'calculateTax()'. 2) Create classes 'Electronics' and 'Book' that implement 'Taxable'. Tax is 10% of the price (0.1 * price). 3) Implement a generic method 'findMax' that accepts a list of objects extending Taxable and returns the highest tax value found.",
+    "examples": [
+        {
+            "input": "Input: Electronics[Laptop(5000), Phone(30000)], Book[Java(1000)]",
+            "output": ""
+        },
+        {
+            "input": "Calculation: Laptop Tax=500, Phone Tax=3000.",
+            "output": ""
+        },
+        {
+            "input": "Output: 3000.0",
+            "output": ""
+        }
+    ],
+    "starterCode": "import java.util.*;\n\ninterface Taxable {\n    double calculateTax();\n}\n\nclass Electronics implements Taxable {\n    double price;\n    public Electronics(double price) { this.price = price; }\n    public double calculateTax() { return 0.1 * price; }\n}\n\nclass Book implements Taxable {\n    double price;\n    public Book(double price) { this.price = price; }\n    public double calculateTax() { return 0.1 * price; }\n}\n\npublic class Main {\n    public static <T extends Taxable> double findMax(List<T> list) {\n        // Implement generic logic to find max tax\n        return 0.0;\n    }\n\n    public static void main(String[] args) {\n        // Hardcoded test for simplicity as generic input parsing is hard\n        List<Electronics> eList = new ArrayList<>();\n        eList.add(new Electronics(5000));\n        eList.add(new Electronics(30000));\n        \n        List<Book> bList = new ArrayList<>();\n        bList.add(new Book(1000));\n        \n        // We need to test findMax with these.\n        // But findMax takes a List<T>.\n        // Let's combine or test separately.\n        \n        System.out.println(findMax(eList));\n    }\n}",
+    "functionName": "findMax",
+    "testCases": [
+        {
+            "input": "",
+            "expected": "3000.0"
+        }
+    ],
+    "hint": "Use a bounded type parameter <T extends Taxable> for the list. Iterate through the list, call calculateTax() on each item, and track the maximum."
+},
+
     {
         id: 'java2-class-person',
         title: 'Person Class',
