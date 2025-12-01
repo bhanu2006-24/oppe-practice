@@ -1,6 +1,400 @@
 import { Problem } from '../types';
 
 export const PYTHON_OPPE1_PROBLEMS: Problem[] = [
+    // --- PYQ PROBLEMS ---
+
+    // --- Set 1 ---
+    {
+        id: 'py-oppe1-set1-p1',
+        title: 'Sum Squares & Abs Diff',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Write a function 'sum_squares_abs_diff_squares' that takes two integer inputs, a and b, and returns a tuple with:
+1. The sum of the squares of a and b.
+2. The absolute difference of the squares of a and b.`,
+        examples: [{ input: 'a = 3, b = 4', output: '(25, 7)' }],
+        starterCode: `def sum_squares_abs_diff_squares(a, b):
+    # Write your code here
+    pass`,
+        functionName: 'sum_squares_abs_diff_squares',
+        testCases: [{ input: '(3, 4)', expected: '(25, 7)' }],
+        hint: 'Return (a**2 + b**2, abs(a**2 - b**2))'
+    },
+    {
+        id: 'py-oppe1-set1-p2',
+        title: 'Odd Length Palindrome',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Write a function 'is_odd_length_palindrome' that takes a string s and returns True if s is a palindrome of odd length, and False otherwise.`,
+        examples: [{ input: '"nun"', output: 'True' }, { input: '"noon"', output: 'False' }],
+        starterCode: `def is_odd_length_palindrome(s):
+    # Write your code here
+    pass`,
+        functionName: 'is_odd_length_palindrome',
+        testCases: [{ input: '("nun")', expected: 'True' }, { input: '("noon")', expected: 'False' }],
+        hint: 'Check s == s[::-1] and len(s) % 2 != 0'
+    },
+    {
+        id: 'py-oppe1-set1-p3',
+        title: 'Remove Elements at Indices',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Write a function 'remove_elements_at_two_indices' that takes a list l and two indices i1 and i2. The function should remove the elements at these two indices from the list l. Assume the indices are non-negative and unique. The function should not return anything but should modify the input list directly.`,
+        examples: [{ input: 'l = [1, 2, 3, 4, 5, 6, 7], i1 = 5, i2 = 1', output: '[1, 3, 4, 5, 7]' }],
+        starterCode: `def remove_elements_at_two_indices(l, i1, i2):
+    # Write your code here
+    pass`,
+        functionName: 'remove_elements_at_two_indices',
+        testCases: [{ input: '([1, 2, 3, 4, 5, 6, 7], 5, 1)', expected: 'None' }], // Checks side effect usually
+        hint: 'Remove larger index first to avoid shifting issues.'
+    },
+    {
+        id: 'py-oppe1-set1-p4',
+        title: 'Sum of Squares of Even',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Write a function 'sum_of_squares_of_even' that takes a list of integers and returns the sum of squares of all even numbers in the list.`,
+        examples: [{ input: '[1, 2, 3, 4, 5, 6]', output: '56' }],
+        starterCode: `def sum_of_squares_of_even(nums):
+    # Write your code here
+    pass`,
+        functionName: 'sum_of_squares_of_even',
+        testCases: [{ input: '([1, 2, 3, 4, 5, 6])', expected: '56' }],
+        hint: 'Sum x**2 for x in nums if x % 2 == 0'
+    },
+    {
+        id: 'py-oppe1-set1-p5',
+        title: 'Vowels to Uppercase',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Write a program that takes a passage with n lines of text as input. For each line, convert all vowels (a, e, i, o, u) to uppercase and all other characters to lowercase.
+        
+Input Format:
+The first line contains an integer n, the number of lines.
+The next n lines contain the passage.`,
+        examples: [{ input: '1\nHello World', output: 'hEllO wOrld' }],
+        starterCode: `def main():
+    # Write your code here
+    pass`,
+        functionName: 'main', // I/O problem
+        testCases: [],
+        hint: 'Iterate chars, check if in "aeiou".'
+    },
+    {
+        id: 'py-oppe1-set1-p6',
+        title: 'Filter Roll Numbers',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Write a function 'get_roll_nos' to filter student roll numbers based on criteria:
+- 'above_average': Marks >= average.
+- 'below_average': Marks < average.
+- 'fail': Marks < 40.
+- 'toppers': Marks >= 90.
+- None: Return all.
+Data format: list of tuples (rollno, marks).`,
+        examples: [],
+        starterCode: `def get_roll_nos(data, criteria=None):
+    # Write your code here
+    pass`,
+        functionName: 'get_roll_nos',
+        testCases: [],
+        hint: 'Calculate average first.'
+    },
+    {
+        id: 'py-oppe1-set1-p7',
+        title: 'V Shaped Pattern',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Given an integer n > 0, print a "V" shaped pattern with n rows using backslashes and forward slashes, with 'v' at the bottom.`,
+        examples: [{ input: '2', output: '\\ /\n v' }],
+        starterCode: `def main():
+    # Write your code here
+    pass`,
+        functionName: 'main',
+        testCases: [],
+        hint: 'Use loops and spacing.'
+    },
+
+    // --- Set 2 ---
+    {
+        id: 'py-oppe1-set2-p1',
+        title: 'Right Triangle Even Sides',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Given three side lengths a, b, c (a<=b<=c), check if they form a right triangle AND the perpendicular sides (a, b) are even.`,
+        examples: [],
+        starterCode: `def is_right_triangle_with_even_sides(a, b, c):
+    # Write your code here
+    pass`,
+        functionName: 'is_right_triangle_with_even_sides',
+        testCases: [],
+        hint: 'Check a**2 + b**2 == c**2 and a%2==0 and b%2==0'
+    },
+    {
+        id: 'py-oppe1-set2-p2',
+        title: 'Odd Alpha Even Digits',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Given a string, check if all odd indices are alphabets and even indices are digits.`,
+        examples: [],
+        starterCode: `def is_odd_indices_alpha_and_even_indices_digits(string):
+    # Write your code here
+    pass`,
+        functionName: 'is_odd_indices_alpha_and_even_indices_digits',
+        testCases: [],
+        hint: 'Enumerate and check types.'
+    },
+    {
+        id: 'py-oppe1-set2-p3',
+        title: 'Unique Chars Diff',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Find unique chars present in first word but not in second. Return a set.`,
+        examples: [],
+        starterCode: `def unique_chars_present_in_first_not_in_second(s1, s2):
+    # Write your code here
+    pass`,
+        functionName: 'unique_chars_present_in_first_not_in_second',
+        testCases: [],
+        hint: 'set(s1) - set(s2)'
+    },
+    {
+        id: 'py-oppe1-set2-p4',
+        title: 'Repeat Tuple',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Given tuple (a, b), return tuple with a repeated b times followed by b repeated a times.`,
+        examples: [{ input: '(2, 3)', output: '(2, 2, 2, 3, 3)' }],
+        starterCode: `def repeat(t):
+    # Write your code here
+    pass`,
+        functionName: 'repeat',
+        testCases: [],
+        hint: 'Return tuple([a]*b + [b]*a)'
+    },
+    {
+        id: 'py-oppe1-set2-p5',
+        title: 'Swap Even Odd Indices',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Swap values at even and odd indices in a list. Modify in place.`,
+        examples: [],
+        starterCode: `def swap_even_and_odd_indices(l):
+    # Write your code here
+    pass`,
+        functionName: 'swap_even_and_odd_indices',
+        testCases: [],
+        hint: 'Loop with step 2.'
+    },
+    {
+        id: 'py-oppe1-set2-p6',
+        title: 'Num Squares Dict',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Create dict with numbers 1 to n as keys and their squares as values.`,
+        examples: [],
+        starterCode: `def num_squares(n):
+    # Write your code here
+    pass`,
+        functionName: 'num_squares',
+        testCases: [],
+        hint: '{i: i**2 for i in range(1, n+1)}'
+    },
+    {
+        id: 'py-oppe1-set2-p7',
+        title: 'Row with Max Zeros',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Find index of row with max number of zeros in a matrix.`,
+        examples: [],
+        starterCode: `def row_index_with_most_number_of_zeros(matrix):
+    # Write your code here
+    pass`,
+        functionName: 'row_index_with_most_number_of_zeros',
+        testCases: [],
+        hint: 'Use max with key counting zeros.'
+    },
+    {
+        id: 'py-oppe1-set2-p8',
+        title: 'Top K Teams',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Given list of dicts (name, runs, team), find top k teams by total runs.`,
+        examples: [],
+        starterCode: `def top_k_teams(batsmen, k):
+    # Write your code here
+    pass`,
+        functionName: 'top_k_teams',
+        testCases: [],
+        hint: 'Aggregate runs per team then sort.'
+    },
+    {
+        id: 'py-oppe1-set2-p9',
+        title: 'Antakshari Subsequence',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Hard',
+        description: `Find length of longest subsequence where last char of word equals first char of next word.`,
+        examples: [],
+        starterCode: `def main():
+    # Write your code here
+    pass`,
+        functionName: 'main',
+        testCases: [],
+        hint: 'Dynamic programming or greedy if simple.'
+    },
+
+    // --- Set 3 ---
+    {
+        id: 'py-oppe1-set3-p1',
+        title: 'Square and Clip',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Square the integer x and clip result to threshold.`,
+        examples: [],
+        starterCode: `def square_and_clip(x, threshold):
+    # Write your code here
+    pass`,
+        functionName: 'square_and_clip',
+        testCases: [],
+        hint: 'min(x**2, threshold)'
+    },
+    {
+        id: 'py-oppe1-set3-p2',
+        title: 'Lower First Upper Second',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Given even length string, first half lowercase, second half uppercase.`,
+        examples: [],
+        starterCode: `def lowercase_first_half_and_uppercase_second_half(s):
+    # Write your code here
+    pass`,
+        functionName: 'lowercase_first_half_and_uppercase_second_half',
+        testCases: [],
+        hint: 'Slice and convert.'
+    },
+    {
+        id: 'py-oppe1-set3-p3',
+        title: 'Add Middle to Ends',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Given odd length list, insert middle element to both ends. Modify in place.`,
+        examples: [],
+        starterCode: `def add_the_middle_element_to_both_ends(l):
+    # Write your code here
+    pass`,
+        functionName: 'add_the_middle_element_to_both_ends',
+        testCases: [],
+        hint: 'Find mid index, insert at 0 and append.'
+    },
+    {
+        id: 'py-oppe1-set3-p4',
+        title: 'Manhattan Distance via B',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Calculate Manhattan distance from a to c via b. Points are tuples (x, y).`,
+        examples: [],
+        starterCode: `def manhattan_distance_via_b(a, b, c):
+    # Write your code here
+    pass`,
+        functionName: 'manhattan_distance_via_b',
+        testCases: [],
+        hint: 'dist(a,b) + dist(b,c)'
+    },
+    {
+        id: 'py-oppe1-set3-p5',
+        title: 'Unique Common Digits',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Return number of unique digits common to both n1 and n2.`,
+        examples: [],
+        starterCode: `def number_of_unique_common_digits(n1, n2):
+    # Write your code here
+    pass`,
+        functionName: 'number_of_unique_common_digits',
+        testCases: [],
+        hint: 'set(str(n1)) & set(str(n2))'
+    },
+    {
+        id: 'py-oppe1-set3-p6',
+        title: 'Create Indexed Dict',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Easy',
+        description: `Create dict with indices as keys and names as values from list.`,
+        examples: [],
+        starterCode: `def create_indexed_dict(names):
+    # Write your code here
+    pass`,
+        functionName: 'create_indexed_dict',
+        testCases: [],
+        hint: 'dict(enumerate(names))'
+    },
+    {
+        id: 'py-oppe1-set3-p7',
+        title: 'Num to Word',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Generate string with digits as words separated by hyphens.`,
+        examples: [],
+        starterCode: `def num_to_word(num):
+    # Write your code here
+    pass`,
+        functionName: 'num_to_word',
+        testCases: [],
+        hint: 'Map digits to words.'
+    },
+    {
+        id: 'py-oppe1-set3-p8',
+        title: 'Courses Sorted by Enrollment',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Medium',
+        description: `Given dict of student: [courses], return courses sorted by enrollment count (desc).`,
+        examples: [],
+        starterCode: `def courses_sorted_by_enrollment(student_courses):
+    # Write your code here
+    pass`,
+        functionName: 'courses_sorted_by_enrollment',
+        testCases: [],
+        hint: 'Count course occurrences then sort.'
+    },
+    {
+        id: 'py-oppe1-set3-p9',
+        title: 'Min Max Balance',
+        subject: 'Python',
+        examLevel: 'OPPE 1',
+        difficulty: 'Hard',
+        description: `Given initial balance and daily transactions, find min, max, and end balance for each day.`,
+        examples: [],
+        starterCode: `def main():
+    # Write your code here
+    pass`,
+        functionName: 'main',
+        testCases: [],
+        hint: 'Track running balance.'
+    },
     // --- EXISTING PROBLEMS ---
     {
         id: 'py-oppe1-sq-diff',
@@ -940,7 +1334,7 @@ export const PYTHON_OPPE1_PROBLEMS: Problem[] = [
     },
 
     // FILE HANDLING QUESTIONS (15 new questions)
-    
+
     // 51. Count Lines in Content
     {
         id: 'py-oppe1-file-count-lines',
@@ -961,7 +1355,7 @@ export const PYTHON_OPPE1_PROBLEMS: Problem[] = [
         ],
         hint: 'Split by newline and count.'
     },
-    
+
     // 52. Count Words in Content
     {
         id: 'py-oppe1-file-count-words',
@@ -981,7 +1375,7 @@ export const PYTHON_OPPE1_PROBLEMS: Problem[] = [
         ],
         hint: 'Split by whitespace and count.'
     },
-    
+
     // 53. Find Longest Line
     {
         id: 'py-oppe1-file-longest-line',
@@ -1001,7 +1395,7 @@ export const PYTHON_OPPE1_PROBLEMS: Problem[] = [
         ],
         hint: 'Use max with key=len on lines.'
     },
-    
+
     // 54. Search Word in Content
     {
         id: 'py-oppe1-file-search',
@@ -1021,7 +1415,7 @@ export const PYTHON_OPPE1_PROBLEMS: Problem[] = [
         ],
         hint: 'Check if word in content.'
     },
-    
+
     // 55. Count Specific Word
     {
         id: 'py-oppe1-file-word-count',
@@ -1041,7 +1435,7 @@ export const PYTHON_OPPE1_PROBLEMS: Problem[] = [
         ],
         hint: 'Split content and count word.'
     },
-    
+
     // 56. File Stats
     {
         id: 'py-oppe1-file-stats',
@@ -1061,7 +1455,7 @@ export const PYTHON_OPPE1_PROBLEMS: Problem[] = [
         ],
         hint: 'Count lines, words, and characters.'
     },
-    
+
     // 57. Filter Lines by Keyword
     {
         id: 'py-oppe1-file-filter',
@@ -1081,7 +1475,7 @@ export const PYTHON_OPPE1_PROBLEMS: Problem[] = [
         ],
         hint: 'Filter lines containing keyword.'
     },
-    
+
     // 58. Remove Empty Lines
     {
         id: 'py-oppe1-file-remove-empty',
@@ -1101,7 +1495,7 @@ export const PYTHON_OPPE1_PROBLEMS: Problem[] = [
         ],
         hint: 'Filter out empty lines and join.'
     },
-    
+
     // 59. Average Numbers in File
     {
         id: 'py-oppe1-file-avg-numbers',
@@ -1121,7 +1515,7 @@ export const PYTHON_OPPE1_PROBLEMS: Problem[] = [
         ],
         hint: 'Split, convert to numbers, calculate average.'
     },
-    
+
     // 60. Replace Text in Content
     {
         id: 'py-oppe1-file-replace',
@@ -1141,7 +1535,7 @@ export const PYTHON_OPPE1_PROBLEMS: Problem[] = [
         ],
         hint: 'Use string replace method.'
     },
-    
+
     // 61. Reverse Lines Order
     {
         id: 'py-oppe1-file-reverse-lines',
@@ -1161,7 +1555,7 @@ export const PYTHON_OPPE1_PROBLEMS: Problem[] = [
         ],
         hint: 'Split, reverse list, join.'
     },
-    
+
     // 62. Parse CSV Line
     {
         id: 'py-oppe1-file-parse-csv',
@@ -1181,7 +1575,7 @@ export const PYTHON_OPPE1_PROBLEMS: Problem[] = [
         ],
         hint: 'Split by comma.'
     },
-    
+
     // 63. Count Blank Lines
     {
         id: 'py-oppe1-file-blank-lines',
@@ -1201,7 +1595,7 @@ export const PYTHON_OPPE1_PROBLEMS: Problem[] = [
         ],
         hint: 'Check if stripped line is empty.'
     },
-    
+
     // 64. Merge Two File Contents
     {
         id: 'py-oppe1-file-merge',
@@ -1221,7 +1615,7 @@ export const PYTHON_OPPE1_PROBLEMS: Problem[] = [
         ],
         hint: 'Join with newline.'
     },
-    
+
     // 65. Extract Numbers from Content
     {
         id: 'py-oppe1-file-extract-nums',

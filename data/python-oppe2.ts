@@ -1,6 +1,418 @@
 import { Problem } from '../types';
 
 export const PYTHON_OPPE2_PROBLEMS: Problem[] = [
+    // --- PYQ PROBLEMS ---
+
+    // --- Set 1 ---
+    {
+        id: 'py-oppe2-set1-p1',
+        title: 'Ten Digit Even',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Write a function 'is_ten_digit_even' that returns True if the number is a 10 digit even number, False otherwise.`,
+        examples: [{ input: '8769473839', output: 'False' }],
+        starterCode: `def is_ten_digit_even(n):
+    # Write your code here
+    pass`,
+        functionName: 'is_ten_digit_even',
+        testCases: [{ input: '(8769473839)', expected: 'False' }, { input: '(9289479278)', expected: 'True' }],
+        hint: 'Check len(str(n)) == 10 and n % 2 == 0'
+    },
+    {
+        id: 'py-oppe2-set1-p2',
+        title: 'Percentage Increase',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Calculate the percentage increase from the original value to the new value.`,
+        examples: [{ input: '50, 75', output: '50.0' }],
+        starterCode: `def percentage_increase(original, new):
+    # Write your code here
+    pass`,
+        functionName: 'percentage_increase',
+        testCases: [{ input: '(50, 75)', expected: '50.0' }, { input: '(80, 100)', expected: '25.0' }],
+        hint: '((new - original) / original) * 100'
+    },
+    {
+        id: 'py-oppe2-set1-p3',
+        title: 'Find Indices',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Find all indices of an element in a list.`,
+        examples: [{ input: '[1, 2, 3, 2, 4], 2', output: '[1, 3]' }],
+        starterCode: `def find_indices_of_element(l, elem):
+    # Write your code here
+    pass`,
+        functionName: 'find_indices_of_element',
+        testCases: [{ input: '([1, 2, 3, 2, 4], 2)', expected: '[1, 3]' }],
+        hint: 'Enumerate and collect indices.'
+    },
+    {
+        id: 'py-oppe2-set1-p4',
+        title: 'Swap Adjacent',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Swap every pair of adjacent elements in the tuple.`,
+        examples: [{ input: '(1, 2, 3, 4, 5, 6)', output: '(2, 1, 4, 3, 6, 5)' }],
+        starterCode: `def swap_adjacent_elements(t):
+    # Write your code here
+    pass`,
+        functionName: 'swap_adjacent_elements',
+        testCases: [{ input: '((1, 2, 3, 4, 5, 6))', expected: '(2, 1, 4, 3, 6, 5)' }],
+        hint: 'Iterate with step 2.'
+    },
+    {
+        id: 'py-oppe2-set1-p5',
+        title: 'Common Chars',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Find all the unique common characters present in the given words and return them as a string in ascending order.`,
+        examples: [{ input: '"apple", "ball"', output: '"al"' }],
+        starterCode: `def common_chars(word1, word2):
+    # Write your code here
+    pass`,
+        functionName: 'common_chars',
+        testCases: [{ input: '("apple", "ball")', expected: '"al"' }],
+        hint: 'sorted(set(word1) & set(word2))'
+    },
+    {
+        id: 'py-oppe2-set1-p6',
+        title: 'Count Values',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Count the number of occurrences of each value in the dictionary. Return a dict where keys are values from input dict, and values are counts.`,
+        examples: [{ input: '{"a": 1, "b": 2, "c": 1}', output: '{1: 2, 2: 1}' }],
+        starterCode: `def count_values_occurrences(d):
+    # Write your code here
+    pass`,
+        functionName: 'count_values_occurrences',
+        testCases: [{ input: '({"a": 1, "b": 2, "c": 1})', expected: '{1: 2, 2: 1}' }],
+        hint: 'Count values using a loop or Counter.'
+    },
+    {
+        id: 'py-oppe2-set1-p7',
+        title: 'Longest Common Prefix',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Find the longest common prefix among the given words of the sentence.`,
+        examples: [],
+        starterCode: `def longest_common_prefix(sentence):
+    # Write your code here
+    pass`,
+        functionName: 'longest_common_prefix',
+        testCases: [],
+        hint: 'Split sentence, sort, compare first and last.'
+    },
+    {
+        id: 'py-oppe2-set1-p8',
+        title: 'Get Leaderboard',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Given a list of dictionaries (matches), generate a leaderboard based on points (Win:2, Draw:1, Loss:0) and goal scored. Sort desc.`,
+        examples: [],
+        starterCode: `def get_leaderboard(matches):
+    # Write your code here
+    pass`,
+        functionName: 'get_leaderboard',
+        testCases: [],
+        hint: 'Calculate points per team, sort by points then goals.'
+    },
+    {
+        id: 'py-oppe2-set1-p9',
+        title: 'Consistent Sales',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Hard',
+        description: `Return the name of the region with the highest count of representatives who have shown consistent sales growth (Q1 < Q2 < Q3 < Q4). Input is filename.`,
+        examples: [],
+        starterCode: `def consistent_sales_increase(filename):
+    # Write your code here
+    pass`,
+        functionName: 'consistent_sales_increase',
+        testCases: [],
+        hint: 'Read CSV, parse rows, check condition, count by region.'
+    },
+
+    // --- Set 2 ---
+    {
+        id: 'py-oppe2-set2-p1',
+        title: 'Digit Product',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Calculate the product of the digits of an integer.`,
+        examples: [{ input: '123', output: '6' }],
+        starterCode: `def digit_product(n):
+    # Write your code here
+    pass`,
+        functionName: 'digit_product',
+        testCases: [{ input: '(123)', expected: '6' }, { input: '(101)', expected: '0' }],
+        hint: 'Multiply digits.'
+    },
+    {
+        id: 'py-oppe2-set2-p2',
+        title: 'Capitalize First Last',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Capitalize the first and last characters of each word of the sentence.`,
+        examples: [{ input: '"hello world"', output: '"HellO WorlD"' }],
+        starterCode: `def capitalize_first_and_last(sentence):
+    # Write your code here
+    pass`,
+        functionName: 'capitalize_first_and_last',
+        testCases: [{ input: '("hello world")', expected: '"HellO WorlD"' }],
+        hint: 'Split, modify each word, join.'
+    },
+    {
+        id: 'py-oppe2-set2-p3',
+        title: 'Unflatten Tuple',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Given a flat tuple of length m*n, convert it into a tuple of tuples with dimensions m x n.`,
+        examples: [{ input: '(1, 2, 3, 4), 2, 2', output: '((1, 2), (3, 4))' }],
+        starterCode: `def unflatten(t, m, n):
+    # Write your code here
+    pass`,
+        functionName: 'unflatten',
+        testCases: [{ input: '((1, 2, 3, 4), 2, 2)', expected: '((1, 2), (3, 4))' }],
+        hint: 'Slice tuple in loop.'
+    },
+    {
+        id: 'py-oppe2-set2-p4',
+        title: 'Kth Longest Word',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Find the k-th longest word in a list of words where each word has a unique length.`,
+        examples: [{ input: '["apple", "banana"], 1', output: '"banana"' }],
+        starterCode: `def kth_longest_word(words, k):
+    # Write your code here
+    pass`,
+        functionName: 'kth_longest_word',
+        testCases: [{ input: '(["apple", "banana"], 1)', expected: '"banana"' }],
+        hint: 'Sort by length desc, take index k-1.'
+    },
+    {
+        id: 'py-oppe2-set2-p5',
+        title: 'Is Heterogram',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Check if a given sentence is a heterogram (no letter occurs more than once). Ignore spaces/case? Usually case insensitive, ignore spaces.`,
+        examples: [{ input: '"Blue bat"', output: 'False' }],
+        starterCode: `def is_heterogram(sentence):
+    # Write your code here
+    pass`,
+        functionName: 'is_heterogram',
+        testCases: [{ input: '("Blue bat")', expected: 'False' }],
+        hint: 'Check duplicates in letters.'
+    },
+    {
+        id: 'py-oppe2-set2-p6',
+        title: 'Filter Keys',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Filter the dictionary keys where the value is greater than the given threshold. Modify in place.`,
+        examples: [],
+        starterCode: `def filter_keys_by_value(d, threshold):
+    # Write your code here
+    pass`,
+        functionName: 'filter_keys_by_value',
+        testCases: [],
+        hint: 'Iterate copy of keys, del if value <= threshold.'
+    },
+    {
+        id: 'py-oppe2-set2-p7',
+        title: 'Happy Numbers',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Find the number of happy numbers in the given list. Happy number: sum of square of digits leads to 1.`,
+        examples: [],
+        starterCode: `def n_happy_numbers(numbers):
+    # Write your code here
+    pass`,
+        functionName: 'n_happy_numbers',
+        testCases: [],
+        hint: 'Helper function for is_happy.'
+    },
+    {
+        id: 'py-oppe2-set2-p8',
+        title: 'Best Performers',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Hard',
+        description: `Given list of dicts (overs), generate ranking based on wickets and economy.`,
+        examples: [],
+        starterCode: `def best_performers(overs):
+    # Write your code here
+    pass`,
+        functionName: 'best_performers',
+        testCases: [],
+        hint: 'Calculate stats per bowler.'
+    },
+    {
+        id: 'py-oppe2-set2-p9',
+        title: 'Total Price',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Compute total amount spent. Inputs: prices_file, shopping_file.`,
+        examples: [],
+        starterCode: `def calculate_total_price(prices_file, shopping_file):
+    # Write your code here
+    pass`,
+        functionName: 'calculate_total_price',
+        testCases: [],
+        hint: 'Read both CSVs, join on Product ID/Name.'
+    },
+
+    // --- Set 3 ---
+    {
+        id: 'py-oppe2-set3-p1',
+        title: 'Arithmetic Operations',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Given tuple (a, b), return tuple (sum, diff, prod, quotient).`,
+        examples: [{ input: '(1, 2)', output: '(3, -1, 2, 0)' }],
+        starterCode: `def arithmetic_operations(t):
+    # Write your code here
+    pass`,
+        functionName: 'arithmetic_operations',
+        testCases: [{ input: '((1, 2))', expected: '(3, -1, 2, 0)' }],
+        hint: 'Return (a+b, a-b, a*b, a//b)'
+    },
+    {
+        id: 'py-oppe2-set3-p2',
+        title: 'Second Largest',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Return second largest number in list.`,
+        examples: [{ input: '[1, 2, 3, 4, 5]', output: '4' }],
+        starterCode: `def second_largest(lst):
+    # Write your code here
+    pass`,
+        functionName: 'second_largest',
+        testCases: [{ input: '([1, 2, 3, 4, 5])', expected: '4' }],
+        hint: 'Sort and pick second last.'
+    },
+    {
+        id: 'py-oppe2-set3-p3',
+        title: 'Not Present in Both',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Return list of items present in either list 1 or list 2 but not in both (symmetric difference).`,
+        examples: [],
+        starterCode: `def not_present_in_both(lst1, lst2):
+    # Write your code here
+    pass`,
+        functionName: 'not_present_in_both',
+        testCases: [],
+        hint: 'list(set(lst1) ^ set(lst2))'
+    },
+    {
+        id: 'py-oppe2-set3-p4',
+        title: 'Create Count Dict',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Easy',
+        description: `Return dict where keys are items from lst1 and values are counts in lst2.`,
+        examples: [],
+        starterCode: `def create_count_dict(lst1, lst2):
+    # Write your code here
+    pass`,
+        functionName: 'create_count_dict',
+        testCases: [],
+        hint: '{k: lst2.count(k) for k in lst1}'
+    },
+    {
+        id: 'py-oppe2-set3-p5',
+        title: 'Modify String',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Separate chars at odd/even indices. Return merged string with even indices first and odd indices second in reverse order.`,
+        examples: [{ input: '"abcde"', output: '"acedb"' }],
+        starterCode: `def modify_string_1(s):
+    # Write your code here
+    pass`,
+        functionName: 'modify_string_1',
+        testCases: [{ input: '("abcde")', expected: '"acedb"' }],
+        hint: 's[::2] + s[1:][::-1]'
+    },
+    {
+        id: 'py-oppe2-set3-p6',
+        title: 'Average of Numbers',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Return average of integers and floats in list, rounded to 2 decimals. Return -1 if none.`,
+        examples: [],
+        starterCode: `def average_of_numbers(lst):
+    # Write your code here
+    pass`,
+        functionName: 'average_of_numbers',
+        testCases: [],
+        hint: 'Filter numbers, sum/count.'
+    },
+    {
+        id: 'py-oppe2-set3-p7',
+        title: 'Most Frequent Element',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Find most frequent integer. If multiple, return largest one.`,
+        examples: [],
+        starterCode: `def most_frequent_element(lst):
+    # Write your code here
+    pass`,
+        functionName: 'most_frequent_element',
+        testCases: [],
+        hint: 'Count frequencies, sort by count desc then value desc.'
+    },
+    {
+        id: 'py-oppe2-set3-p8',
+        title: 'Valid Substring',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Medium',
+        description: `Check if string can be split into two substrings that are both in word_list.`,
+        examples: [],
+        starterCode: `def valid_substring(s, word_list):
+    # Write your code here
+    pass`,
+        functionName: 'valid_substring',
+        testCases: [],
+        hint: 'Iterate split point.'
+    },
+    {
+        id: 'py-oppe2-set3-p9',
+        title: 'Most Frequent Alpha',
+        subject: 'Python',
+        examLevel: 'OPPE 2',
+        difficulty: 'Hard',
+        description: `Return most frequent alphabetic characters (case sensitive) in file.`,
+        examples: [],
+        starterCode: `def most_frequent_alpha_character(filename):
+    # Write your code here
+    pass`,
+        functionName: 'most_frequent_alpha_character',
+        testCases: [],
+        hint: 'Read file, count chars, filter alpha.'
+    },
     // --- EXISTING PROBLEMS ---
     {
         id: 'py-oppe2-matrix-mult',
