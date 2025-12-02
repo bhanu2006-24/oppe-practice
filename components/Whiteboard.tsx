@@ -162,23 +162,6 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
     };
 
     const draw = (e: React.MouseEvent | React.TouchEvent) => {
-        if (isDraggingText && textInput && dragStartRef.current) {
-            const canvas = canvasRef.current;
-            if (!canvas) return;
-            const { offsetX, offsetY } = getCoordinates(e, canvas);
-
-            const dx = offsetX - dragStartRef.current.x;
-            const dy = offsetY - dragStartRef.current.y;
-
-            setTextInput({
-                ...textInput,
-                x: textInput.x + dx,
-                y: textInput.y + dy
-            });
-            dragStartRef.current = { x: offsetX, y: offsetY };
-            return;
-        }
-
         if (!isDrawing) return;
         const canvas = canvasRef.current;
         if (!canvas) return;
@@ -250,10 +233,69 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
         setIsDraggingText(true);
         const canvas = canvasRef.current;
         if (canvas) {
-            const coords = getCoordinates(e, canvas);
-            dragStartRef.current = { x: coords.offsetX, y: coords.offsetY };
+            // Calculate offset from the top-left of the text box
+            // This prevents the box from jumping to center on mouse down
+            let clientX, clientY;
+            if ('touches' in e) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            } else {
+                clientX = (e as React.MouseEvent).clientX;
+                clientY = (e as React.MouseEvent).clientY;
+            }
+
+            // Store the initial mouse position
+            dragStartRef.current = { x: clientX, y: clientY };
         }
     };
+
+    // Global event listeners for dragging text
+    useEffect(() => {
+        const handleGlobalMove = (e: MouseEvent | TouchEvent) => {
+            if (!isDraggingText || !textInput || !dragStartRef.current) return;
+
+            let clientX, clientY;
+            if ('touches' in e) {
+                clientX = (e as TouchEvent).touches[0].clientX;
+                clientY = (e as TouchEvent).touches[0].clientY;
+            } else {
+                clientX = (e as MouseEvent).clientX;
+                clientY = (e as MouseEvent).clientY;
+            }
+
+            const dx = clientX - dragStartRef.current.x;
+            const dy = clientY - dragStartRef.current.y;
+
+            setTextInput(prev => prev ? ({
+                ...prev,
+                x: prev.x + dx,
+                y: prev.y + dy
+            }) : null);
+
+            dragStartRef.current = { x: clientX, y: clientY };
+        };
+
+        const handleGlobalUp = () => {
+            if (isDraggingText) {
+                setIsDraggingText(false);
+                dragStartRef.current = null;
+            }
+        };
+
+        if (isDraggingText) {
+            window.addEventListener('mousemove', handleGlobalMove);
+            window.addEventListener('mouseup', handleGlobalUp);
+            window.addEventListener('touchmove', handleGlobalMove);
+            window.addEventListener('touchend', handleGlobalUp);
+        }
+
+        return () => {
+            window.removeEventListener('mousemove', handleGlobalMove);
+            window.removeEventListener('mouseup', handleGlobalUp);
+            window.removeEventListener('touchmove', handleGlobalMove);
+            window.removeEventListener('touchend', handleGlobalUp);
+        };
+    }, [isDraggingText, textInput]);
 
     const clearCanvas = () => {
         const canvas = canvasRef.current;
