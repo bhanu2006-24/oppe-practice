@@ -11,38 +11,17 @@ type Tool = 'pen' | 'eraser' | 'rect' | 'circle' | 'text';
 export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [isDrawing, setIsDrawing] = useState(false);
-
-    // State for UI
     const [color, setColor] = useState('#000000');
     const [brushSize, setBrushSize] = useState(2);
     const [tool, setTool] = useState<Tool>('pen');
-
-    // Refs for Event Listeners (to avoid stale closures)
-    const colorRef = useRef(color);
-    const brushSizeRef = useRef(brushSize);
-    const toolRef = useRef(tool);
-
     const [snapshot, setSnapshot] = useState<ImageData | null>(null);
     const [startPos, setStartPos] = useState<{ x: number; y: number } | null>(null);
 
     // Text Tool State
     const [textInput, setTextInput] = useState<{ x: number; y: number; value: string } | null>(null);
-    const textInputStateRef = useRef<{ x: number; y: number; value: string } | null>(null); // Ref to track latest state
     const [isDraggingText, setIsDraggingText] = useState(false);
     const dragStartRef = useRef<{ x: number; y: number } | null>(null);
     const textInputRef = useRef<HTMLTextAreaElement>(null);
-
-    // Update refs when state changes
-    useEffect(() => {
-        colorRef.current = color;
-        brushSizeRef.current = brushSize;
-        toolRef.current = tool;
-    }, [color, brushSize, tool]);
-
-    // Sync textInput state to ref
-    useEffect(() => {
-        textInputStateRef.current = textInput;
-    }, [textInput]);
 
     // Initialize canvas and load saved data
     useEffect(() => {
@@ -55,9 +34,6 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
         const resizeCanvas = () => {
             const parent = canvas.parentElement;
             if (parent) {
-                // Prevent resizing to 0 which clears canvas
-                if (parent.clientWidth === 0 || parent.clientHeight === 0) return;
-
                 // Save current content before resizing
                 let tempCanvas: HTMLCanvasElement | null = null;
                 if (canvas.width > 0 && canvas.height > 0) {
@@ -76,13 +52,12 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
                     ctx.drawImage(tempCanvas, 0, 0);
                 }
 
-                // Restore context settings using Refs to get latest values
+                // Restore context settings
                 ctx.lineCap = 'round';
                 ctx.lineJoin = 'round';
-                ctx.strokeStyle = toolRef.current === 'eraser' ? '#ffffff' : colorRef.current;
-                ctx.lineWidth = toolRef.current === 'eraser' ? brushSizeRef.current * 5 : brushSizeRef.current;
-                ctx.fillStyle = colorRef.current;
-                ctx.font = `${brushSizeRef.current * 10}px sans-serif`;
+                ctx.strokeStyle = color;
+                ctx.lineWidth = brushSize;
+                ctx.font = '20px sans-serif';
             }
         };
 
@@ -96,16 +71,13 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
             };
         }
 
-        // Initial resize
         resizeCanvas();
-
-        // Use a debounce or just standard listener? Standard is fine if logic is cheap.
         window.addEventListener('resize', resizeCanvas);
 
         return () => window.removeEventListener('resize', resizeCanvas);
-    }, [sessionId]); // Removed other deps to prevent re-attaching listener constantly
+    }, [sessionId]);
 
-    // Update context when settings change (for normal usage)
+    // Update context when settings change
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
@@ -115,8 +87,6 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
         ctx.strokeStyle = tool === 'eraser' ? '#ffffff' : color;
         ctx.lineWidth = tool === 'eraser' ? brushSize * 5 : brushSize;
         ctx.fillStyle = color;
-        // Ensure font size updates too
-        ctx.font = `${brushSize * 10}px sans-serif`;
     }, [color, brushSize, tool]);
 
     // Focus text input when it appears
@@ -125,18 +95,6 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
             textInputRef.current.focus();
         }
     }, [textInput]);
-
-    // Auto-commit text when switching tools
-    useEffect(() => {
-        // Use the REF to check if there is text to commit, because 'textInput' in dependency array
-        // would trigger this effect on every keystroke if we included it, or be stale if we didn't.
-        // Actually, we only want to trigger when TOOL changes.
-        // But inside, we need the LATEST text.
-        if (tool !== 'text' && textInputStateRef.current) {
-            submitText(textInputStateRef.current);
-            setTextInput(null);
-        }
-    }, [tool]);
 
     const saveSession = () => {
         const canvas = canvasRef.current;
@@ -163,29 +121,6 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
         };
     };
 
-    const submitText = (data: { x: number; y: number; value: string }) => {
-        if (!data.value.trim()) return;
-
-        const canvas = canvasRef.current;
-        if (canvas) {
-            const ctx = canvas.getContext('2d');
-            if (ctx) {
-                ctx.save();
-                // Use refs for style to ensure we use current settings even if called from stale closure
-                ctx.font = `${brushSizeRef.current * 10}px sans-serif`;
-                ctx.fillStyle = colorRef.current;
-                ctx.textBaseline = 'top';
-                const lines = data.value.split('\n');
-                const lineHeight = brushSizeRef.current * 12;
-                lines.forEach((line, i) => {
-                    ctx.fillText(line, data.x + 4, data.y + 4 + (i * lineHeight));
-                });
-                ctx.restore();
-                saveSession();
-            }
-        }
-    };
-
     const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
         // If dragging text, don't draw
         if (isDraggingText) return;
@@ -195,20 +130,16 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
             // Actually, clicking on canvas while text input is open should commit it.
             if ((e.target as HTMLElement).tagName === 'TEXTAREA') return;
 
+            if (textInput) {
+                handleTextSubmit();
+                return;
+            }
+
+            if (e.type === 'touchstart') return;
             const canvas = canvasRef.current;
             if (!canvas) return;
+
             const { offsetX, offsetY } = getCoordinates(e, canvas);
-
-            if (textInput) {
-                // Commit existing text
-                submitText(textInput);
-            }
-
-            // Start new text box
-            if (e.type === 'touchstart') {
-                // For touch, maybe wait? But simple is better.
-            }
-
             setTextInput({ x: offsetX, y: offsetY, value: '' });
             return;
         }
@@ -272,22 +203,50 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
         }
     };
 
+    const handleTextSubmit = () => {
+        if (!textInput) return;
+
+        if (textInput.value.trim()) {
+            const canvas = canvasRef.current;
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                if (ctx) {
+                    ctx.save();
+                    ctx.font = `${brushSize * 10}px sans-serif`;
+                    ctx.fillStyle = color;
+                    ctx.textBaseline = 'top';
+                    const lines = textInput.value.split('\n');
+                    const lineHeight = brushSize * 12; // slightly larger than font size
+                    lines.forEach((line, i) => {
+                        ctx.fillText(line, textInput.x + 4, textInput.y + 4 + (i * lineHeight));
+                    });
+                    ctx.restore();
+                    saveSession();
+                }
+            }
+        }
+        setTextInput(null);
+    };
+
     const handleTextDragStart = (e: React.MouseEvent | React.TouchEvent) => {
         e.stopPropagation();
-        e.preventDefault(); // Prevent focus loss or other default behaviors
         setIsDraggingText(true);
+        const canvas = canvasRef.current;
+        if (canvas) {
+            // Calculate offset from the top-left of the text box
+            // This prevents the box from jumping to center on mouse down
+            let clientX, clientY;
+            if ('touches' in e) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            } else {
+                clientX = (e as React.MouseEvent).clientX;
+                clientY = (e as React.MouseEvent).clientY;
+            }
 
-        let clientX, clientY;
-        if ('touches' in e) {
-            clientX = e.touches[0].clientX;
-            clientY = e.touches[0].clientY;
-        } else {
-            clientX = (e as React.MouseEvent).clientX;
-            clientY = (e as React.MouseEvent).clientY;
+            // Store the initial mouse position
+            dragStartRef.current = { x: clientX, y: clientY };
         }
-
-        // Store the initial mouse position
-        dragStartRef.current = { x: clientX, y: clientY };
     };
 
     // Global event listeners for dragging text
@@ -326,7 +285,7 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
         if (isDraggingText) {
             window.addEventListener('mousemove', handleGlobalMove);
             window.addEventListener('mouseup', handleGlobalUp);
-            window.addEventListener('touchmove', handleGlobalMove, { passive: false });
+            window.addEventListener('touchmove', handleGlobalMove);
             window.addEventListener('touchend', handleGlobalUp);
         }
 
@@ -448,14 +407,20 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
                                 value={textInput.value}
                                 onChange={(e) => setTextInput({ ...textInput, value: e.target.value })}
                                 onBlur={() => {
-                                    // Optional: auto-save on blur if not dragging
-                                    // if (!isDraggingText) submitText(textInput);
+                                    // Small delay to allow clicking "Done" button if we had one, 
+                                    // but here we just want to save if user clicks away.
+                                    // However, dragging might trigger blur if we're not careful.
+                                    // Let's rely on explicit "Enter" or clicking canvas to save.
+                                    // Actually, standard behavior is click away -> save.
+                                    // But dragging the handle shouldn't save.
+                                    if (!isDraggingText) {
+                                        // handleTextSubmit(); // Optional: auto-save on blur
+                                    }
                                 }}
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter' && !e.shiftKey) {
                                         e.preventDefault();
-                                        submitText(textInput);
-                                        setTextInput(null);
+                                        handleTextSubmit();
                                     }
                                     if (e.key === 'Escape') setTextInput(null);
                                 }}
