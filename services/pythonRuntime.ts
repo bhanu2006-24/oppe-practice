@@ -151,10 +151,30 @@ _run_test_safe()
         error: error.message
       });
     } else {
+
       // If it crashed during tests, append error to output
-      capturedOutput += `\n\nRuntime Error: ${error.message}`;
+      capturedOutput += `\n\n${formatPythonError(error.message)}`;
     }
   }
 
   return { results, output: capturedOutput };
+};
+
+const formatPythonError = (errorMsg: string): string => {
+  // Split into lines
+  const lines = errorMsg.split('\n');
+
+  // Filter out internal Pyodide/Python lines that are not relevant to the user
+  const filteredLines = lines.filter(line => {
+    return !line.includes('/lib/python311.zip/_pyodide/') &&
+      !line.includes('await CodeRunner(') &&
+      !line.includes('self.ast = next(self._gen)') &&
+      !line.includes('mod = compile(source, filename, mode, flags | ast.PyCF_ONLY_AST)');
+  });
+
+  // If we filtered everything out (unlikely), return original
+  if (filteredLines.length === 0) return errorMsg;
+
+  // Rejoin
+  return filteredLines.join('\n').trim();
 };

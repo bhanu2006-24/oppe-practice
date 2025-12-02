@@ -76,8 +76,18 @@ export const Playground: React.FC<PlaygroundProps> = ({ onExit, onToggleTheme, i
       let result;
       if (language === 'python') {
         // Use Pyodide for Python (client-side)
-        const { output: pyOutput } = await runPythonCode(code, '', []);
-        result = { output: pyOutput, status: ExecutionStatus.COMPLETED };
+        // Use Pyodide for Python (client-side)
+        const { results, output: pyOutput } = await runPythonCode(code, '', []);
+        let finalOutput = pyOutput;
+        let finalStatus = ExecutionStatus.COMPLETED;
+
+        // Check for global errors (syntax, runtime) caught by runPythonCode
+        if (results.length > 0 && results[0].error) {
+          finalOutput += `\n${results[0].error}`;
+          finalStatus = ExecutionStatus.ERROR;
+        }
+
+        result = { output: finalOutput, status: finalStatus };
       } else {
         // Use Piston for other languages (server-side)
         result = await executeCode(language, code);
