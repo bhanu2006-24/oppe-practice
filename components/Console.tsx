@@ -93,16 +93,16 @@ export const Console: React.FC<ConsoleProps> = ({ status, output, testResults, o
           <button
             onClick={() => setActiveTab('tests')}
             className={`flex items-center px-4 py-2 text-xs font-semibold transition-colors border-r border-slate-200 dark:border-slate-700 whitespace-nowrap ${activeTab === 'tests'
-                ? 'bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-white border-b-2 border-b-blue-500'
-                : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700/50'
+              ? 'bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-white border-b-2 border-b-blue-500'
+              : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700/50'
               }`}
           >
             <ListChecks className="w-3.5 h-3.5 mr-2" />
             Test Results
             {totalCount > 0 && (
               <span className={`ml-2 px-1.5 py-0.5 rounded-full text-[10px] ${passedCount === totalCount
-                  ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300'
-                  : 'bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-300'
+                ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300'
+                : 'bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-300'
                 }`}>
                 {passedCount}/{totalCount}
               </span>
@@ -111,15 +111,15 @@ export const Console: React.FC<ConsoleProps> = ({ status, output, testResults, o
           <button
             onClick={() => setActiveTab('output')}
             className={`flex items-center px-4 py-2 text-xs font-semibold transition-colors border-r border-slate-200 dark:border-slate-700 whitespace-nowrap ${activeTab === 'output'
-                ? 'bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-white border-b-2 border-b-blue-500'
-                : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700/50'
+              ? 'bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-white border-b-2 border-b-blue-500'
+              : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700/50'
               }`}
           >
             <FileText className="w-3.5 h-3.5 mr-2" />
             Output
             {output && <span className="ml-2 w-1.5 h-1.5 rounded-full bg-blue-500 block" />}
           </button>
-          <button
+          {/* <button
             onClick={() => setActiveTab('custom')}
             className={`flex items-center px-4 py-2 text-xs font-semibold transition-colors border-r border-slate-200 dark:border-slate-700 whitespace-nowrap ${activeTab === 'custom'
                 ? 'bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-white border-b-2 border-b-blue-500'
@@ -128,7 +128,7 @@ export const Console: React.FC<ConsoleProps> = ({ status, output, testResults, o
           >
             <Keyboard className="w-3.5 h-3.5 mr-2" />
             Custom Input
-          </button>
+          </button> */}
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
@@ -182,8 +182,8 @@ export const Console: React.FC<ConsoleProps> = ({ status, output, testResults, o
                 <div
                   key={idx}
                   className={`rounded-md border overflow-hidden transition-all ${result.passed
-                      ? 'bg-green-50/50 dark:bg-green-950/10 border-green-200 dark:border-green-900/30'
-                      : 'bg-red-50/50 dark:bg-red-950/10 border-red-200 dark:border-red-900/30'
+                    ? 'bg-green-50/50 dark:bg-green-950/10 border-green-200 dark:border-green-900/30'
+                    : 'bg-red-50/50 dark:bg-red-950/10 border-red-200 dark:border-red-900/30'
                     }`}
                 >
                   <div
@@ -258,7 +258,7 @@ export const Console: React.FC<ConsoleProps> = ({ status, output, testResults, o
         )}
 
         {/* Custom Input View */}
-        {activeTab === 'custom' && (
+        {/* {activeTab === 'custom' && (
           <div className="p-4 h-full flex flex-col">
             <div className="mb-4">
               <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">Custom Input (Stdin)</label>
@@ -293,7 +293,7 @@ export const Console: React.FC<ConsoleProps> = ({ status, output, testResults, o
               </div>
             )}
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

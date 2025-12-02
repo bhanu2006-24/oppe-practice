@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { CodeEditor } from './CodeEditor';
 import { Console } from './Console';
+import { ShortcutsModal } from './ShortcutsModal';
+import { Whiteboard } from './Whiteboard';
 import { runPythonCode } from '../services/pythonRuntime';
 import { executeCode } from '../services/multiCompilerRuntime';
 import { ExecutionStatus, Language } from '../types';
@@ -45,6 +47,10 @@ export const Playground: React.FC<PlaygroundProps> = ({ onExit, onToggleTheme, i
   const [output, setOutput] = useState<string>("");
   const [status, setStatus] = useState<ExecutionStatus>(ExecutionStatus.IDLE);
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
+
+  // New Features State
+  const [showShortcuts, setShowShortcuts] = useState(false);
+  const [showWhiteboard, setShowWhiteboard] = useState(false);
 
   const handleLanguageChange = (lang: Language) => {
     setLanguage(lang);
@@ -205,12 +211,23 @@ export const Playground: React.FC<PlaygroundProps> = ({ onExit, onToggleTheme, i
       {/* Workspace */}
       <div className="flex-1 flex flex-col overflow-hidden">
         <div className="flex-1 relative border-b border-slate-200 dark:border-slate-700">
-          <CodeEditor value={code} onChange={handleCodeChange} language={language} />
+          <CodeEditor
+            value={code}
+            onChange={handleCodeChange}
+            language={language}
+            onRun={handleRun}
+            onOpenShortcuts={() => setShowShortcuts(true)}
+            onOpenWhiteboard={() => setShowWhiteboard(true)}
+          />
         </div>
         <div className="h-1/3 min-h-[150px]">
           <Console status={status} output={output} testResults={[]} />
         </div>
       </div>
-    </div>
+
+
+      {showShortcuts && <ShortcutsModal onClose={() => setShowShortcuts(false)} />}
+      {showWhiteboard && <Whiteboard onClose={() => setShowWhiteboard(false)} />}
+    </div >
   );
 };
