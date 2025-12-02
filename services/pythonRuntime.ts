@@ -148,7 +148,7 @@ _run_test_safe()
         input: "Global Execution",
         expected: "-",
         actual: "Error",
-        error: error.message
+        error: formatPythonError(error.message)
       });
     } else {
 
