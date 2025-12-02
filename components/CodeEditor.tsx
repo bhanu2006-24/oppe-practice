@@ -1,11 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Copy, Check, Type, Search, X, ChevronUp, ChevronDown, AlignLeft, ArrowDownToLine, ArrowUpFromLine, Sparkles, WrapText, MoveVertical, Trash2, ArrowUp, ArrowDown, Replace } from 'lucide-react';
+import { Copy, Check, Type, Search, X, ChevronUp, ChevronDown, AlignLeft, ArrowDownToLine, ArrowUpFromLine, Sparkles, WrapText, MoveVertical, Trash2, ArrowUp, ArrowDown, Replace, Maximize2, Minimize2, Keyboard, PenTool, Play } from 'lucide-react';
 
 interface CodeEditorProps {
   value: string;
   onChange: (value: string) => void;
   language?: string;
   onRun?: () => void;
+  isZenMode?: boolean;
+  onToggleZenMode?: () => void;
+  onOpenShortcuts?: () => void;
+  onOpenWhiteboard?: () => void;
+  errorLine?: number | null;
 }
 
 interface Suggestion {
@@ -85,7 +90,7 @@ const DEFAULT_KEYWORDS = [
   ...KEYWORDS_BY_LANG.bash
 ];
 
-export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, language, onRun }) => {
+export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, language, onRun, isZenMode, onToggleZenMode, onOpenShortcuts, onOpenWhiteboard, errorLine }) => {
   const [lineCount, setLineCount] = useState(1);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -115,6 +120,34 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
     const lines = value.split('\n').length;
     setLineCount(lines);
   }, [value]);
+
+  // Basic Linting
+  const [lintErrors, setLintErrors] = useState<{ line: number; message: string }[]>([]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const errors: { line: number; message: string }[] = [];
+      const lines = value.split('\n');
+      const lang = language?.toLowerCase() || 'text';
+
+      lines.forEach((line, idx) => {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed.startsWith('#') || trimmed.startsWith('//')) return;
+
+        if (lang === 'python') {
+          // Check for missing colons
+          if ((trimmed.startsWith('if ') || trimmed.startsWith('elif ') || trimmed.startsWith('else') ||
+            trimmed.startsWith('for ') || trimmed.startsWith('while ') || trimmed.startsWith('def ') ||
+            trimmed.startsWith('class ') || trimmed.startsWith('try') || trimmed.startsWith('except') ||
+            trimmed.startsWith('finally')) && !trimmed.endsWith(':')) {
+            errors.push({ line: idx + 1, message: 'Missing colon' });
+          }
+        }
+      });
+      setLintErrors(errors);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [value, language]);
 
   // Search Logic
   useEffect(() => {
@@ -701,6 +734,49 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
           {language || 'Editor'}
         </div>
         <div className="flex items-center gap-2">
+          {/* Zen Mode Run Button */}
+          {isZenMode && onRun && (
+            <button
+              onClick={onRun}
+              className="flex items-center gap-1 px-2 py-1 bg-green-600 hover:bg-green-500 text-white rounded text-xs font-bold mr-2 transition-colors"
+              title="Run Code (Cmd/Ctrl + Enter)"
+            >
+              <Play size={12} />
+              Run
+            </button>
+          )}
+
+          <div className="h-4 w-px bg-slate-300 dark:bg-slate-600 mx-1"></div>
+
+          {onOpenShortcuts && (
+            <button
+              onClick={onOpenShortcuts}
+              className="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-[#3e3e42] text-slate-600 dark:text-slate-300 transition-colors"
+              title="Keyboard Shortcuts"
+            >
+              <Keyboard size={14} />
+            </button>
+          )}
+          {onOpenWhiteboard && (
+            <button
+              onClick={onOpenWhiteboard}
+              className="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-[#3e3e42] text-slate-600 dark:text-slate-300 transition-colors"
+              title="Open Whiteboard"
+            >
+              <PenTool size={14} />
+            </button>
+          )}
+          {onToggleZenMode && (
+            <button
+              onClick={onToggleZenMode}
+              className={`p-1.5 rounded hover:bg-slate-200 dark:hover:bg-[#3e3e42] text-slate-600 dark:text-slate-300 transition-colors ${isZenMode ? 'text-blue-500' : ''}`}
+              title={isZenMode ? "Exit Zen Mode" : "Enter Zen Mode"}
+            >
+              {isZenMode ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
+            </button>
+          )}
+
+          <div className="h-4 w-px bg-slate-300 dark:bg-slate-600 mx-1"></div>
           <button
             onClick={() => setShowSearch(!showSearch)}
             className={`p-1.5 rounded hover:bg-slate-200 dark:hover:bg-[#3e3e42] transition-colors ${showSearch ? 'bg-slate-200 dark:bg-[#3e3e42] text-blue-500' : 'text-slate-600 dark:text-slate-300'}`}
@@ -792,9 +868,22 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
           ref={lineNumbersRef}
           className="w-12 bg-slate-100 dark:bg-[#1e1e1e] border-r border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-500 text-right pr-3 pt-4 select-none overflow-hidden"
         >
-          {Array.from({ length: Math.max(lineCount, 20) }).map((_, i) => (
-            <div key={i} className={`leading-6 h-6 ${i === activeLine ? 'text-slate-800 dark:text-slate-200 font-bold' : ''}`}>{i + 1}</div>
-          ))}
+          {Array.from({ length: Math.max(lineCount, 20) }).map((_, i) => {
+            const isRuntimeError = errorLine === i + 1;
+            const lintError = lintErrors.find(e => e.line === i + 1);
+            const hasError = isRuntimeError || lintError;
+
+            return (
+              <div
+                key={i}
+                className={`leading-6 h-6 flex justify-end pr-1 ${i === activeLine ? 'text-slate-800 dark:text-slate-200 font-bold' : ''} ${hasError ? 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400' : ''}`}
+                title={isRuntimeError ? 'Runtime Error' : lintError?.message}
+              >
+                {hasError && <span className="text-[10px] mr-1 select-none">!</span>}
+                {i + 1}
+              </div>
+            );
+          })}
         </div>
 
         {/* Text Area */}

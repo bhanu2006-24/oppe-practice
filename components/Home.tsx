@@ -3,7 +3,7 @@ import { Subject, Level, ExamLevel, Course } from '../types';
 import {
   Code2, Terminal, BookOpen, Database, Cpu,
   Trophy, Github, Linkedin, Layout,
-  GraduationCap, School, Book, Info, Heart, Sun, Moon, Mail
+  GraduationCap, School, Book, Info, Heart, Sun, Moon, Mail, Clock
 } from 'lucide-react';
 
 interface HomeProps {
@@ -14,10 +14,11 @@ interface HomeProps {
   onToggleTheme: () => void;
   isDark: boolean;
   solvedCount: number;
+  onStartExam: () => void;
 }
 
 export const Home: React.FC<HomeProps> = ({
-  onSelectCourse, onGoPlayground, onGoAbout, onGoContribute, onToggleTheme, isDark, solvedCount
+  onSelectCourse, onGoPlayground, onGoAbout, onGoContribute, onToggleTheme, isDark, solvedCount, onStartExam
 }) => {
   const [activeLevel, setActiveLevel] = useState<Level>('Foundation');
 
@@ -190,6 +191,13 @@ export const Home: React.FC<HomeProps> = ({
               className="inline-flex items-center px-6 py-3 rounded-full bg-white dark:bg-transparent border-2 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold hover:border-blue-500 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               Contribute Question
+            </button>
+            <button
+              onClick={onStartExam}
+              className="inline-flex items-center px-6 py-3 rounded-full bg-blue-600 text-white font-bold hover:bg-blue-500 hover:shadow-lg hover:scale-105 transition-all shadow-blue-500/30"
+            >
+              <Clock className="w-4 h-4 mr-2" />
+              Start Mock Exam
             </button>
           </div>
         </div>
