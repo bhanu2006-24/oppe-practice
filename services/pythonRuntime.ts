@@ -161,20 +161,34 @@ _run_test_safe()
 };
 
 const formatPythonError = (errorMsg: string): string => {
-  // Split into lines
   const lines = errorMsg.split('\n');
+  const keptLines: string[] = [];
+  let skipBlock = false;
 
-  // Filter out internal Pyodide/Python lines that are not relevant to the user
-  const filteredLines = lines.filter(line => {
-    return !line.includes('/lib/python311.zip/_pyodide/') &&
-      !line.includes('await CodeRunner(') &&
-      !line.includes('self.ast = next(self._gen)') &&
-      !line.includes('mod = compile(source, filename, mode, flags | ast.PyCF_ONLY_AST)');
-  });
+  for (const line of lines) {
+    // Check for start of a stack frame
+    if (line.trim().startsWith('File "')) {
+      // Identify if it's an internal file
+      if (line.includes('/lib/python') || line.includes('_pyodide')) {
+        skipBlock = true;
+      } else {
+        skipBlock = false;
+      }
+    } else if (!line.startsWith(' ')) {
+      // Reset skip block for non-indented lines (like the error message itself)
+      // But keep "Traceback" header
+      if (!line.startsWith('Traceback')) {
+        skipBlock = false;
+      }
+    }
+
+    if (!skipBlock) {
+      keptLines.push(line);
+    }
+  }
 
   // If we filtered everything out (unlikely), return original
-  if (filteredLines.length === 0) return errorMsg;
+  if (keptLines.length === 0) return errorMsg;
 
-  // Rejoin
-  return filteredLines.join('\n').trim();
+  return keptLines.join('\n').trim();
 };
