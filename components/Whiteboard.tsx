@@ -11,9 +11,17 @@ type Tool = 'pen' | 'eraser' | 'rect' | 'circle' | 'text';
 export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [isDrawing, setIsDrawing] = useState(false);
+
+    // State for UI
     const [color, setColor] = useState('#000000');
     const [brushSize, setBrushSize] = useState(2);
     const [tool, setTool] = useState<Tool>('pen');
+
+    // Refs for Event Listeners (to avoid stale closures)
+    const colorRef = useRef(color);
+    const brushSizeRef = useRef(brushSize);
+    const toolRef = useRef(tool);
+
     const [snapshot, setSnapshot] = useState<ImageData | null>(null);
     const [startPos, setStartPos] = useState<{ x: number; y: number } | null>(null);
 
@@ -22,6 +30,13 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
     const [isDraggingText, setIsDraggingText] = useState(false);
     const dragStartRef = useRef<{ x: number; y: number } | null>(null);
     const textInputRef = useRef<HTMLTextAreaElement>(null);
+
+    // Update refs when state changes
+    useEffect(() => {
+        colorRef.current = color;
+        brushSizeRef.current = brushSize;
+        toolRef.current = tool;
+    }, [color, brushSize, tool]);
 
     // Initialize canvas and load saved data
     useEffect(() => {
@@ -34,6 +49,9 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
         const resizeCanvas = () => {
             const parent = canvas.parentElement;
             if (parent) {
+                // Prevent resizing to 0 which clears canvas
+                if (parent.clientWidth === 0 || parent.clientHeight === 0) return;
+
                 // Save current content before resizing
                 let tempCanvas: HTMLCanvasElement | null = null;
                 if (canvas.width > 0 && canvas.height > 0) {
@@ -52,12 +70,13 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
                     ctx.drawImage(tempCanvas, 0, 0);
                 }
 
-                // Restore context settings
+                // Restore context settings using Refs to get latest values
                 ctx.lineCap = 'round';
                 ctx.lineJoin = 'round';
-                ctx.strokeStyle = color;
-                ctx.lineWidth = brushSize;
-                ctx.font = '20px sans-serif';
+                ctx.strokeStyle = toolRef.current === 'eraser' ? '#ffffff' : colorRef.current;
+                ctx.lineWidth = toolRef.current === 'eraser' ? brushSizeRef.current * 5 : brushSizeRef.current;
+                ctx.fillStyle = colorRef.current;
+                ctx.font = `${brushSizeRef.current * 10}px sans-serif`;
             }
         };
 
@@ -71,13 +90,16 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
             };
         }
 
+        // Initial resize
         resizeCanvas();
+
+        // Use a debounce or just standard listener? Standard is fine if logic is cheap.
         window.addEventListener('resize', resizeCanvas);
 
         return () => window.removeEventListener('resize', resizeCanvas);
-    }, [sessionId]);
+    }, [sessionId]); // Removed other deps to prevent re-attaching listener constantly
 
-    // Update context when settings change
+    // Update context when settings change (for normal usage)
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
@@ -87,6 +109,8 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
         ctx.strokeStyle = tool === 'eraser' ? '#ffffff' : color;
         ctx.lineWidth = tool === 'eraser' ? brushSize * 5 : brushSize;
         ctx.fillStyle = color;
+        // Ensure font size updates too
+        ctx.font = `${brushSize * 10}px sans-serif`;
     }, [color, brushSize, tool]);
 
     // Focus text input when it appears
@@ -144,16 +168,9 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
             if (textInput) {
                 // Commit existing text
                 handleTextSubmit();
-                // Immediately start new text box at new location
-                // We need to wait for state update or just set it directly?
-                // handleTextSubmit sets textInput to null.
-                // We can just set it to the new value directly here, effectively "committing and moving"
-                // But handleTextSubmit needs to read the CURRENT value from state/ref.
-                // Better to do it in one go if possible, or just accept the commit and let user click again?
-                // User expects click -> commit old -> open new.
-                
+
                 // Let's try to commit manually here without clearing state, then update state.
-                 if (textInput.value.trim()) {
+                if (textInput.value.trim()) {
                     const ctx = canvas.getContext('2d');
                     if (ctx) {
                         ctx.save();
@@ -174,7 +191,7 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
             }
 
             if (e.type === 'touchstart') return;
-            
+
             setTextInput({ x: offsetX, y: offsetY, value: '' });
             return;
         }
@@ -267,7 +284,7 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
         e.stopPropagation();
         e.preventDefault(); // Prevent focus loss or other default behaviors
         setIsDraggingText(true);
-        
+
         let clientX, clientY;
         if ('touches' in e) {
             clientX = e.touches[0].clientX;
