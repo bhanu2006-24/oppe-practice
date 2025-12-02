@@ -27,6 +27,7 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
 
     // Text Tool State
     const [textInput, setTextInput] = useState<{ x: number; y: number; value: string } | null>(null);
+    const textInputStateRef = useRef<{ x: number; y: number; value: string } | null>(null); // Ref to track latest state
     const [isDraggingText, setIsDraggingText] = useState(false);
     const dragStartRef = useRef<{ x: number; y: number } | null>(null);
     const textInputRef = useRef<HTMLTextAreaElement>(null);
@@ -37,6 +38,11 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
         brushSizeRef.current = brushSize;
         toolRef.current = tool;
     }, [color, brushSize, tool]);
+
+    // Sync textInput state to ref
+    useEffect(() => {
+        textInputStateRef.current = textInput;
+    }, [textInput]);
 
     // Initialize canvas and load saved data
     useEffect(() => {
@@ -122,8 +128,13 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
 
     // Auto-commit text when switching tools
     useEffect(() => {
-        if (tool !== 'text' && textInput) {
-            handleTextSubmit();
+        // Use the REF to check if there is text to commit, because 'textInput' in dependency array
+        // would trigger this effect on every keystroke if we included it, or be stale if we didn't.
+        // Actually, we only want to trigger when TOOL changes.
+        // But inside, we need the LATEST text.
+        if (tool !== 'text' && textInputStateRef.current) {
+            submitText(textInputStateRef.current);
+            setTextInput(null);
         }
     }, [tool]);
 
@@ -152,6 +163,29 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
         };
     };
 
+    const submitText = (data: { x: number; y: number; value: string }) => {
+        if (!data.value.trim()) return;
+
+        const canvas = canvasRef.current;
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            if (ctx) {
+                ctx.save();
+                // Use refs for style to ensure we use current settings even if called from stale closure
+                ctx.font = `${brushSizeRef.current * 10}px sans-serif`;
+                ctx.fillStyle = colorRef.current;
+                ctx.textBaseline = 'top';
+                const lines = data.value.split('\n');
+                const lineHeight = brushSizeRef.current * 12;
+                lines.forEach((line, i) => {
+                    ctx.fillText(line, data.x + 4, data.y + 4 + (i * lineHeight));
+                });
+                ctx.restore();
+                saveSession();
+            }
+        }
+    };
+
     const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
         // If dragging text, don't draw
         if (isDraggingText) return;
@@ -167,30 +201,13 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
 
             if (textInput) {
                 // Commit existing text
-                handleTextSubmit();
-
-                // Let's try to commit manually here without clearing state, then update state.
-                if (textInput.value.trim()) {
-                    const ctx = canvas.getContext('2d');
-                    if (ctx) {
-                        ctx.save();
-                        ctx.font = `${brushSize * 10}px sans-serif`;
-                        ctx.fillStyle = color;
-                        ctx.textBaseline = 'top';
-                        const lines = textInput.value.split('\n');
-                        const lineHeight = brushSize * 12;
-                        lines.forEach((line, i) => {
-                            ctx.fillText(line, textInput.x + 4, textInput.y + 4 + (i * lineHeight));
-                        });
-                        ctx.restore();
-                        saveSession();
-                    }
-                }
-                setTextInput({ x: offsetX, y: offsetY, value: '' });
-                return;
+                submitText(textInput);
             }
 
-            if (e.type === 'touchstart') return;
+            // Start new text box
+            if (e.type === 'touchstart') {
+                // For touch, maybe wait? But simple is better.
+            }
 
             setTextInput({ x: offsetX, y: offsetY, value: '' });
             return;
@@ -253,31 +270,6 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
             setStartPos(null);
             saveSession();
         }
-    };
-
-    const handleTextSubmit = () => {
-        if (!textInput) return;
-
-        if (textInput.value.trim()) {
-            const canvas = canvasRef.current;
-            if (canvas) {
-                const ctx = canvas.getContext('2d');
-                if (ctx) {
-                    ctx.save();
-                    ctx.font = `${brushSize * 10}px sans-serif`;
-                    ctx.fillStyle = color;
-                    ctx.textBaseline = 'top';
-                    const lines = textInput.value.split('\n');
-                    const lineHeight = brushSize * 12; // slightly larger than font size
-                    lines.forEach((line, i) => {
-                        ctx.fillText(line, textInput.x + 4, textInput.y + 4 + (i * lineHeight));
-                    });
-                    ctx.restore();
-                    saveSession();
-                }
-            }
-        }
-        setTextInput(null);
     };
 
     const handleTextDragStart = (e: React.MouseEvent | React.TouchEvent) => {
@@ -457,12 +449,13 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
                                 onChange={(e) => setTextInput({ ...textInput, value: e.target.value })}
                                 onBlur={() => {
                                     // Optional: auto-save on blur if not dragging
-                                    // if (!isDraggingText) handleTextSubmit();
+                                    // if (!isDraggingText) submitText(textInput);
                                 }}
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter' && !e.shiftKey) {
                                         e.preventDefault();
-                                        handleTextSubmit();
+                                        submitText(textInput);
+                                        setTextInput(null);
                                     }
                                     if (e.key === 'Escape') setTextInput(null);
                                 }}
