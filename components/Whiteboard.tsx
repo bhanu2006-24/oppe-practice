@@ -18,8 +18,10 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
     const [startPos, setStartPos] = useState<{ x: number; y: number } | null>(null);
 
     // Text Tool State
-    const [textInput, setTextInput] = useState<{ x: number; y: number; visible: boolean; value: string } | null>(null);
-    const textInputRef = useRef<HTMLInputElement>(null);
+    const [textInput, setTextInput] = useState<{ x: number; y: number; value: string } | null>(null);
+    const [isDraggingText, setIsDraggingText] = useState(false);
+    const dragStartRef = useRef<{ x: number; y: number } | null>(null);
+    const textInputRef = useRef<HTMLTextAreaElement>(null);
 
     // Initialize canvas and load saved data
     useEffect(() => {
@@ -89,10 +91,10 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
 
     // Focus text input when it appears
     useEffect(() => {
-        if (textInput?.visible && textInputRef.current) {
+        if (textInput && textInputRef.current) {
             textInputRef.current.focus();
         }
-    }, [textInput?.visible]);
+    }, [textInput]);
 
     const saveSession = () => {
         const canvas = canvasRef.current;
@@ -120,16 +122,25 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
     };
 
     const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
+        // If dragging text, don't draw
+        if (isDraggingText) return;
+
         if (tool === 'text') {
+            // If clicking inside the text input (handled by bubbling), ignore here?
+            // Actually, clicking on canvas while text input is open should commit it.
+            if ((e.target as HTMLElement).tagName === 'TEXTAREA') return;
+
+            if (textInput) {
+                handleTextSubmit();
+                return;
+            }
+
             if (e.type === 'touchstart') return;
             const canvas = canvasRef.current;
             if (!canvas) return;
 
-            // If we are already editing, let the blur event handle submission first
-            if (textInput) return;
-
             const { offsetX, offsetY } = getCoordinates(e, canvas);
-            setTextInput({ x: offsetX, y: offsetY, visible: true, value: '' });
+            setTextInput({ x: offsetX, y: offsetY, value: '' });
             return;
         }
 
@@ -151,6 +162,23 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
     };
 
     const draw = (e: React.MouseEvent | React.TouchEvent) => {
+        if (isDraggingText && textInput && dragStartRef.current) {
+            const canvas = canvasRef.current;
+            if (!canvas) return;
+            const { offsetX, offsetY } = getCoordinates(e, canvas);
+
+            const dx = offsetX - dragStartRef.current.x;
+            const dy = offsetY - dragStartRef.current.y;
+
+            setTextInput({
+                ...textInput,
+                x: textInput.x + dx,
+                y: textInput.y + dy
+            });
+            dragStartRef.current = { x: offsetX, y: offsetY };
+            return;
+        }
+
         if (!isDrawing) return;
         const canvas = canvasRef.current;
         if (!canvas) return;
@@ -178,6 +206,12 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
     };
 
     const stopDrawing = () => {
+        if (isDraggingText) {
+            setIsDraggingText(false);
+            dragStartRef.current = null;
+            return;
+        }
+
         if (isDrawing) {
             setIsDrawing(false);
             setSnapshot(null);
@@ -198,14 +232,27 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
                     ctx.font = `${brushSize * 10}px sans-serif`;
                     ctx.fillStyle = color;
                     ctx.textBaseline = 'top';
-                    // Add padding offset to match input styling (4px padding + 1px border approx)
-                    ctx.fillText(textInput.value, textInput.x + 5, textInput.y + 5);
+                    const lines = textInput.value.split('\n');
+                    const lineHeight = brushSize * 12; // slightly larger than font size
+                    lines.forEach((line, i) => {
+                        ctx.fillText(line, textInput.x + 4, textInput.y + 4 + (i * lineHeight));
+                    });
                     ctx.restore();
                     saveSession();
                 }
             }
         }
         setTextInput(null);
+    };
+
+    const handleTextDragStart = (e: React.MouseEvent | React.TouchEvent) => {
+        e.stopPropagation();
+        setIsDraggingText(true);
+        const canvas = canvasRef.current;
+        if (canvas) {
+            const coords = getCoordinates(e, canvas);
+            dragStartRef.current = { x: coords.offsetX, y: coords.offsetY };
+        }
     };
 
     const clearCanvas = () => {
@@ -301,34 +348,62 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
                     />
 
                     {/* Text Input Overlay */}
-                    {textInput && textInput.visible && (
-                        <input
-                            ref={textInputRef}
-                            type="text"
-                            value={textInput.value}
-                            onChange={(e) => setTextInput({ ...textInput, value: e.target.value })}
-                            onBlur={handleTextSubmit}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter') handleTextSubmit();
-                                if (e.key === 'Escape') setTextInput(null);
-                            }}
+                    {textInput && (
+                        <div
                             style={{
                                 position: 'absolute',
                                 left: textInput.x,
                                 top: textInput.y,
-                                color: color,
-                                fontSize: `${brushSize * 10}px`,
-                                border: '1px dashed #3b82f6',
-                                background: 'rgba(255, 255, 255, 0.9)',
-                                outline: 'none',
-                                minWidth: '100px',
-                                padding: '4px',
-                                zIndex: 10
+                                zIndex: 10,
+                                cursor: isDraggingText ? 'grabbing' : 'grab'
                             }}
-                            className="rounded shadow-sm"
-                            placeholder="Type..."
-                            autoFocus
-                        />
+                            onMouseDown={handleTextDragStart}
+                            onTouchStart={handleTextDragStart}
+                        >
+                            <textarea
+                                ref={textInputRef}
+                                value={textInput.value}
+                                onChange={(e) => setTextInput({ ...textInput, value: e.target.value })}
+                                onBlur={() => {
+                                    // Small delay to allow clicking "Done" button if we had one, 
+                                    // but here we just want to save if user clicks away.
+                                    // However, dragging might trigger blur if we're not careful.
+                                    // Let's rely on explicit "Enter" or clicking canvas to save.
+                                    // Actually, standard behavior is click away -> save.
+                                    // But dragging the handle shouldn't save.
+                                    if (!isDraggingText) {
+                                        // handleTextSubmit(); // Optional: auto-save on blur
+                                    }
+                                }}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' && !e.shiftKey) {
+                                        e.preventDefault();
+                                        handleTextSubmit();
+                                    }
+                                    if (e.key === 'Escape') setTextInput(null);
+                                }}
+                                style={{
+                                    color: color,
+                                    fontSize: `${brushSize * 10}px`,
+                                    lineHeight: '1.2',
+                                    minWidth: '150px',
+                                    minHeight: '50px',
+                                    background: 'rgba(255, 255, 255, 0.9)',
+                                    border: '2px dashed #3b82f6',
+                                    borderRadius: '4px',
+                                    padding: '4px',
+                                    outline: 'none',
+                                    resize: 'both',
+                                    overflow: 'hidden'
+                                }}
+                                className="shadow-lg"
+                                placeholder="Type here... (Drag to move)"
+                                autoFocus
+                            />
+                            <div className="absolute -top-6 left-0 bg-blue-500 text-white text-xs px-2 py-1 rounded rounded-b-none cursor-grab">
+                                Drag me
+                            </div>
+                        </div>
                     )}
                 </div>
             </div>
