@@ -527,6 +527,114 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
       return;
     }
 
+    // Insert Line Below (Ctrl + Enter) - Distinct from Run Code (Cmd + Enter)
+    // Note: On Mac, Ctrl is distinct from Cmd. On Windows, this might conflict if we used Ctrl for Run.
+    // Assuming Cmd for Run on Mac, Ctrl for Run on Windows.
+    // Let's use Shift+Enter for Insert Line Below if Ctrl+Enter is risky, but user asked for useful ones.
+    // VS Code uses Cmd+Enter for Insert Line Below. We used Cmd+Enter for Run.
+    // Let's use Shift+Cmd+Enter for Insert Line Above, and maybe Alt+Enter for Insert Line Below?
+    // Or just stick to the plan: Ctrl+Enter for Insert Line Below.
+    if (!e.metaKey && e.ctrlKey && e.key === 'Enter') {
+      e.preventDefault();
+      const currentLineEnd = value.indexOf('\n', end);
+      const actualEnd = currentLineEnd === -1 ? value.length : currentLineEnd;
+
+      const newValue = value.substring(0, actualEnd) + '\n' + value.substring(actualEnd);
+      onChange(newValue);
+      addToHistory(newValue);
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.selectionStart = textareaRef.current.selectionEnd = actualEnd + 1;
+        }
+      }, 0);
+      return;
+    }
+
+    // Insert Line Above (Cmd/Ctrl + Shift + Enter)
+    if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'Enter') {
+      e.preventDefault();
+      const currentLineStart = value.lastIndexOf('\n', start - 1) + 1;
+
+      const newValue = value.substring(0, currentLineStart) + '\n' + value.substring(currentLineStart);
+      onChange(newValue);
+      addToHistory(newValue);
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.selectionStart = textareaRef.current.selectionEnd = currentLineStart;
+        }
+      }, 0);
+      return;
+    }
+
+    // Join Lines (Ctrl + J)
+    if (!e.metaKey && e.ctrlKey && e.key === 'j') {
+      e.preventDefault();
+      const currentLineEnd = value.indexOf('\n', end);
+      if (currentLineEnd === -1) return; // Last line
+
+      const nextLineEnd = value.indexOf('\n', currentLineEnd + 1);
+      const actualNextEnd = nextLineEnd === -1 ? value.length : nextLineEnd;
+
+      const line1 = value.substring(value.lastIndexOf('\n', start - 1) + 1, currentLineEnd);
+      const line2 = value.substring(currentLineEnd + 1, actualNextEnd);
+
+      // Join with a space if needed, or just direct join? VS Code adds space.
+      const joined = line1 + ' ' + line2.trimStart();
+
+      const newValue = value.substring(0, value.lastIndexOf('\n', start - 1) + 1) + joined + value.substring(actualNextEnd);
+      onChange(newValue);
+      addToHistory(newValue);
+      return;
+    }
+
+    // Go to Matching Bracket (Cmd/Ctrl + Shift + \)
+    if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === '\\') {
+      e.preventDefault();
+      if (matchingBracketIndex !== null) {
+        if (textareaRef.current) {
+          textareaRef.current.selectionStart = textareaRef.current.selectionEnd = matchingBracketIndex;
+        }
+      } else {
+        // Try to find one near cursor if not already highlighted
+        findMatchingBracket(start);
+        // We need to wait for state update or calculate immediately. 
+        // Since findMatchingBracket sets state, we can't use it immediately.
+        // Let's recalculate locally for jump.
+        const char = value[start];
+        const pairs: Record<string, string> = { '(': ')', '[': ']', '{': '}', ')': '(', ']': '[', '}': '{' };
+        if (pairs[char]) {
+          // Logic duplicated for immediate jump
+          const isOpen = ['(', '[', '{'].includes(char);
+          const target = pairs[char];
+          let depth = 0;
+          let targetIdx = -1;
+
+          if (isOpen) {
+            for (let i = start + 1; i < value.length; i++) {
+              if (value[i] === char) depth++;
+              else if (value[i] === target) {
+                if (depth === 0) { targetIdx = i; break; }
+                depth--;
+              }
+            }
+          } else {
+            for (let i = start - 1; i >= 0; i--) {
+              if (value[i] === char) depth++;
+              else if (value[i] === target) {
+                if (depth === 0) { targetIdx = i; break; }
+                depth--;
+              }
+            }
+          }
+
+          if (targetIdx !== -1 && textareaRef.current) {
+            textareaRef.current.selectionStart = textareaRef.current.selectionEnd = targetIdx;
+          }
+        }
+      }
+      return;
+    }
+
     // Handle Suggestions Navigation
     if (showSuggestions) {
       if (e.key === 'ArrowDown') {
@@ -793,6 +901,49 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
   const clearEditor = () => {
     if (window.confirm('Are you sure you want to clear the editor?')) {
       onChange('');
+    }
+  };
+
+  const handleCopy = (e: React.ClipboardEvent) => {
+    const start = e.currentTarget.selectionStart;
+    const end = e.currentTarget.selectionEnd;
+
+    if (start === end) {
+      // No selection: Copy current line
+      e.preventDefault();
+      const currentLineStart = value.lastIndexOf('\n', start - 1) + 1;
+      const currentLineEnd = value.indexOf('\n', start);
+      const actualEnd = currentLineEnd === -1 ? value.length : currentLineEnd + 1; // Include newline
+      const lineText = value.substring(currentLineStart, actualEnd);
+      navigator.clipboard.writeText(lineText);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  const handleCut = (e: React.ClipboardEvent) => {
+    const start = e.currentTarget.selectionStart;
+    const end = e.currentTarget.selectionEnd;
+
+    if (start === end) {
+      // No selection: Cut current line
+      e.preventDefault();
+      const currentLineStart = value.lastIndexOf('\n', start - 1) + 1;
+      const currentLineEnd = value.indexOf('\n', start);
+      const actualEnd = currentLineEnd === -1 ? value.length : currentLineEnd + 1; // Include newline
+      const lineText = value.substring(currentLineStart, actualEnd);
+
+      navigator.clipboard.writeText(lineText);
+
+      const newValue = value.substring(0, currentLineStart) + value.substring(actualEnd);
+      onChange(newValue);
+      addToHistory(newValue);
+
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.selectionStart = textareaRef.current.selectionEnd = currentLineStart;
+        }
+      }, 0);
     }
   };
 
@@ -1133,6 +1284,8 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
             value={value}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
+            onCopy={handleCopy}
+            onCut={handleCut}
             onScroll={handleScroll}
             onClick={() => {
               if (textareaRef.current) {
