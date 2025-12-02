@@ -347,6 +347,47 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
       return;
     }
 
+    // Toggle Word Wrap (Alt + Z)
+    if (e.altKey && e.key === 'z') {
+      e.preventDefault();
+      setWordWrap(prev => !prev);
+      return;
+    }
+
+    // Delete Line (Cmd/Ctrl + Shift + K)
+    if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'k') {
+      e.preventDefault();
+      const currentLineStart = value.lastIndexOf('\n', start - 1) + 1;
+      const currentLineEnd = value.indexOf('\n', end); // Use end to handle selection
+      const actualEnd = currentLineEnd === -1 ? value.length : currentLineEnd + 1; // Include newline
+
+      const newValue = value.substring(0, currentLineStart) + value.substring(actualEnd);
+      onChange(newValue);
+      addToHistory(newValue);
+
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.selectionStart = textareaRef.current.selectionEnd = currentLineStart;
+        }
+      }, 0);
+      return;
+    }
+
+    // Select Line (Cmd/Ctrl + L)
+    if ((e.metaKey || e.ctrlKey) && e.key === 'l') {
+      e.preventDefault();
+      const currentLineStart = value.lastIndexOf('\n', start - 1) + 1;
+      let nextLineEnd = value.indexOf('\n', end);
+      if (nextLineEnd === -1) nextLineEnd = value.length;
+      else nextLineEnd += 1; // Include newline
+
+      if (textareaRef.current) {
+        textareaRef.current.selectionStart = currentLineStart;
+        textareaRef.current.selectionEnd = nextLineEnd;
+      }
+      return;
+    }
+
     // Search Shortcut
     if ((e.metaKey || e.ctrlKey) && e.key === 'f') {
       e.preventDefault();
@@ -363,33 +404,44 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
     // Toggle Comment (Cmd/Ctrl + /)
     if ((e.metaKey || e.ctrlKey) && e.key === '/') {
       e.preventDefault();
-      const currentLineStart = value.lastIndexOf('\n', start - 1) + 1;
-      const currentLineEnd = value.indexOf('\n', start);
-      const actualEnd = currentLineEnd === -1 ? value.length : currentLineEnd;
-      const currentLine = value.substring(currentLineStart, actualEnd);
+
+      // Identify start and end lines
+      const startLineStart = value.lastIndexOf('\n', start - 1) + 1;
+      const endLineEnd = value.indexOf('\n', end);
+      const actualEnd = endLineEnd === -1 ? value.length : endLineEnd;
+
+      const selectedText = value.substring(startLineStart, actualEnd);
+      const lines = selectedText.split('\n');
 
       let commentPrefix = '// ';
       if (language === 'python' || language === 'bash') commentPrefix = '# ';
       if (language === 'sql') commentPrefix = '-- ';
 
-      let newLine = '';
-      if (currentLine.trimStart().startsWith(commentPrefix.trim())) {
-        // Uncomment
-        newLine = currentLine.replace(commentPrefix.trim(), '').trimStart();
-        const regex = new RegExp(`^(\\s*)${commentPrefix.trim()}\\s?`);
-        newLine = currentLine.replace(regex, '$1');
-      } else {
-        // Comment
-        newLine = commentPrefix + currentLine;
-      }
+      // Check if all lines are commented
+      const allCommented = lines.every(line => line.trimStart().startsWith(commentPrefix.trim()));
 
-      const newValue = value.substring(0, currentLineStart) + newLine + value.substring(actualEnd);
+      const newLines = lines.map(line => {
+        if (allCommented) {
+          // Uncomment
+          const regex = new RegExp(`^(\\s*)${commentPrefix.trim()}\\s?`);
+          return line.replace(regex, '$1');
+        } else {
+          // Comment
+          return commentPrefix + line;
+        }
+      });
+
+      const newSelectedText = newLines.join('\n');
+      const newValue = value.substring(0, startLineStart) + newSelectedText + value.substring(actualEnd);
+
       onChange(newValue);
       addToHistory(newValue);
-      // Restore cursor
+
+      // Restore selection
       setTimeout(() => {
         if (textareaRef.current) {
-          textareaRef.current.selectionStart = textareaRef.current.selectionEnd = currentLineStart + newLine.length;
+          textareaRef.current.selectionStart = startLineStart;
+          textareaRef.current.selectionEnd = startLineStart + newSelectedText.length;
         }
       }, 0);
       return;
@@ -399,11 +451,11 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
     if (e.shiftKey && e.altKey && e.key === 'ArrowDown') {
       e.preventDefault();
       const currentLineStart = value.lastIndexOf('\n', start - 1) + 1;
-      const currentLineEnd = value.indexOf('\n', start);
+      const currentLineEnd = value.indexOf('\n', end); // Handle selection
       const actualEnd = currentLineEnd === -1 ? value.length : currentLineEnd;
-      const currentLine = value.substring(currentLineStart, actualEnd);
+      const currentContent = value.substring(currentLineStart, actualEnd);
 
-      const newValue = value.substring(0, actualEnd) + '\n' + currentLine + value.substring(actualEnd);
+      const newValue = value.substring(0, actualEnd) + '\n' + currentContent + value.substring(actualEnd);
       onChange(newValue);
       addToHistory(newValue);
       return;
@@ -416,20 +468,25 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
       if (currentLineStart === 0) return; // Already at top
 
       const prevLineStart = value.lastIndexOf('\n', currentLineStart - 2) + 1;
-      const currentLineEnd = value.indexOf('\n', start);
+      const currentLineEnd = value.indexOf('\n', end);
       const actualEnd = currentLineEnd === -1 ? value.length : currentLineEnd;
 
       const prevLine = value.substring(prevLineStart, currentLineStart - 1);
-      const currentLine = value.substring(currentLineStart, actualEnd);
+      const currentContent = value.substring(currentLineStart, actualEnd);
 
-      const newValue = value.substring(0, prevLineStart) + currentLine + '\n' + prevLine + value.substring(actualEnd);
+      const newValue = value.substring(0, prevLineStart) + currentContent + '\n' + prevLine + value.substring(actualEnd);
       onChange(newValue);
       addToHistory(newValue);
-      // Move cursor
+
+      // Move selection
       setTimeout(() => {
         if (textareaRef.current) {
-          const newCursor = prevLineStart + (start - currentLineStart);
-          textareaRef.current.selectionStart = textareaRef.current.selectionEnd = newCursor;
+          const newStart = prevLineStart;
+          const newEnd = prevLineStart + currentContent.length;
+          textareaRef.current.selectionStart = newStart + (start - currentLineStart); // Keep relative pos if single cursor
+          textareaRef.current.selectionEnd = newEnd; // Simplified selection restore
+          // Ideally we want to preserve exact selection range but shifted
+          textareaRef.current.setSelectionRange(prevLineStart, prevLineStart + (end - start));
         }
       }, 0);
       return;
@@ -438,24 +495,26 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
     // Move Line Down (Alt + Down)
     if (e.altKey && e.key === 'ArrowDown') {
       e.preventDefault();
-      const currentLineEnd = value.indexOf('\n', start);
+      const currentLineEnd = value.indexOf('\n', end);
       if (currentLineEnd === -1) return; // Already at bottom
 
       const currentLineStart = value.lastIndexOf('\n', start - 1) + 1;
       const nextLineEnd = value.indexOf('\n', currentLineEnd + 1);
       const actualNextEnd = nextLineEnd === -1 ? value.length : nextLineEnd;
 
-      const currentLine = value.substring(currentLineStart, currentLineEnd);
-      const nextLine = value.substring(currentLineEnd + 1, actualNextEnd);
+      const currentContent = value.substring(currentLineStart, currentLineEnd === -1 ? value.length : currentLineEnd);
+      const nextLine = value.substring((currentLineEnd === -1 ? value.length : currentLineEnd) + 1, actualNextEnd);
 
-      const newValue = value.substring(0, currentLineStart) + nextLine + '\n' + currentLine + value.substring(actualNextEnd);
+      const newValue = value.substring(0, currentLineStart) + nextLine + '\n' + currentContent + value.substring(actualNextEnd);
       onChange(newValue);
       addToHistory(newValue);
-      // Move cursor
+
+      // Move selection
       setTimeout(() => {
         if (textareaRef.current) {
-          const newCursor = currentLineStart + nextLine.length + 1 + (start - currentLineStart);
-          textareaRef.current.selectionStart = textareaRef.current.selectionEnd = newCursor;
+          // Simplified
+          const newStart = currentLineStart + nextLine.length + 1;
+          textareaRef.current.setSelectionRange(newStart, newStart + (end - start));
         }
       }, 0);
       return;
@@ -494,12 +553,54 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
     if (e.key === 'Tab') {
       e.preventDefault();
 
+      const startLineStart = value.lastIndexOf('\n', start - 1) + 1;
+      const endLineEnd = value.indexOf('\n', end);
+      const actualEnd = endLineEnd === -1 ? value.length : endLineEnd;
+
+      // If we have a multi-line selection, indent/unindent all lines
+      if (start !== end && value.substring(start, end).includes('\n')) {
+        const selectedText = value.substring(startLineStart, actualEnd);
+        const lines = selectedText.split('\n');
+
+        if (e.shiftKey) {
+          // Un-indent lines
+          const newLines = lines.map(line => {
+            if (line.startsWith('    ')) return line.substring(4);
+            if (line.startsWith('\t')) return line.substring(1);
+            const match = line.match(/^ +/);
+            if (match) return line.substring(Math.min(match[0].length, 4));
+            return line;
+          });
+          const newSelectedText = newLines.join('\n');
+          const newValue = value.substring(0, startLineStart) + newSelectedText + value.substring(actualEnd);
+          onChange(newValue);
+          addToHistory(newValue);
+          setTimeout(() => {
+            if (textareaRef.current) {
+              textareaRef.current.selectionStart = startLineStart;
+              textareaRef.current.selectionEnd = startLineStart + newSelectedText.length;
+            }
+          }, 0);
+        } else {
+          // Indent lines
+          const newLines = lines.map(line => '    ' + line);
+          const newSelectedText = newLines.join('\n');
+          const newValue = value.substring(0, startLineStart) + newSelectedText + value.substring(actualEnd);
+          onChange(newValue);
+          addToHistory(newValue);
+          setTimeout(() => {
+            if (textareaRef.current) {
+              textareaRef.current.selectionStart = startLineStart;
+              textareaRef.current.selectionEnd = startLineStart + newSelectedText.length;
+            }
+          }, 0);
+        }
+        return;
+      }
+
       if (e.shiftKey) {
-        // Un-indent (Shift + Tab)
-        const currentLineStart = value.lastIndexOf('\n', start - 1) + 1;
-        const currentLineEnd = value.indexOf('\n', start);
-        const actualEnd = currentLineEnd === -1 ? value.length : currentLineEnd;
-        const currentLine = value.substring(currentLineStart, actualEnd);
+        // Un-indent (Shift + Tab) - Single Line
+        const currentLine = value.substring(startLineStart, actualEnd);
 
         let removeCount = 0;
         if (currentLine.startsWith('    ')) {
@@ -515,17 +616,17 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
         }
 
         if (removeCount > 0) {
-          const newValue = value.substring(0, currentLineStart) + currentLine.substring(removeCount) + value.substring(actualEnd);
+          const newValue = value.substring(0, startLineStart) + currentLine.substring(removeCount) + value.substring(actualEnd);
           onChange(newValue);
           addToHistory(newValue);
           setTimeout(() => {
             if (textareaRef.current) {
-              textareaRef.current.selectionStart = textareaRef.current.selectionEnd = Math.max(currentLineStart, start - removeCount);
+              textareaRef.current.selectionStart = textareaRef.current.selectionEnd = Math.max(startLineStart, start - removeCount);
             }
           }, 0);
         }
       } else {
-        // Indent (Tab)
+        // Indent (Tab) - Single Line
         const newValue = value.substring(0, start) + '    ' + value.substring(end);
         onChange(newValue);
         addToHistory(newValue);
