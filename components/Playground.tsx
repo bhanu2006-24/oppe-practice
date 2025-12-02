@@ -108,7 +108,7 @@ export const Playground: React.FC<PlaygroundProps> = ({ onExit, onToggleTheme, i
   return (
     <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900">
       {/* Enhanced Header */}
-      <div className="h-14 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between px-4 md:px-6 shadow-sm z-10">
+      <div className="h-14 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between px-4 md:px-6 shadow-sm z-30">
 
         {/* Left: Branding & Language Selector */}
         <div className="flex items-center space-x-3">
@@ -126,8 +126,8 @@ export const Playground: React.FC<PlaygroundProps> = ({ onExit, onToggleTheme, i
 
             {isLangMenuOpen && (
               <>
-                <div className="fixed inset-0 z-10" onClick={() => setIsLangMenuOpen(false)} />
-                <div className="absolute top-full left-0 mt-1 w-48 bg-white dark:bg-slate-800 rounded-md shadow-lg border border-slate-200 dark:border-slate-700 py-1 z-20">
+                <div className="fixed inset-0 z-40" onClick={() => setIsLangMenuOpen(false)} />
+                <div className="absolute top-full left-0 mt-1 w-48 bg-white dark:bg-slate-800 rounded-md shadow-lg border border-slate-200 dark:border-slate-700 py-1 z-50">
                   {LANGUAGES.map((lang) => (
                     <button
                       key={lang.id}
