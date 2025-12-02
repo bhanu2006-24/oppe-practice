@@ -96,6 +96,13 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
         }
     }, [textInput]);
 
+    // Auto-commit text when switching tools
+    useEffect(() => {
+        if (tool !== 'text' && textInput) {
+            handleTextSubmit();
+        }
+    }, [tool]);
+
     const saveSession = () => {
         const canvas = canvasRef.current;
         if (canvas) {
@@ -130,16 +137,44 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
             // Actually, clicking on canvas while text input is open should commit it.
             if ((e.target as HTMLElement).tagName === 'TEXTAREA') return;
 
+            const canvas = canvasRef.current;
+            if (!canvas) return;
+            const { offsetX, offsetY } = getCoordinates(e, canvas);
+
             if (textInput) {
+                // Commit existing text
                 handleTextSubmit();
+                // Immediately start new text box at new location
+                // We need to wait for state update or just set it directly?
+                // handleTextSubmit sets textInput to null.
+                // We can just set it to the new value directly here, effectively "committing and moving"
+                // But handleTextSubmit needs to read the CURRENT value from state/ref.
+                // Better to do it in one go if possible, or just accept the commit and let user click again?
+                // User expects click -> commit old -> open new.
+                
+                // Let's try to commit manually here without clearing state, then update state.
+                 if (textInput.value.trim()) {
+                    const ctx = canvas.getContext('2d');
+                    if (ctx) {
+                        ctx.save();
+                        ctx.font = `${brushSize * 10}px sans-serif`;
+                        ctx.fillStyle = color;
+                        ctx.textBaseline = 'top';
+                        const lines = textInput.value.split('\n');
+                        const lineHeight = brushSize * 12;
+                        lines.forEach((line, i) => {
+                            ctx.fillText(line, textInput.x + 4, textInput.y + 4 + (i * lineHeight));
+                        });
+                        ctx.restore();
+                        saveSession();
+                    }
+                }
+                setTextInput({ x: offsetX, y: offsetY, value: '' });
                 return;
             }
 
             if (e.type === 'touchstart') return;
-            const canvas = canvasRef.current;
-            if (!canvas) return;
-
-            const { offsetX, offsetY } = getCoordinates(e, canvas);
+            
             setTextInput({ x: offsetX, y: offsetY, value: '' });
             return;
         }
@@ -230,23 +265,20 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
 
     const handleTextDragStart = (e: React.MouseEvent | React.TouchEvent) => {
         e.stopPropagation();
+        e.preventDefault(); // Prevent focus loss or other default behaviors
         setIsDraggingText(true);
-        const canvas = canvasRef.current;
-        if (canvas) {
-            // Calculate offset from the top-left of the text box
-            // This prevents the box from jumping to center on mouse down
-            let clientX, clientY;
-            if ('touches' in e) {
-                clientX = e.touches[0].clientX;
-                clientY = e.touches[0].clientY;
-            } else {
-                clientX = (e as React.MouseEvent).clientX;
-                clientY = (e as React.MouseEvent).clientY;
-            }
-
-            // Store the initial mouse position
-            dragStartRef.current = { x: clientX, y: clientY };
+        
+        let clientX, clientY;
+        if ('touches' in e) {
+            clientX = e.touches[0].clientX;
+            clientY = e.touches[0].clientY;
+        } else {
+            clientX = (e as React.MouseEvent).clientX;
+            clientY = (e as React.MouseEvent).clientY;
         }
+
+        // Store the initial mouse position
+        dragStartRef.current = { x: clientX, y: clientY };
     };
 
     // Global event listeners for dragging text
@@ -285,7 +317,7 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
         if (isDraggingText) {
             window.addEventListener('mousemove', handleGlobalMove);
             window.addEventListener('mouseup', handleGlobalUp);
-            window.addEventListener('touchmove', handleGlobalMove);
+            window.addEventListener('touchmove', handleGlobalMove, { passive: false });
             window.addEventListener('touchend', handleGlobalUp);
         }
 
@@ -407,15 +439,8 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({ onClose, sessionId }) =>
                                 value={textInput.value}
                                 onChange={(e) => setTextInput({ ...textInput, value: e.target.value })}
                                 onBlur={() => {
-                                    // Small delay to allow clicking "Done" button if we had one, 
-                                    // but here we just want to save if user clicks away.
-                                    // However, dragging might trigger blur if we're not careful.
-                                    // Let's rely on explicit "Enter" or clicking canvas to save.
-                                    // Actually, standard behavior is click away -> save.
-                                    // But dragging the handle shouldn't save.
-                                    if (!isDraggingText) {
-                                        // handleTextSubmit(); // Optional: auto-save on blur
-                                    }
+                                    // Optional: auto-save on blur if not dragging
+                                    // if (!isDraggingText) handleTextSubmit();
                                 }}
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter' && !e.shiftKey) {
