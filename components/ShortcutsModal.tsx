@@ -41,7 +41,19 @@ export const ShortcutsModal: React.FC<ShortcutsModalProps> = ({ onClose }) => {
                     </div>
                     <div className="flex justify-between items-center p-2 bg-slate-50 dark:bg-slate-700/50 rounded">
                         <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Zen Mode</span>
+                        <kbd className="px-2 py-1 bg-white dark:bg-slate-600 border border-slate-200 dark:border-slate-500 rounded text-xs font-mono text-slate-600 dark:text-slate-200">Cmd/Ctrl + Shift + F</kbd>
+                    </div>
+                    <div className="flex justify-between items-center p-2 bg-slate-50 dark:bg-slate-700/50 rounded">
+                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Undo</span>
                         <kbd className="px-2 py-1 bg-white dark:bg-slate-600 border border-slate-200 dark:border-slate-500 rounded text-xs font-mono text-slate-600 dark:text-slate-200">Cmd/Ctrl + Z</kbd>
+                    </div>
+                    <div className="flex justify-between items-center p-2 bg-slate-50 dark:bg-slate-700/50 rounded">
+                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Redo</span>
+                        <kbd className="px-2 py-1 bg-white dark:bg-slate-600 border border-slate-200 dark:border-slate-500 rounded text-xs font-mono text-slate-600 dark:text-slate-200">Cmd/Ctrl + Shift + Z</kbd>
+                    </div>
+                    <div className="flex justify-between items-center p-2 bg-slate-50 dark:bg-slate-700/50 rounded">
+                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Unindent</span>
+                        <kbd className="px-2 py-1 bg-white dark:bg-slate-600 border border-slate-200 dark:border-slate-500 rounded text-xs font-mono text-slate-600 dark:text-slate-200">Shift + Tab</kbd>
                     </div>
                 </div>
             </div>

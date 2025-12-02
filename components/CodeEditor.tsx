@@ -278,14 +278,85 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
     }
   };
 
+  // History Management
+  const historyRef = useRef<string[]>([value]);
+  const historyIndexRef = useRef<number>(0);
+  const isUndoRedoRef = useRef(false);
+
+  const addToHistory = (newValue: string) => {
+    if (isUndoRedoRef.current) return;
+
+    const currentIndex = historyIndexRef.current;
+    const currentHistory = historyRef.current;
+
+    // If we are not at the end of history, discard future
+    const newHistory = currentHistory.slice(0, currentIndex + 1);
+
+    // Simple debounce/grouping: if the new value is just one char different and it's been less than 500ms... 
+    // Actually, for simplicity and robustness, let's just push. 
+    // Optimization: Don't push if identical (handled by slice usually)
+    if (newHistory[newHistory.length - 1] !== newValue) {
+      newHistory.push(newValue);
+      historyRef.current = newHistory;
+      historyIndexRef.current = newHistory.length - 1;
+    }
+  };
+
+  // Sync history with external value changes if needed (optional, but good if value changes from outside)
+  // For now, we assume this component drives the changes mostly.
+
+  const handleUndo = () => {
+    if (historyIndexRef.current > 0) {
+      isUndoRedoRef.current = true;
+      historyIndexRef.current -= 1;
+      const prevValue = historyRef.current[historyIndexRef.current];
+      onChange(prevValue);
+      // We need to reset the flag after the render cycle or immediately if synchronous
+      // Since onChange might be async or parent-controlled, we just set it.
+      // But wait, if parent updates `value` prop, `useEffect` or just render happens.
+      // We need to ensure `addToHistory` doesn't trigger on that update.
+      setTimeout(() => { isUndoRedoRef.current = false; }, 0);
+    }
+  };
+
+  const handleRedo = () => {
+    if (historyIndexRef.current < historyRef.current.length - 1) {
+      isUndoRedoRef.current = true;
+      historyIndexRef.current += 1;
+      const nextValue = historyRef.current[historyIndexRef.current];
+      onChange(nextValue);
+      setTimeout(() => { isUndoRedoRef.current = false; }, 0);
+    }
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     const start = e.currentTarget.selectionStart;
     const end = e.currentTarget.selectionEnd;
 
+    // Undo: Cmd/Ctrl + Z
+    if ((e.metaKey || e.ctrlKey) && !e.shiftKey && e.key === 'z') {
+      e.preventDefault();
+      handleUndo();
+      return;
+    }
+
+    // Redo: Cmd/Ctrl + Shift + Z OR Cmd/Ctrl + Y
+    if (((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'z') || ((e.metaKey || e.ctrlKey) && e.key === 'y')) {
+      e.preventDefault();
+      handleRedo();
+      return;
+    }
+
     // Search Shortcut
     if ((e.metaKey || e.ctrlKey) && e.key === 'f') {
       e.preventDefault();
-      setShowSearch(true);
+      if (e.shiftKey) {
+        // Toggle Zen Mode (Cmd/Ctrl + Shift + F)
+        if (onToggleZenMode) onToggleZenMode();
+      } else {
+        // Find (Cmd/Ctrl + F)
+        setShowSearch(true);
+      }
       return;
     }
 
@@ -305,9 +376,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
       if (currentLine.trimStart().startsWith(commentPrefix.trim())) {
         // Uncomment
         newLine = currentLine.replace(commentPrefix.trim(), '').trimStart();
-        // If it was just the prefix, it might be empty now, but usually we want to remove the prefix
-        // A simple regex replace is safer
-        const regex = new RegExp(`^ (\\s *)${commentPrefix.trim()} \\s ? `);
+        const regex = new RegExp(`^(\\s*)${commentPrefix.trim()}\\s?`);
         newLine = currentLine.replace(regex, '$1');
       } else {
         // Comment
@@ -316,6 +385,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
 
       const newValue = value.substring(0, currentLineStart) + newLine + value.substring(actualEnd);
       onChange(newValue);
+      addToHistory(newValue);
       // Restore cursor
       setTimeout(() => {
         if (textareaRef.current) {
@@ -335,6 +405,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
 
       const newValue = value.substring(0, actualEnd) + '\n' + currentLine + value.substring(actualEnd);
       onChange(newValue);
+      addToHistory(newValue);
       return;
     }
 
@@ -353,6 +424,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
 
       const newValue = value.substring(0, prevLineStart) + currentLine + '\n' + prevLine + value.substring(actualEnd);
       onChange(newValue);
+      addToHistory(newValue);
       // Move cursor
       setTimeout(() => {
         if (textareaRef.current) {
@@ -378,6 +450,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
 
       const newValue = value.substring(0, currentLineStart) + nextLine + '\n' + currentLine + value.substring(actualNextEnd);
       onChange(newValue);
+      addToHistory(newValue);
       // Move cursor
       setTimeout(() => {
         if (textareaRef.current) {
@@ -420,14 +493,49 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
 
     if (e.key === 'Tab') {
       e.preventDefault();
-      const newValue = value.substring(0, start) + '    ' + value.substring(end);
-      onChange(newValue);
 
-      setTimeout(() => {
-        if (textareaRef.current) {
-          textareaRef.current.selectionStart = textareaRef.current.selectionEnd = start + 4;
+      if (e.shiftKey) {
+        // Un-indent (Shift + Tab)
+        const currentLineStart = value.lastIndexOf('\n', start - 1) + 1;
+        const currentLineEnd = value.indexOf('\n', start);
+        const actualEnd = currentLineEnd === -1 ? value.length : currentLineEnd;
+        const currentLine = value.substring(currentLineStart, actualEnd);
+
+        let removeCount = 0;
+        if (currentLine.startsWith('    ')) {
+          removeCount = 4;
+        } else if (currentLine.startsWith('\t')) {
+          removeCount = 1;
+        } else {
+          // Check for partial spaces
+          const match = currentLine.match(/^ +/);
+          if (match) {
+            removeCount = Math.min(match[0].length, 4);
+          }
         }
-      }, 0);
+
+        if (removeCount > 0) {
+          const newValue = value.substring(0, currentLineStart) + currentLine.substring(removeCount) + value.substring(actualEnd);
+          onChange(newValue);
+          addToHistory(newValue);
+          setTimeout(() => {
+            if (textareaRef.current) {
+              textareaRef.current.selectionStart = textareaRef.current.selectionEnd = Math.max(currentLineStart, start - removeCount);
+            }
+          }, 0);
+        }
+      } else {
+        // Indent (Tab)
+        const newValue = value.substring(0, start) + '    ' + value.substring(end);
+        onChange(newValue);
+        addToHistory(newValue);
+
+        setTimeout(() => {
+          if (textareaRef.current) {
+            textareaRef.current.selectionStart = textareaRef.current.selectionEnd = start + 4;
+          }
+        }, 0);
+      }
     } else if (e.key === 'Enter') {
       e.preventDefault();
       const currentLineStart = value.lastIndexOf('\n', start - 1) + 1;
@@ -445,6 +553,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
 
       const newValue = value.substring(0, start) + '\n' + indentation + value.substring(end);
       onChange(newValue);
+      addToHistory(newValue);
 
       setTimeout(() => {
         if (textareaRef.current) {
@@ -465,6 +574,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
           const newValue = value.substring(0, currentLineStart) + newIndent + e.key + value.substring(end);
           e.preventDefault();
           onChange(newValue);
+          addToHistory(newValue);
           setTimeout(() => {
             if (textareaRef.current) {
               textareaRef.current.selectionStart = textareaRef.current.selectionEnd = currentLineStart + newIndent.length + 1;
@@ -486,6 +596,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
 
       const newValue = value.substring(0, start) + char + closeChar + value.substring(end);
       onChange(newValue);
+      addToHistory(newValue);
       setTimeout(() => {
         if (textareaRef.current) {
           textareaRef.current.selectionStart = textareaRef.current.selectionEnd = start + 1;
@@ -501,6 +612,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
           e.preventDefault();
           const newValue = value.substring(0, start - 1) + value.substring(end + 1);
           onChange(newValue);
+          addToHistory(newValue);
           setTimeout(() => {
             if (textareaRef.current) {
               textareaRef.current.selectionStart = textareaRef.current.selectionEnd = start - 1;
@@ -514,6 +626,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const val = e.target.value;
     onChange(val);
+    addToHistory(val);
 
     const cursor = e.target.selectionStart;
     updateCursorCoords(cursor);
