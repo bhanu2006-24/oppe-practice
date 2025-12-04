@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Copy, Check, Type, Search, X, ChevronUp, ChevronDown, AlignLeft, ArrowDownToLine, ArrowUpFromLine, Sparkles, WrapText, MoveVertical, Trash2, ArrowUp, ArrowDown, Replace, Maximize2, Minimize2, Keyboard, PenTool, Play } from 'lucide-react';
 
 interface CodeEditorProps {
@@ -90,7 +90,7 @@ const DEFAULT_KEYWORDS = [
   ...KEYWORDS_BY_LANG.bash
 ];
 
-export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, language, onRun, isZenMode, onToggleZenMode, onOpenShortcuts, onOpenWhiteboard, errorLine }) => {
+export const CodeEditor = React.memo<CodeEditorProps>(({ value, onChange, language, onRun, isZenMode, onToggleZenMode, onOpenShortcuts, onOpenWhiteboard, errorLine }) => {
   const [lineCount, setLineCount] = useState(1);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -832,14 +832,19 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const val = e.target.value;
-    onChange(val);
-    addToHistory(val);
+  // Debounce helper
+  const debounce = (func: Function, wait: number) => {
+    let timeout: NodeJS.Timeout;
+    return (...args: any[]) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func(...args), wait);
+    };
+  };
 
-    const cursor = e.target.selectionStart;
+  // Debounced expensive operations
+  const debouncedUpdates = useCallback(debounce((val: string, cursor: number) => {
     updateCursorCoords(cursor);
-    findMatchingBracket(cursor - 1); // Check bracket before cursor
+    findMatchingBracket(cursor - 1);
 
     // Suggestion logic
     const textBeforeCursor = val.substring(0, cursor);
@@ -890,6 +895,17 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
     } else {
       setShowSuggestions(false);
     }
+  }, 100), [language]); // Re-create if language changes
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const val = e.target.value;
+    onChange(val);
+    addToHistory(val);
+
+    const cursor = e.target.selectionStart;
+
+    // Call debounced updates
+    debouncedUpdates(val, cursor);
   };
 
   const copyToClipboard = () => {
@@ -1339,4 +1355,6 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, languag
       </div>
     </div >
   );
-};
+});
+
+CodeEditor.displayName = 'CodeEditor';

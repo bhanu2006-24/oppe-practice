@@ -7,7 +7,7 @@ interface AboutProps {
   isDark: boolean;
 }
 
-export const About: React.FC<AboutProps> = ({ onBack, onToggleTheme, isDark }) => {
+export const About = React.memo<AboutProps>(({ onBack, onToggleTheme, isDark }) => {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#0f172a] text-slate-800 dark:text-slate-200">
 
@@ -120,4 +120,6 @@ export const About: React.FC<AboutProps> = ({ onBack, onToggleTheme, isDark }) =
       </div>
     </div>
   );
-};
+});
+
+About.displayName = 'About';
