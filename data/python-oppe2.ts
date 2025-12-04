@@ -416,6 +416,10 @@ shopping_file: CSV with Product, Quantity.`,
         setupCode: `with open("prices.csv", "w") as f:
     f.write("Product,Price\\nApple,10\\nBanana,5")
 with open("shopping.csv", "w") as f:
+    f.write("Product,Quantity\\nApple,5\\nBanana,10")
+with open("p.csv", "w") as f:
+    f.write("Product,Price\\nApple,10\\nBanana,5")
+with open("s.csv", "w") as f:
     f.write("Product,Quantity\\nApple,5\\nBanana,10")`,
         examples: [
             { input: 'prices_file="prices.csv", shopping_file="shopping.csv"', output: '100.0' }
