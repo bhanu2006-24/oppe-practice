@@ -192,9 +192,11 @@ Return a list of team names in ranked order.`,
         subject: 'Python',
         examLevel: 'OPPE 2',
         difficulty: 'Hard',
-        description: `Write a function 'consistent_sales_increase' that takes a filename (CSV). The CSV contains sales data with columns: Region, Rep, Q1, Q2, Q3, Q4.
-        
-Find the region that has the highest number of representatives who have shown consistent sales growth (Q1 < Q2 < Q3 < Q4). Return the name of that region.`,
+        setupCode: `with open("sales.csv", "w") as f:
+    f.write("Region,Rep,Q1,Q2,Q3,Q4\\nNorth,A,100,150,200,250\\nSouth,B,100,200,150,300")
+with open("sales2.csv", "w") as f:
+    f.write("Region,Rep,Q1,Q2,Q3,Q4\\nNorth,A,100,150,200,250\\nSouth,B,100,120,140,160")`,
+        description: `Find the region that has the highest number of representatives who have shown consistent sales growth (Q1 < Q2 < Q3 < Q4). Return the name of that region.`,
         examples: [
             { input: 'filename="sales.csv"', output: '"North"' },
             { input: 'filename="sales2.csv"', output: '"South"' }
@@ -408,9 +410,11 @@ Return a list of bowler names in ranked order.`,
         description: `Write a function 'calculate_total_price' that takes two filenames: prices_file and shopping_file.
         
 prices_file: CSV with Product, Price.
-shopping_file: CSV with Product, Quantity.
-
-Calculate and return the total amount spent.`,
+shopping_file: CSV with Product, Quantity.`,
+        setupCode: `with open("prices.csv", "w") as f:
+    f.write("Product,Price\\nApple,10\\nBanana,5")
+with open("shopping.csv", "w") as f:
+    f.write("Product,Quantity\\nApple,5\\nBanana,10")`,
         examples: [
             { input: 'prices_file="prices.csv", shopping_file="shopping.csv"', output: '100.0' }
         ],
@@ -606,6 +610,10 @@ Calculate and return the total amount spent.`,
         examLevel: 'OPPE 2',
         difficulty: 'Hard',
         description: `Write a function 'most_frequent_alpha_character' that takes a filename. Read the file and find the alphabetic character (case-sensitive) that appears most frequently. Return the character. If there are ties, return the one that appears first alphabetically.`,
+        setupCode: `with open("test.txt", "w") as f:
+    f.write("apple")
+with open("test2.txt", "w") as f:
+    f.write("banana")`,
         examples: [
             { input: 'filename="test.txt" (content: "apple")', output: '"p"' },
             { input: 'filename="test2.txt" (content: "banana")', output: '"a"' }
@@ -1145,6 +1153,8 @@ Calculate and return the total amount spent.`,
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
         description: `Write a function 'count_file_lines' that takes a file content string and returns number of lines.`,
+        setupCode: `with open("lines.txt", "w") as f:
+    f.write("Line 1\\nLine 2\\nLine 3")`,
         examples: [{ input: '"line1\\nline2"', output: '2' }, { input: '"line1"', output: '1' }],
         starterCode: `def count_file_lines(content):
     # Write your code here
@@ -1161,6 +1171,8 @@ Calculate and return the total amount spent.`,
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
         description: `Write a function 'count_file_words' that returns total word count in content.`,
+        setupCode: `with open("words.txt", "w") as f:
+    f.write("Hello world this is a test")`,
         examples: [{ input: '"hello world\\nhi"', output: '3' }, { input: '"hello"', output: '1' }],
         starterCode: `def count_file_words(content):
     # Write your code here
@@ -1193,6 +1205,8 @@ Calculate and return the total amount spent.`,
         examLevel: 'OPPE 2',
         difficulty: 'Easy',
         description: `Write a function 'search_word_in_file' that returns True if word is in content.`,
+        setupCode: `with open("search.txt", "w") as f:
+    f.write("The quick brown fox jumps over the lazy dog")`,
         examples: [{ input: '"hello world", "world"', output: 'True' }, { input: '"hello world", "python"', output: 'False' }],
         starterCode: `def search_word_in_file(content, word):
     # Write your code here
@@ -1209,6 +1223,8 @@ Calculate and return the total amount spent.`,
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Write a function 'avg_nums_in_file' that parses numbers separated by spaces/newlines and returns average.`,
+        setupCode: `with open("nums.txt", "w") as f:
+    f.write("10 20 30")`,
         examples: [{ input: '"10 20\\n30"', output: '20.0' }, { input: '"1 2 3"', output: '2.0' }],
         starterCode: `def avg_nums_in_file(content):
     # Write your code here
@@ -1570,6 +1586,10 @@ def parse_json_content(content):
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Write a function 'compare_files' that returns True if two file contents are identical.`,
+        setupCode: `with open("file1.txt", "w") as f:
+    f.write("Content")
+with open("file2.txt", "w") as f:
+    f.write("Content")`,
         examples: [{ input: '"content1", "content1"', output: 'True' }, { input: '"a", "b"', output: 'False' }],
         starterCode: `def compare_files(content1, content2):
     # Write your code here
@@ -1675,6 +1695,8 @@ def parse_json_content(content):
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Write a function 'file_word_frequency' that returns dict of word frequencies (case-insensitive).`,
+        setupCode: `with open("freq.txt", "w") as f:
+    f.write("Hello hello world")`,
         examples: [{ input: '"Hello world\\nHello"', output: '{"hello": 2, "world": 1}' }, { input: '"a"', output: '{"a": 1}' }],
         starterCode: `def file_word_frequency(content):
     # Write your code here
@@ -1737,6 +1759,8 @@ def parse_json_content(content):
         examLevel: 'OPPE 2',
         difficulty: 'Medium',
         description: `Write a function 'count_file_types' that takes content with filenames (one per line) and returns dict of extension counts.`,
+        setupCode: `with open("files.txt", "w") as f:
+    f.write("file1.txt\\nfile2.py\\nfile3.txt")`,
         examples: [{ input: '"file1.txt\\nfile2.txt\\nfile3.py"', output: '{".txt": 2, ".py": 1}' }, { input: '"a.c"', output: '{".c": 1}' }],
         starterCode: `def count_file_types(content):
     # Write your code here

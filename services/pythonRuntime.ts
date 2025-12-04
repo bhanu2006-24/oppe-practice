@@ -39,7 +39,8 @@ export const initializePyodide = async () => {
 export const runPythonCode = async (
   userCode: string,
   functionName: string,
-  testCases: { input: string; expected: string }[]
+  testCases: { input: string; expected: string }[],
+  setupCode?: string
 ): Promise<{ results: TestResult[]; output: string }> => {
   const pyodide = await initializePyodide();
 
@@ -54,6 +55,11 @@ sys.stdout = StringIO()
   const results: TestResult[] = [];
 
   try {
+    // 0. Run Setup Code (if any)
+    if (setupCode) {
+      await pyodide.runPythonAsync(setupCode);
+    }
+
     // 1. Run User Code
     // We use loadPackagesFromImports if needed, but for standard library it's fine.
     // We wrap in a try-except block in Python to catch syntax errors immediately

@@ -211,7 +211,8 @@ const App: React.FC = () => {
         const { results, output } = await runPythonCode(
           userCode,
           currentProblem.functionName,
-          currentProblem.testCases
+          currentProblem.testCases,
+          currentProblem.setupCode
         );
         setTestResults(results);
         setOutput(output);
@@ -319,7 +320,8 @@ const App: React.FC = () => {
         const { results, output: runOutput } = await runPythonCode(
           userCode,
           currentProblem.functionName,
-          [{ input: customInput, expected: "" }] // Dummy expected
+          [{ input: customInput, expected: "" }], // Dummy expected
+          currentProblem.setupCode
         );
 
         // We only care about the output for custom run

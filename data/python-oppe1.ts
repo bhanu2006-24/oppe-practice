@@ -1553,6 +1553,8 @@ For each day, print: "Min: <min_bal>, Max: <max_bal>, End: <end_bal>"`,
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Write a function 'count_lines' that takes file content as a string and returns the number of lines.`,
+        setupCode: `with open("file.txt", "w") as f:
+    f.write("Line 1\\nLine 2\\nLine 3")`,
         examples: [{ input: '"line1\\nline2\\nline3"', output: '3' }, { input: '"one"', output: '1' }],
         starterCode: `def count_lines(content):
     # Write your code here
@@ -1574,6 +1576,8 @@ For each day, print: "Min: <min_bal>, Max: <max_bal>, End: <end_bal>"`,
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Write a function 'count_words_file' that takes file content and returns total word count.`,
+        setupCode: `with open("words.txt", "w") as f:
+    f.write("Hello world this is a test")`,
         examples: [{ input: '"hello world\\npython"', output: '3' }, { input: '"one"', output: '1' }],
         starterCode: `def count_words_file(content):
     # Write your code here
@@ -1595,6 +1599,8 @@ For each day, print: "Min: <min_bal>, Max: <max_bal>, End: <end_bal>"`,
         examLevel: 'OPPE 1',
         difficulty: 'Medium',
         description: `Write a function 'find_longest_line' that returns the longest line in file content.`,
+        setupCode: `with open("lines.txt", "w") as f:
+    f.write("Short\\nThis is a longer line\\nMedium line")`,
         examples: [{ input: '"short\\nlonger line\\nok"', output: '"longer line"' }, { input: '"a\\nbc"', output: '"bc"' }],
         starterCode: `def find_longest_line(content):
     # Write your code here
@@ -1616,6 +1622,8 @@ For each day, print: "Min: <min_bal>, Max: <max_bal>, End: <end_bal>"`,
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Write a function 'search_in_file' that returns True if word exists in content.`,
+        setupCode: `with open("search.txt", "w") as f:
+    f.write("The quick brown fox jumps over the lazy dog")`,
         examples: [{ input: '"hello world\\npython", "python"', output: 'True' }, { input: '"hello", "hi"', output: 'False' }],
         starterCode: `def search_in_file(content, word):
     # Write your code here
@@ -1658,6 +1666,8 @@ For each day, print: "Min: <min_bal>, Max: <max_bal>, End: <end_bal>"`,
         examLevel: 'OPPE 1',
         difficulty: 'Medium',
         description: `Write a function 'file_stats' that returns a tuple (lines, words, chars) for file content.`,
+        setupCode: `with open("stats.txt", "w") as f:
+    f.write("Line 1\\nLine 2 is longer\\nLine 3")`,
         examples: [{ input: '"hello world\\npython"', output: '(2, 3, 19)' }, { input: '"a"', output: '(1, 1, 1)' }],
         starterCode: `def file_stats(content):
     # Write your code here
@@ -1742,6 +1752,8 @@ For each day, print: "Min: <min_bal>, Max: <max_bal>, End: <end_bal>"`,
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Write a function 'replace_in_file' that replaces old text with new text in content.`,
+        setupCode: `with open("replace.txt", "w") as f:
+    f.write("Hello old world")`,
         examples: [{ input: '"hello world", "world", "python"', output: '"hello python"' }, { input: '"a b", "a", "c"', output: '"c b"' }],
         starterCode: `def replace_in_file(content, old, new):
     # Write your code here
@@ -1763,6 +1775,8 @@ For each day, print: "Min: <min_bal>, Max: <max_bal>, End: <end_bal>"`,
         examLevel: 'OPPE 1',
         difficulty: 'Medium',
         description: `Write a function 'reverse_lines' that reverses the order of lines in file content.`,
+        setupCode: `with open("reverse.txt", "w") as f:
+    f.write("First\\nSecond\\nThird")`,
         examples: [{ input: '"first\\nsecond\\nthird"', output: '"third\\nsecond\\nfirst"' }, { input: '"a\\nb"', output: '"b\\na"' }],
         starterCode: `def reverse_lines(content):
     # Write your code here
@@ -1826,6 +1840,10 @@ For each day, print: "Min: <min_bal>, Max: <max_bal>, End: <end_bal>"`,
         examLevel: 'OPPE 1',
         difficulty: 'Easy',
         description: `Write a function 'merge_contents' that concatenates two file contents.`,
+        setupCode: `with open("file1.txt", "w") as f:
+    f.write("Content 1")
+with open("file2.txt", "w") as f:
+    f.write("Content 2")`,
         examples: [{ input: '"content1", "content2"', output: '"content1\\ncontent2"' }, { input: '"a", "b"', output: '"a\\nb"' }],
         starterCode: `def merge_contents(content1, content2):
     # Write your code here
