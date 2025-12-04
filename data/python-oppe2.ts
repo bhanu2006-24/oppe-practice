@@ -195,7 +195,9 @@ Return a list of team names in ranked order.`,
         setupCode: `with open("sales.csv", "w") as f:
     f.write("Region,Rep,Q1,Q2,Q3,Q4\\nNorth,A,100,150,200,250\\nSouth,B,100,200,150,300")
 with open("sales2.csv", "w") as f:
-    f.write("Region,Rep,Q1,Q2,Q3,Q4\\nNorth,A,100,150,200,250\\nSouth,B,100,120,140,160")`,
+    f.write("Region,Rep,Q1,Q2,Q3,Q4\\nNorth,A,100,150,200,190\\nSouth,B,100,120,140,160")
+with open("sales3.csv", "w") as f:
+    f.write("Region,Rep,Q1,Q2,Q3,Q4\\nNorth,A,100,150,200,190\\nSouth,B,100,120,140,130\\nEast,C,100,110,120,130")`,
         description: `Find the region that has the highest number of representatives who have shown consistent sales growth (Q1 < Q2 < Q3 < Q4). Return the name of that region.`,
         examples: [
             { input: 'filename="sales.csv"', output: '"North"' },
