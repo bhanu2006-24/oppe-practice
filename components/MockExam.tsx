@@ -13,7 +13,7 @@ export const ExamSetup: React.FC<ExamSetupProps> = ({ onStart, onCancel }) => {
     const [questionCount, setQuestionCount] = useState(3);
     const [duration, setDuration] = useState(45);
 
-    const subjects: Subject[] = ['Python', 'Java', 'DBMS', 'PDSA', 'System_Commands', 'ML_Practice'];
+    const subjects: Subject[] = ['Python', 'Java', 'DBMS', 'SQL', 'PDSA', 'System_Commands', 'ML_Practice'];
 
     return (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-sm">
