@@ -11,7 +11,7 @@ export const SQL_OPPE2_PROBLEMS: Problem[] = [
                 examples: [{ input: '', output: 'Alice|Math\nBob|Science' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE students (id INT, name TEXT);
+                setupCode: `DROP TABLE IF EXISTS students; DROP TABLE IF EXISTS courses; CREATE TABLE students (id INT, name TEXT);
 CREATE TABLE courses (id INT, title TEXT, student_id INT);
 INSERT INTO students VALUES (1, 'Alice'), (2, 'Bob');
 INSERT INTO courses VALUES (101, 'Math', 1), (102, 'Science', 2);`,
@@ -29,7 +29,7 @@ INSERT INTO courses VALUES (101, 'Math', 1), (102, 'Science', 2);`,
                 examples: [{ input: '', output: 'Alice|Math\nBob|NULL' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE students (id INT, name TEXT);
+                setupCode: `DROP TABLE IF EXISTS students; DROP TABLE IF EXISTS courses; CREATE TABLE students (id INT, name TEXT);
 CREATE TABLE courses (id INT, title TEXT, student_id INT);
 INSERT INTO students VALUES (1, 'Alice'), (2, 'Bob');
 INSERT INTO courses VALUES (101, 'Math', 1);`,
@@ -47,7 +47,7 @@ INSERT INTO courses VALUES (101, 'Math', 1);`,
                 examples: [{ input: '', output: 'Math|Alice\nScience|NULL' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE students (id INT, name TEXT);
+                setupCode: `DROP TABLE IF EXISTS students; DROP TABLE IF EXISTS courses; CREATE TABLE students (id INT, name TEXT);
 CREATE TABLE courses (id INT, title TEXT, student_id INT);
 INSERT INTO students VALUES (1, 'Alice');
 INSERT INTO courses VALUES (101, 'Math', 1), (102, 'Science', 2);`,
@@ -65,7 +65,7 @@ INSERT INTO courses VALUES (101, 'Math', 1), (102, 'Science', 2);`,
                 examples: [{ input: '', output: 'Alice|Math\nBob|NULL\nNULL|Science' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE students (id INT, name TEXT);
+                setupCode: `DROP TABLE IF EXISTS students; DROP TABLE IF EXISTS courses; CREATE TABLE students (id INT, name TEXT);
 CREATE TABLE courses (id INT, title TEXT, student_id INT);
 INSERT INTO students VALUES (1, 'Alice'), (2, 'Bob');
 INSERT INTO courses VALUES (101, 'Math', 1), (103, 'Science', 3);`,
@@ -83,7 +83,7 @@ INSERT INTO courses VALUES (101, 'Math', 1), (103, 'Science', 3);`,
                 examples: [{ input: '', output: 'Alice|Math\nAlice|Science\nBob|Math\nBob|Science' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE students (name TEXT);
+                setupCode: `DROP TABLE IF EXISTS students; DROP TABLE IF EXISTS courses; CREATE TABLE students (name TEXT);
 CREATE TABLE courses (title TEXT);
 INSERT INTO students VALUES ('Alice'), ('Bob');
 INSERT INTO courses VALUES ('Math'), ('Science');`,
@@ -101,7 +101,7 @@ INSERT INTO courses VALUES ('Math'), ('Science');`,
                 examples: [{ input: '', output: 'Alice|Bob' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE students (id INT, name TEXT, city TEXT);
+                setupCode: `DROP TABLE IF EXISTS students; CREATE TABLE students (id INT, name TEXT, city TEXT);
 INSERT INTO students VALUES (1, 'Alice', 'NY'), (2, 'Bob', 'NY'), (3, 'Charlie', 'LA');`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: 'Alice|Bob' }],
@@ -117,7 +117,7 @@ INSERT INTO students VALUES (1, 'Alice', 'NY'), (2, 'Bob', 'NY'), (3, 'Charlie',
                 examples: [{ input: '', output: 'Bob' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE students (name TEXT, score INT);
+                setupCode: `DROP TABLE IF EXISTS students; CREATE TABLE students (name TEXT, score INT);
 INSERT INTO students VALUES ('Alice', 40), ('Bob', 60);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: 'Bob' }],
@@ -133,7 +133,7 @@ INSERT INTO students VALUES ('Alice', 40), ('Bob', 60);`,
                 examples: [{ input: '', output: 'Alice' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE students (id INT, name TEXT);
+                setupCode: `DROP TABLE IF EXISTS students; DROP TABLE IF EXISTS courses; CREATE TABLE students (id INT, name TEXT);
 CREATE TABLE courses (student_id INT, title TEXT);
 INSERT INTO students VALUES (1, 'Alice'), (2, 'Bob');
 INSERT INTO courses VALUES (1, 'Math');`,
@@ -151,7 +151,7 @@ INSERT INTO courses VALUES (1, 'Math');`,
                 examples: [{ input: '', output: 'Alice' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE students (id INT, name TEXT);
+                setupCode: `DROP TABLE IF EXISTS students; DROP TABLE IF EXISTS courses; CREATE TABLE students (id INT, name TEXT);
 CREATE TABLE courses (student_id INT);
 INSERT INTO students VALUES (1, 'Alice'), (2, 'Bob');
 INSERT INTO courses VALUES (1);`,
@@ -169,7 +169,7 @@ INSERT INTO courses VALUES (1);`,
                 examples: [{ input: '', output: '60.0' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE students (city TEXT, score INT);
+                setupCode: `DROP TABLE IF EXISTS students; CREATE TABLE students (city TEXT, score INT);
 INSERT INTO students VALUES ('NY', 50), ('NY', 70), ('LA', 40);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '60.0' }],
@@ -185,7 +185,7 @@ INSERT INTO students VALUES ('NY', 50), ('NY', 70), ('LA', 40);`,
                 examples: [{ input: '', output: 'Bob' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE students (name TEXT, city TEXT, score INT);
+                setupCode: `DROP TABLE IF EXISTS students; CREATE TABLE students (name TEXT, city TEXT, score INT);
 INSERT INTO students VALUES ('Alice', 'NY', 40), ('Bob', 'NY', 60), ('Charlie', 'LA', 30);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: 'Bob' }],
@@ -201,7 +201,7 @@ INSERT INTO students VALUES ('Alice', 'NY', 40), ('Bob', 'NY', 60), ('Charlie', 
                 examples: [{ input: '', output: 'Alice' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE students (name TEXT);
+                setupCode: `DROP TABLE IF EXISTS students; CREATE TABLE students (name TEXT);
 INSERT INTO students VALUES ('Alice');`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: 'Alice' }],
@@ -217,7 +217,7 @@ INSERT INTO students VALUES ('Alice');`,
                 examples: [{ input: '', output: 'Bob' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE students (name TEXT, score INT);
+                setupCode: `DROP TABLE IF EXISTS students; CREATE TABLE students (name TEXT, score INT);
 INSERT INTO students VALUES ('Alice', 40), ('Bob', 60);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: 'Bob' }],
@@ -233,7 +233,7 @@ INSERT INTO students VALUES ('Alice', 40), ('Bob', 60);`,
                 examples: [{ input: '', output: 'Bob|1\nAlice|2' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE students (name TEXT, score INT);
+                setupCode: `DROP TABLE IF EXISTS students; CREATE TABLE students (name TEXT, score INT);
 INSERT INTO students VALUES ('Alice', 40), ('Bob', 60);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: 'Bob|1\nAlice|2' }],
@@ -249,7 +249,7 @@ INSERT INTO students VALUES ('Alice', 40), ('Bob', 60);`,
                 examples: [{ input: '', output: 'Bob|1\nAlice|1\nCharlie|2' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE students (name TEXT, score INT);
+                setupCode: `DROP TABLE IF EXISTS students; CREATE TABLE students (name TEXT, score INT);
 INSERT INTO students VALUES ('Alice', 60), ('Bob', 60), ('Charlie', 40);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: 'Bob|1\nAlice|1\nCharlie|2' }],
@@ -265,7 +265,7 @@ INSERT INTO students VALUES ('Alice', 60), ('Bob', 60), ('Charlie', 40);`,
                 examples: [{ input: '', output: 'Bob|1\nAlice|2' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE students (name TEXT, score INT);
+                setupCode: `DROP TABLE IF EXISTS students; CREATE TABLE students (name TEXT, score INT);
 INSERT INTO students VALUES ('Alice', 60), ('Bob', 60);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: 'Bob|1\nAlice|2' }],
@@ -281,7 +281,7 @@ INSERT INTO students VALUES ('Alice', 60), ('Bob', 60);`,
                 examples: [{ input: '', output: 'Bob|1\nAlice|2\nCharlie|1' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE students (name TEXT, city TEXT, score INT);
+                setupCode: `DROP TABLE IF EXISTS students; CREATE TABLE students (name TEXT, city TEXT, score INT);
 INSERT INTO students VALUES ('Alice', 'NY', 40), ('Bob', 'NY', 60), ('Charlie', 'LA', 50);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: 'Bob|1\nAlice|2\nCharlie|1' }],
@@ -297,7 +297,7 @@ INSERT INTO students VALUES ('Alice', 'NY', 40), ('Bob', 'NY', 60), ('Charlie', 
                 examples: [{ input: '', output: 'Alice|Fail\nBob|Pass' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE students (name TEXT, score INT);
+                setupCode: `DROP TABLE IF EXISTS students; CREATE TABLE students (name TEXT, score INT);
 INSERT INTO students VALUES ('Alice', 40), ('Bob', 60);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: 'Alice|Fail\nBob|Pass' }],
@@ -313,7 +313,7 @@ INSERT INTO students VALUES ('Alice', 40), ('Bob', 60);`,
                 examples: [{ input: '', output: 'NULL\n10' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE students (score INT);
+                setupCode: `DROP TABLE IF EXISTS students; CREATE TABLE students (score INT);
 INSERT INTO students VALUES (0), (10);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: 'NULL\n10' }],
@@ -329,7 +329,7 @@ INSERT INTO students VALUES (0), (10);`,
                 examples: [{ input: '', output: '1' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE T (A INT);`,
+                setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (A INT);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '1' }],
                 hint: 'BEGIN TRANSACTION; ... COMMIT;'
@@ -344,7 +344,7 @@ INSERT INTO students VALUES (0), (10);`,
                 examples: [{ input: '', output: '' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE T (A INT);`,
+                setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (A INT);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '' }],
                 hint: 'ROLLBACK;'
@@ -359,7 +359,7 @@ INSERT INTO students VALUES (0), (10);`,
                 examples: [{ input: '', output: '1' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE T (A INT);`,
+                setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (A INT);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '1' }],
                 hint: 'SAVEPOINT S; ROLLBACK TO S;'
@@ -374,7 +374,7 @@ INSERT INTO students VALUES (0), (10);`,
                 examples: [{ input: '', output: '' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE students (name TEXT);`,
+                setupCode: `DROP TABLE IF EXISTS students; CREATE TABLE students (name TEXT);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '' }],
                 hint: 'CREATE INDEX'
@@ -389,7 +389,7 @@ INSERT INTO students VALUES (0), (10);`,
                 examples: [{ input: '', output: '' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE students (name TEXT);
+                setupCode: `DROP TABLE IF EXISTS students; CREATE TABLE students (name TEXT);
 CREATE INDEX idx_name ON students(name);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '' }],
@@ -489,7 +489,7 @@ CREATE INDEX idx_name ON students(name);`,
                 examples: [{ input: '', output: '1' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE T (A INT);
+                setupCode: `DROP TABLE IF EXISTS T; DROP TABLE IF EXISTS Log; CREATE TABLE T (A INT);
 CREATE TABLE Log (A INT);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '1' }],
@@ -505,7 +505,7 @@ CREATE TABLE Log (A INT);`,
                 examples: [{ input: '', output: '' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE T (A INT);
+                setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (A INT);
 CREATE TRIGGER tr AFTER INSERT ON T BEGIN INSERT INTO T VALUES (1); END;`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '' }],
@@ -521,7 +521,7 @@ CREATE TRIGGER tr AFTER INSERT ON T BEGIN INSERT INTO T VALUES (1); END;`,
                 examples: [{ input: '', output: 'Alice' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE students (name TEXT);
+                setupCode: `DROP TABLE IF EXISTS students; CREATE TABLE students (name TEXT);
 INSERT INTO students VALUES ('Alice'), ('Bob');`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: 'Alice' }],
@@ -537,7 +537,7 @@ INSERT INTO students VALUES ('Alice'), ('Bob');`,
                 examples: [{ input: '', output: 'ALice' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE students (name TEXT);
+                setupCode: `DROP TABLE IF EXISTS students; CREATE TABLE students (name TEXT);
 INSERT INTO students VALUES ('Alice');`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: 'ALice' }],
@@ -690,7 +690,7 @@ SELECT TYPEOF(1);
                 starterCode: `-- Write your query below
 SELECT last_insert_rowid();
 `,
-                setupCode: `CREATE TABLE T (A INT); INSERT INTO T VALUES (1);`,
+                setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (A INT); INSERT INTO T VALUES (1);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '1' }],
                 hint: 'last_insert_rowid()'
@@ -706,7 +706,7 @@ SELECT last_insert_rowid();
                 starterCode: `-- Write your query below
 SELECT changes();
 `,
-                setupCode: `CREATE TABLE T (A INT); INSERT INTO T VALUES (1);`,
+                setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (A INT); INSERT INTO T VALUES (1);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '1' }],
                 hint: 'changes()'
@@ -722,7 +722,7 @@ SELECT changes();
                 starterCode: `-- Write your query below
 SELECT total_changes();
 `,
-                setupCode: `CREATE TABLE T (A INT); INSERT INTO T VALUES (1);`,
+                setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (A INT); INSERT INTO T VALUES (1);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '1' }],
                 hint: 'total_changes()'

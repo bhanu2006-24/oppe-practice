@@ -11,7 +11,7 @@ export const DBMS_OPPE2_PROBLEMS: Problem[] = [
         examples: [{ input: '', output: '100' }],
         starterCode: `-- Write your query below
 `,
-        setupCode: `CREATE TABLE account (bal INT); INSERT INTO account VALUES (50);`,
+        setupCode: `DROP TABLE IF EXISTS account; CREATE TABLE account (bal INT); INSERT INTO account VALUES (50);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '100' }],
         hint: 'BEGIN; UPDATE ... COMMIT;'
@@ -26,7 +26,7 @@ export const DBMS_OPPE2_PROBLEMS: Problem[] = [
         examples: [{ input: '', output: '50' }],
         starterCode: `-- Write your query below
 `,
-        setupCode: `CREATE TABLE account (bal INT); INSERT INTO account VALUES (50);`,
+        setupCode: `DROP TABLE IF EXISTS account; CREATE TABLE account (bal INT); INSERT INTO account VALUES (50);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '50' }],
         hint: 'ROLLBACK'
@@ -41,7 +41,7 @@ export const DBMS_OPPE2_PROBLEMS: Problem[] = [
         examples: [{ input: '', output: '1' }],
         starterCode: `-- Write your query below
 `,
-        setupCode: `CREATE TABLE T (val INT);`,
+        setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1' }],
         hint: 'SAVEPOINT'
@@ -56,7 +56,7 @@ export const DBMS_OPPE2_PROBLEMS: Problem[] = [
         examples: [{ input: '', output: '1' }],
         starterCode: `-- Write your query below
 `,
-        setupCode: `CREATE TABLE T (val INT); CREATE TABLE Log (val INT);`,
+        setupCode: `DROP TABLE IF EXISTS T; DROP TABLE IF EXISTS Log; CREATE TABLE T (val INT); CREATE TABLE Log (val INT);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1' }],
         hint: 'CREATE TRIGGER'
@@ -71,7 +71,7 @@ export const DBMS_OPPE2_PROBLEMS: Problem[] = [
         examples: [{ input: '', output: '1' }],
         starterCode: `-- Write your query below
 `,
-        setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1); CREATE TABLE Log (val INT);`,
+        setupCode: `DROP TABLE IF EXISTS T; DROP TABLE IF EXISTS Log; CREATE TABLE T (val INT); INSERT INTO T VALUES (1); CREATE TABLE Log (val INT);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1' }],
         hint: 'OLD.val'
@@ -86,7 +86,7 @@ export const DBMS_OPPE2_PROBLEMS: Problem[] = [
         examples: [{ input: '', output: '1' }],
         starterCode: `-- Write your query below
 `,
-        setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1);`,
+        setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT); INSERT INTO T VALUES (1);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1' }],
         hint: 'RAISE(ABORT, ...)'
@@ -101,7 +101,7 @@ export const DBMS_OPPE2_PROBLEMS: Problem[] = [
         examples: [{ input: '', output: '2' }],
         starterCode: `-- Write your query below
 `,
-        setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1);`,
+        setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT); INSERT INTO T VALUES (1);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '2' }],
         hint: 'UPDATE V'
@@ -116,7 +116,7 @@ export const DBMS_OPPE2_PROBLEMS: Problem[] = [
         examples: [{ input: '', output: '1' }],
         starterCode: `-- Write your query below
 `,
-        setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1);`,
+        setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT); INSERT INTO T VALUES (1);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1' }],
         hint: 'CREATE UNIQUE INDEX'
@@ -173,7 +173,7 @@ export const DBMS_OPPE2_PROBLEMS: Problem[] = [
         examples: [{ input: '', output: '1|NULL\n2|1' }],
         starterCode: `-- Write your query below
 `,
-        setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (2);`,
+        setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (2);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1|NULL\n2|1' }],
         hint: 'LAG(val)'
@@ -188,7 +188,7 @@ export const DBMS_OPPE2_PROBLEMS: Problem[] = [
         examples: [{ input: '', output: '1|2\n2|NULL' }],
         starterCode: `-- Write your query below
 `,
-        setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (2);`,
+        setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (2);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1|2\n2|NULL' }],
         hint: 'LEAD(val)'
@@ -203,7 +203,7 @@ export const DBMS_OPPE2_PROBLEMS: Problem[] = [
         examples: [{ input: '', output: '1|1\n2|3' }],
         starterCode: `-- Write your query below
 `,
-        setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (2);`,
+        setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (2);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1|1\n2|3' }],
         hint: 'SUM(val) OVER (ORDER BY val)'
@@ -218,7 +218,7 @@ export const DBMS_OPPE2_PROBLEMS: Problem[] = [
         examples: [{ input: '', output: '1.0|1.0\n2.0|1.5' }],
         starterCode: `-- Write your query below
 `,
-        setupCode: `CREATE TABLE T (val REAL); INSERT INTO T VALUES (1), (2);`,
+        setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val REAL); INSERT INTO T VALUES (1), (2);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1.0|1.0\n2.0|1.5' }],
         hint: 'AVG(val) OVER (ORDER BY val)'
@@ -235,7 +235,7 @@ export const DBMS_OPPE2_PROBLEMS: Problem[] = [
 EXPLAIN QUERY PLAN SELECT * FROM T;
 SELECT 'Valid';
 `,
-        setupCode: `CREATE TABLE T (val INT);`,
+        setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'Valid' }],
         hint: 'EXPLAIN QUERY PLAN'
@@ -251,7 +251,7 @@ SELECT 'Valid';
         starterCode: `-- Write your query below
 ANALYZE T;
 `,
-        setupCode: `CREATE TABLE T (val INT);`,
+        setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '' }],
         hint: 'ANALYZE'
@@ -355,7 +355,7 @@ PRAGMA foreign_key_check;
         starterCode: `-- Write your query below
 PRAGMA table_info(T);
 `,
-        setupCode: `CREATE TABLE T (val INT);`,
+        setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '0|val|INT|0||0' }],
         hint: 'PRAGMA table_info'
@@ -371,7 +371,7 @@ PRAGMA table_info(T);
         starterCode: `-- Write your query below
 PRAGMA index_list(T);
 `,
-        setupCode: `CREATE TABLE T (val INT); CREATE INDEX idx ON T(val);`,
+        setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT); CREATE INDEX idx ON T(val);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '0|idx|0|c|0' }],
         hint: 'PRAGMA index_list'
@@ -387,7 +387,7 @@ PRAGMA index_list(T);
         starterCode: `-- Write your query below
 PRAGMA index_info(idx);
 `,
-        setupCode: `CREATE TABLE T (val INT); CREATE INDEX idx ON T(val);`,
+        setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT); CREATE INDEX idx ON T(val);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '0|0|val' }],
         hint: 'PRAGMA index_info'
@@ -536,7 +536,7 @@ SELECT json_valid('{"a":1}');
 INSERT INTO T VALUES (1, 2) ON CONFLICT(id) DO UPDATE SET val=excluded.val;
 SELECT val FROM T;
 `,
-        setupCode: `CREATE TABLE T (id INT PRIMARY KEY, val INT); INSERT INTO T VALUES (1, 1);`,
+        setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (id INT PRIMARY KEY, val INT); INSERT INTO T VALUES (1, 1);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '2' }],
         hint: 'ON CONFLICT DO UPDATE'
@@ -552,7 +552,7 @@ SELECT val FROM T;
         starterCode: `-- Write your query below
 INSERT INTO T VALUES (1) RETURNING id;
 `,
-        setupCode: `CREATE TABLE T (id INT);`,
+        setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (id INT);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1' }],
         hint: 'RETURNING'
@@ -569,7 +569,7 @@ INSERT INTO T VALUES (1) RETURNING id;
 INSERT INTO T VALUES (1);
 SELECT b FROM T;
 `,
-        setupCode: `CREATE TABLE T (a INT, b INT GENERATED ALWAYS AS (a*2));`,
+        setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (a INT, b INT GENERATED ALWAYS AS (a*2));`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '2' }],
         hint: 'GENERATED ALWAYS AS'
@@ -585,7 +585,7 @@ SELECT b FROM T;
         starterCode: `-- Write your query below
 SELECT count(*) FILTER (WHERE val > 1) FROM T;
 `,
-        setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (2);`,
+        setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (2);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1' }],
         hint: 'FILTER (WHERE ...)'
@@ -600,7 +600,7 @@ SELECT count(*) FILTER (WHERE val > 1) FROM T;
         examples: [{ input: '', output: 'NULL\n1' }],
         starterCode: `-- Write your query below
 `,
-        setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (NULL);`,
+        setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (NULL);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: 'NULL\n1' }],
         hint: 'NULLS FIRST'
@@ -615,7 +615,7 @@ SELECT count(*) FILTER (WHERE val > 1) FROM T;
         examples: [{ input: '', output: '1\nNULL' }],
         starterCode: `-- Write your query below
 `,
-        setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (NULL), (1);`,
+        setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT); INSERT INTO T VALUES (NULL), (1);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1\nNULL' }],
         hint: 'NULLS LAST'
@@ -660,7 +660,7 @@ VALUES (1), (2);
         starterCode: `-- Write your query below
 DROP VIEW V;
 `,
-        setupCode: `CREATE VIEW V AS SELECT 1;`,
+        setupCode: `DROP VIEW IF EXISTS V; CREATE VIEW V AS SELECT 1;`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '' }],
         hint: 'DROP VIEW'
@@ -676,7 +676,7 @@ DROP VIEW V;
         starterCode: `-- Write your query below
 REINDEX T;
 `,
-        setupCode: `CREATE TABLE T (val INT);`,
+        setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT);`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '' }],
         hint: 'REINDEX'
@@ -693,7 +693,7 @@ REINDEX T;
 INSERT INTO T VALUES (1);
 SELECT * FROM T;
 `,
-        setupCode: `CREATE TABLE T (val INT) STRICT;`,
+        setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT) STRICT;`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1' }],
         hint: 'STRICT'
@@ -710,7 +710,7 @@ SELECT * FROM T;
 INSERT INTO T VALUES (1);
 SELECT * FROM T;
 `,
-        setupCode: `CREATE TABLE T (val INT PRIMARY KEY) WITHOUT ROWID;`,
+        setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT PRIMARY KEY) WITHOUT ROWID;`,
         functionName: 'sql',
         testCases: [{ input: '', expected: '1' }],
         hint: 'WITHOUT ROWID'

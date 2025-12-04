@@ -25,7 +25,7 @@ export const DBMS_OPPE1_PROBLEMS: Problem[] = [
                 examples: [{ input: '', output: '1' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE users (id INT PRIMARY KEY); INSERT INTO users VALUES (1);`,
+                setupCode: `DROP TABLE IF EXISTS users; CREATE TABLE users (id INT PRIMARY KEY); INSERT INTO users VALUES (1);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '1' }],
                 hint: 'FOREIGN KEY (user_id) REFERENCES users(id)'
@@ -110,7 +110,7 @@ export const DBMS_OPPE1_PROBLEMS: Problem[] = [
                 examples: [{ input: '', output: '1|Alice|' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE users (id INT, name TEXT); INSERT INTO users VALUES (1, 'Alice');`,
+                setupCode: `DROP TABLE IF EXISTS users; CREATE TABLE users (id INT, name TEXT); INSERT INTO users VALUES (1, 'Alice');`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '1|Alice|' }],
                 hint: 'ALTER TABLE ... ADD COLUMN'
@@ -125,7 +125,7 @@ export const DBMS_OPPE1_PROBLEMS: Problem[] = [
                 examples: [{ input: '', output: '' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE temp (id INT);`,
+                setupCode: `DROP TABLE IF EXISTS temp; CREATE TABLE temp (id INT);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '' }],
                 hint: 'DROP TABLE'
@@ -142,7 +142,7 @@ export const DBMS_OPPE1_PROBLEMS: Problem[] = [
 DELETE FROM logs;
 SELECT count(*) FROM logs;
 `,
-                setupCode: `CREATE TABLE logs (msg TEXT); INSERT INTO logs VALUES ('Error');`,
+                setupCode: `DROP TABLE IF EXISTS logs; CREATE TABLE logs (msg TEXT); INSERT INTO logs VALUES ('Error');`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '0' }],
                 hint: 'DELETE FROM logs'
@@ -157,7 +157,7 @@ SELECT count(*) FROM logs;
                 examples: [{ input: '', output: 'Bob' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE users (id INT, name TEXT); INSERT INTO users VALUES (1, 'Alice');`,
+                setupCode: `DROP TABLE IF EXISTS users; CREATE TABLE users (id INT, name TEXT); INSERT INTO users VALUES (1, 'Alice');`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: 'Bob' }],
                 hint: 'UPDATE ... SET ... WHERE'
@@ -172,7 +172,7 @@ SELECT count(*) FROM logs;
                 examples: [{ input: '', output: '0' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE users (id INT PRIMARY KEY, role TEXT DEFAULT 'user');
+                setupCode: `DROP TABLE IF EXISTS users; CREATE TABLE users (id INT PRIMARY KEY, role TEXT DEFAULT 'user');
 INSERT INTO users (id) VALUES (1);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '0' }],
@@ -188,7 +188,7 @@ INSERT INTO users (id) VALUES (1);`,
                 examples: [{ input: '', output: 'HR\nIT' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE employees (dept TEXT); INSERT INTO employees VALUES ('HR'), ('HR'), ('IT');`,
+                setupCode: `DROP TABLE IF EXISTS employees; CREATE TABLE employees (dept TEXT); INSERT INTO employees VALUES ('HR'), ('HR'), ('IT');`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: 'HR\nIT' }],
                 hint: 'SELECT DISTINCT'
@@ -203,7 +203,7 @@ INSERT INTO users (id) VALUES (1);`,
                 examples: [{ input: '', output: 'Bob\nAlice' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE users (name TEXT, age INT); INSERT INTO users VALUES ('Alice', 20), ('Bob', 30);`,
+                setupCode: `DROP TABLE IF EXISTS users; CREATE TABLE users (name TEXT, age INT); INSERT INTO users VALUES ('Alice', 20), ('Bob', 30);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: 'Bob\nAlice' }],
                 hint: 'ORDER BY age DESC'
@@ -218,7 +218,7 @@ INSERT INTO users (id) VALUES (1);`,
                 examples: [{ input: '', output: 'IN|2\nUS|1' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE users (country TEXT); INSERT INTO users VALUES ('IN'), ('IN'), ('US');`,
+                setupCode: `DROP TABLE IF EXISTS users; CREATE TABLE users (country TEXT); INSERT INTO users VALUES ('IN'), ('IN'), ('US');`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: 'IN|2\nUS|1' }],
                 hint: 'GROUP BY country'
@@ -233,7 +233,7 @@ INSERT INTO users (id) VALUES (1);`,
                 examples: [{ input: '', output: 'IN' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE users (country TEXT); INSERT INTO users VALUES ('IN'), ('IN'), ('US');`,
+                setupCode: `DROP TABLE IF EXISTS users; CREATE TABLE users (country TEXT); INSERT INTO users VALUES ('IN'), ('IN'), ('US');`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: 'IN' }],
                 hint: 'HAVING count(*) > 1'
@@ -248,7 +248,7 @@ INSERT INTO users (id) VALUES (1);`,
                 examples: [{ input: '', output: 'Alice|101' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE users (id INT PRIMARY KEY); INSERT INTO users VALUES (1);
+                setupCode: `DROP TABLE IF EXISTS users; DROP TABLE IF EXISTS orders; CREATE TABLE users (id INT PRIMARY KEY); INSERT INTO users VALUES (1);
 CREATE TABLE orders (id INT PRIMARY KEY, user_id INT, FOREIGN KEY (user_id) REFERENCES users(id));
 INSERT INTO orders VALUES (101, 1);`,
                 functionName: 'sql',
@@ -265,7 +265,7 @@ INSERT INTO orders VALUES (101, 1);`,
                 examples: [{ input: '', output: 'Alice|101\nBob|NULL' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE users (id INT, name TEXT); CREATE TABLE orders (id INT, user_id INT);
+                setupCode: `DROP TABLE IF EXISTS users; DROP TABLE IF EXISTS orders; CREATE TABLE users (id INT, name TEXT); CREATE TABLE orders (id INT, user_id INT);
 INSERT INTO users VALUES (1, 'Alice'), (2, 'Bob'); INSERT INTO orders VALUES (101, 1);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: 'Alice|101\nBob|NULL' }],
@@ -281,7 +281,7 @@ INSERT INTO users VALUES (1, 'Alice'), (2, 'Bob'); INSERT INTO orders VALUES (10
                 examples: [{ input: '', output: '1\n2' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE A (val INT); CREATE TABLE B (val INT);
+                setupCode: `DROP TABLE IF EXISTS A; DROP TABLE IF EXISTS B; CREATE TABLE A (val INT); CREATE TABLE B (val INT);
 INSERT INTO A VALUES (1); INSERT INTO B VALUES (2);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '1\n2' }],
@@ -297,7 +297,7 @@ INSERT INTO A VALUES (1); INSERT INTO B VALUES (2);`,
                 examples: [{ input: '', output: '1' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE A (val INT); CREATE TABLE B (val INT);
+                setupCode: `DROP TABLE IF EXISTS A; DROP TABLE IF EXISTS B; CREATE TABLE A (val INT); CREATE TABLE B (val INT);
 INSERT INTO A VALUES (1), (2); INSERT INTO B VALUES (1), (3);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '1' }],
@@ -313,7 +313,7 @@ INSERT INTO A VALUES (1), (2); INSERT INTO B VALUES (1), (3);`,
                 examples: [{ input: '', output: '2' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE A (val INT); CREATE TABLE B (val INT);
+                setupCode: `DROP TABLE IF EXISTS A; DROP TABLE IF EXISTS B; CREATE TABLE A (val INT); CREATE TABLE B (val INT);
 INSERT INTO A VALUES (1), (2); INSERT INTO B VALUES (1);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '2' }],
@@ -329,7 +329,7 @@ INSERT INTO A VALUES (1), (2); INSERT INTO B VALUES (1);`,
                 examples: [{ input: '', output: 'Alice' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE users (id INT, name TEXT); CREATE TABLE orders (user_id INT);
+                setupCode: `DROP TABLE IF EXISTS users; DROP TABLE IF EXISTS orders; CREATE TABLE users (id INT, name TEXT); CREATE TABLE orders (user_id INT);
 INSERT INTO users VALUES (1, 'Alice'), (2, 'Bob'); INSERT INTO orders VALUES (1);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: 'Alice' }],
@@ -345,7 +345,7 @@ INSERT INTO users VALUES (1, 'Alice'), (2, 'Bob'); INSERT INTO orders VALUES (1)
                 examples: [{ input: '', output: 'Alice' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE users (id INT, name TEXT); CREATE TABLE orders (user_id INT);
+                setupCode: `DROP TABLE IF EXISTS users; DROP TABLE IF EXISTS orders; CREATE TABLE users (id INT, name TEXT); CREATE TABLE orders (user_id INT);
 INSERT INTO users VALUES (1, 'Alice'), (2, 'Bob'); INSERT INTO orders VALUES (1);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: 'Alice' }],
@@ -361,7 +361,7 @@ INSERT INTO users VALUES (1, 'Alice'), (2, 'Bob'); INSERT INTO orders VALUES (1)
                 examples: [{ input: '', output: 'Alice' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE users (name TEXT); INSERT INTO users VALUES ('Alice');`,
+                setupCode: `DROP TABLE IF EXISTS users; CREATE TABLE users (name TEXT); INSERT INTO users VALUES ('Alice');`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: 'Alice' }],
                 hint: 'CREATE VIEW'
@@ -376,7 +376,7 @@ INSERT INTO users VALUES (1, 'Alice'), (2, 'Bob'); INSERT INTO orders VALUES (1)
                 examples: [{ input: '', output: '' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE users (email TEXT);`,
+                setupCode: `DROP TABLE IF EXISTS users; CREATE TABLE users (email TEXT);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '' }],
                 hint: 'CREATE INDEX'
@@ -391,7 +391,7 @@ INSERT INTO users VALUES (1, 'Alice'), (2, 'Bob'); INSERT INTO orders VALUES (1)
                 examples: [{ input: '', output: '1' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE T (val INT);`,
+                setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '1' }],
                 hint: 'BEGIN; ... COMMIT;'
@@ -406,7 +406,7 @@ INSERT INTO users VALUES (1, 'Alice'), (2, 'Bob'); INSERT INTO orders VALUES (1)
                 examples: [{ input: '', output: '' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE T (val INT);`,
+                setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '' }],
                 hint: 'ROLLBACK'
@@ -451,7 +451,7 @@ SELECT 'Revoked';
                 examples: [{ input: '', output: 'Alice' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE users (name TEXT); INSERT INTO users VALUES ('Alice'), ('Bob');`,
+                setupCode: `DROP TABLE IF EXISTS users; CREATE TABLE users (name TEXT); INSERT INTO users VALUES ('Alice'), ('Bob');`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: 'Alice' }],
                 hint: 'LIKE "A%"'
@@ -466,7 +466,7 @@ SELECT 'Revoked';
                 examples: [{ input: '', output: 'Alice' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE users (name TEXT); INSERT INTO users VALUES ('Alice'), ('Bob');`,
+                setupCode: `DROP TABLE IF EXISTS users; CREATE TABLE users (name TEXT); INSERT INTO users VALUES ('Alice'), ('Bob');`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: 'Alice' }],
                 hint: 'GLOB "A*"'
@@ -481,7 +481,7 @@ SELECT 'Revoked';
                 examples: [{ input: '', output: '1' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (2);`,
+                setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (2);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '1' }],
                 hint: 'LIMIT 1'
@@ -496,7 +496,7 @@ SELECT 'Revoked';
                 examples: [{ input: '', output: '2' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (2), (3);`,
+                setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (2), (3);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '2' }],
                 hint: 'LIMIT 1 OFFSET 1'
@@ -512,7 +512,7 @@ SELECT 'Revoked';
                 starterCode: `-- Write your query below
 SELECT val FROM T WHERE val IS NULL;
 `,
-                setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (NULL);`,
+                setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT); INSERT INTO T VALUES (NULL);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '' }],
                 hint: 'IS NULL'
@@ -527,7 +527,7 @@ SELECT val FROM T WHERE val IS NULL;
                 examples: [{ input: '', output: '1' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (NULL);`,
+                setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (NULL);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '1' }],
                 hint: 'IS NOT NULL'
@@ -542,7 +542,7 @@ SELECT val FROM T WHERE val IS NULL;
                 examples: [{ input: '', output: '2' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (0), (2), (4);`,
+                setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT); INSERT INTO T VALUES (0), (2), (4);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '2' }],
                 hint: 'BETWEEN 1 AND 3'
@@ -557,7 +557,7 @@ SELECT val FROM T WHERE val IS NULL;
                 examples: [{ input: '', output: '1\n2' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (2), (3);`,
+                setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (2), (3);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '1\n2' }],
                 hint: 'IN (1, 2)'
@@ -572,7 +572,7 @@ SELECT val FROM T WHERE val IS NULL;
                 examples: [{ input: '', output: 'A' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1);`,
+                setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT); INSERT INTO T VALUES (1);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: 'A' }],
                 hint: 'CASE WHEN'
@@ -587,7 +587,7 @@ SELECT val FROM T WHERE val IS NULL;
                 examples: [{ input: '', output: '0' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (NULL);`,
+                setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT); INSERT INTO T VALUES (NULL);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '0' }],
                 hint: 'COALESCE'
@@ -751,7 +751,7 @@ SELECT TRIM(' A ');
                 examples: [{ input: '', output: '2' }],
                 starterCode: `-- Write your query below
 `,
-                setupCode: `CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (2);`,
+                setupCode: `DROP TABLE IF EXISTS T; CREATE TABLE T (val INT); INSERT INTO T VALUES (1), (2);`,
                 functionName: 'sql',
                 testCases: [{ input: '', expected: '2' }],
                 hint: 'MAX'
